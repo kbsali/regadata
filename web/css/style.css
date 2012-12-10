@@ -1,0 +1,35 @@
+body {
+    padding-top: 60px;
+    padding-bottom: 40px;
+}
+
+.r {
+    text-align: right !important;
+}
+
+.c {
+    text-align: center !important;
+    margin: 0 auto;
+}
+
+.t {
+    vertical-align: top !important;
+}
+
+.borderleft {
+    border-left: 3px solid #ddd !important;
+}
+
+.chart {
+    height: 200px;
+}
+
+.chart div.legend table {
+    margin-top: -30px;
+}
+
+.togo {
+    width: 100%;
+    text-align: center;
+    font-size: 12px;
+}

@@ -1,0 +1,22 @@
+            <div class="pagination pagination-centered">
+                <ul>
+                    <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
+                        <a href="{{ p.prev is null ? '#' : p.first }}">&lt;&lt; first</a>
+                    </li>
+                    <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
+                        <a href="{{ p.prev is null ? '#' : p.prev }}">&lt; prev</a>
+                    </li>
+
+                    <li class="disabled">
+                        <a href="#">Classement : {{ p.current }} / {{ p.total }}</a>
+                    </li>
+
+
+                    <li class="next{{ p.next is null ? ' disabled' : '' }}">
+                        <a href="{{ p.next is null ? '#' : p.next }}">next &gt;</a>
+                    </li>
+                    <li class="next{{ p.next is null ? ' disabled' : '' }}">
+                        <a href="{{ p.next is null ? '#' : p.last }}">last &gt;&gt;</a>
+                    </li>
+                </ul>
+            </div>

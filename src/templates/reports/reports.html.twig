@@ -1,0 +1,83 @@
+{% extends 'layout.html.twig' %}
+
+{% block container_content %}
+            {% include '_pagination.html.twig' with { 'p': pagination } %}
+
+            <table class="table table-condensed table-bordered table-hover table-striped">
+                <caption>
+                    Classement : {{ r.timestamp|date }}
+                </caption>
+                <thead>
+                    <tr>
+                        <th colspan="2">&nbsp;</th>
+                        <th class="c borderleft" colspan="2">Position</th>
+                        <th class="c borderleft" colspan="3">1 heure</th>
+                        <th class="c borderleft" colspan="4">Dernier classement</th>
+                        <th class="c borderleft" colspan="4">24 heures</th>
+                        <th class="c borderleft" colspan="2">&nbsp;</th>
+                    </tr>
+                    <tr>
+                        <th class="t">Rank</th>
+                        <th class="t">Skipper [Bateau]</th>
+
+                        <th class="c t borderleft"><abbr title="Latitude">Lat</abbr><br>(<abbr title="Degrees Minutes Seconds">DMS</abbr>)</th>
+                        <th class="c t"><abbr title="Longitude">Lon</abbr><br>(<abbr title="Degrees Minutes Seconds">DMS</abbr>)</th>
+
+                        <th class="c t borderleft">Cap<br>(<abbr title="Degré">°</abbr>)</th>
+                        <th class="c t">Vitesse<br>(<abbr title="Noeuds">kn</abbr>)</th>
+                        <th class="c t"><abbr title="Velocity Made Good">VMG</abbr><br>(<abbr title="Noeuds">kn</abbr>)</th>
+
+                        <th class="c t borderleft">Cap<br>(<abbr title="Degré">°</abbr>)</th>
+                        <th class="c t">Vitesse<br>(<abbr title="Noeuds">kn</abbr>)</th>
+                        <th class="c t"><abbr title="Velocity Made Good">VMG</abbr><br>(<abbr title="Noeuds">kn</abbr>)</th>
+                        <th class="c t">Distance<br>(<abbr title="Nautical Miles">nm</abbr>)</th>
+
+                        <th class="c t borderleft">Cap<br>(<abbr title="Degré">°</abbr>)</th>
+                        <th class="c t">Vitesse<br>(<abbr title="Noeuds">kn</abbr>)</th>
+                        <th class="c t"><abbr title="Velocity Made Good">VMG</abbr><br>(<abbr title="Noeuds">kn</abbr>)</th>
+                        <th class="c t">Distance<br>(<abbr title="Nautical Miles">nm</abbr>)</th>
+
+                        <th class="c t borderleft"><abbr title="Distance To Final">DTF</abbr><br>(<abbr title="Nautical Miles">nm</abbr>)</th>
+                        <th class="c t"><abbr title="Distance To Leader">DTL</abbr><br>(<abbr title="Nautical Miles">nm</abbr>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for r in report %}
+                    <tr>
+                        <td class="r"><span class="badge">{{ r.rank }}</span></td>
+                        <td>
+                            <a href="/sail/{{ r.sail }}">{{ r.skipper }}</a>
+                            [<a href="/sail/{{ r.sail }}">{{ r.boat }}</a>]
+                        </td>
+
+                        <td class="borderleft">{{ r.lat_dms }}</td>
+                        <td>{{ r.lon_dms }}</td>
+
+                        <td class="r borderleft">{{ r['1hour_heading'] }}</td>
+                        <td class="r">{{ '%.1f' | format(r['1hour_speed']) }}</td>
+                        <td class="r">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
+
+                        <td class="r borderleft">{{ r.lastreport_heading }}</td>
+                        <td class="r">{{ '%.1f' | format(r.lastreport_speed) }}</td>
+                        <td class="r">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
+                        <td class="r">{{ '%.1f' | format(r.lastreport_distance) }}</td>
+
+                        <td class="r borderleft">{{ r['24hour_heading'] }}</td>
+                        <td class="r">{{ '%.1f' | format(r['24hour_speed']) }}</td>
+                        <td class="r">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
+                        <td class="r">{{ '%.1f' | format(r['24hour_distance']) }}</td>
+
+                        <td class="r borderleft">{{ r['dtf'] }}</td>
+                        <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            {% include '_pagination.html.twig' with { 'p': pagination } %}
+
+            <p>
+                Source : <a target="_blank" href="{{ source }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i>{{ source }}</a>
+                Carte : <a target="_blank" href="http://tracking2012.vendeeglobe.org/fr/"><i class="icon-globe"></i>Cartographie officielle</a>
+            </p>
+{% endblock %}
