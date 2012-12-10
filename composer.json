@@ -1,0 +1,23 @@
+{
+    "minimum-stability" : "stable",
+    "require"           : {
+        "silex/silex"     : "1.*@dev",
+
+        "twig/twig"       : "1.*",
+
+        "doctrine/dbal"   : "2.*",
+        "doctrine/common" : "2.*",
+
+        "symfony/config": "2.1.*",
+        "symfony/yaml": "2.1.*",
+
+        "symfony/translation": "2.1.*"
+    },
+    "autoload"          : {
+        "psr-0": {
+            "Repository": "src/",
+            "Util": "src/",
+            "Service": "src/"
+        }
+    }
+}
