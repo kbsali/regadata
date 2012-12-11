@@ -2,7 +2,6 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-
 $app = new Silex\Application();
 
 $app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
@@ -27,7 +26,7 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
     return $translator;
 }));
 
-$app->before(function() use ($app, $config) {
+$app->before(function() use ($app) {
 
     $app['srv.vg'] = $app->share(function($app) {
         return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);
@@ -36,6 +35,14 @@ $app->before(function() use ($app, $config) {
     $app['html'] = $app->share(function($app) {
         return new Util\HtmlHelper();
     });
+
+    $reports     = $app['srv.vg']->listJson('reports');
+    $first       = str_replace('/json', '', end($reports));
+    $firstReport = $app['srv.vg']->parseJson($first);
+    $sk          = $app['srv.vg']->getSailSkipper($firstReport);
+    asort($sk);
+    $app['sk']   = $sk;
+    $app['twig']->addGlobal('sk', $app['sk']);
 
     $app['lSail'] = $app['srv.vg']->listJson('sail');
     $app['_lSail'] = array_map(function($s) {

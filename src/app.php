@@ -27,7 +27,7 @@ $app->get('/reports/{id}', function ($id) use ($app) {
     $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
 
     return $app['twig']->render('reports/reports.html.twig', array(
-        'r' => current($report),
+        'r'      => current($report),
         'report' => $report,
         'source' => '/json/reports/'.$id.'.json',
 
@@ -59,7 +59,7 @@ $app->get('/about', function () use ($app) {
         'lSail'       => $app['lSail'],
         '_lSail'      => $app['_lSail'],
         'rndSail'     => $app['_lSail'][array_rand($app['_lSail'])],
-        'lReport'     => $reports,
+        'reports'     => $app['srv.vg']->getReportsById($reports),
         'firstReport' => $firstReport,
     ));
 });
@@ -86,11 +86,6 @@ $app->get('/sail/{id1}/{id2}', function ($id1, $id2) use ($app) {
     $arr   = $app['srv.vg']->parseJson('/sail/'.$id2.'.json');
     $info2 = extractSailInfo($arr, $app);
 
-    $_lSail2 = array();
-    foreach ($app['_lSail'] as $s) {
-        $_lSail2[substr($s, 6)] = substr($s, 6);
-    }
-
     return $app['twig']->render('sail/sail_compare.html.twig', array(
 
         'info1'             => $info1['info'],
@@ -105,19 +100,14 @@ $app->get('/sail/{id1}/{id2}', function ($id1, $id2) use ($app) {
         't24hour_distance2' => json_encode(array('label' => $id2, 'data' => $info2['t24hour_distance'])),
         't24hour_speed2'    => json_encode(array('label' => $id2, 'data' => $info2['t24hour_speed'])),
 
-        'sail1'    => $app['html']->dropdown('sail1', $_lSail2, $id1),
-        'sail2'    => $app['html']->dropdown('sail2', $_lSail2, $id2, '... avec'),
+        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $id1),
+        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], $id2, '... avec'),
     ));
 });
 
 $app->get('/sail/{id1}', function ($id1) use ($app) {
     $arr   = $app['srv.vg']->parseJson('/sail/'.$id1.'.json');
     $info1 = extractSailInfo($arr, $app);
-
-    $_lSail2 = array();
-    foreach ($app['_lSail'] as $s) {
-        $_lSail2[substr($s, 6)] = substr($s, 6);
-    }
 
     return $app['twig']->render('sail/sail.html.twig', array(
         'info1'             => $info1['info'],
@@ -126,8 +116,8 @@ $app->get('/sail/{id1}', function ($id1) use ($app) {
         't24hour_distance1' => json_encode(array('label' => $id1, 'data' => $info1['t24hour_distance'])),
         't24hour_speed1'    => json_encode(array('label' => $id1, 'data' => $info1['t24hour_speed'])),
 
-        'sail1'    => $app['html']->dropdown('sail1', $_lSail2, $id1),
-        'sail2'    => $app['html']->dropdown('sail2', $_lSail2, null, '... avec'),
+        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $id1),
+        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], null, '... avec'),
     ));
 });
 

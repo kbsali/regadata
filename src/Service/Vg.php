@@ -14,6 +14,31 @@ class Vg
         $this->jsonDir = $root.$jsonDir;
     }
 
+    public function getSailSkipper($report)
+    {
+        $ret = array();
+        foreach ($report as $sail => $info) {
+            $ret[$sail] = $info['skipper'].' ['.$info['boat'].']';
+        }
+
+        return $ret;
+    }
+
+    public function getReportsById($reports)
+    {
+        $s = '|/json/reports/(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2}).json|s';
+        $ret = array();
+        foreach ($reports as $file) {
+            preg_match($s, $file, $m);
+            list($bla, $y, $mo, $d, $h, $min) = $m;
+            $id = $y.$mo.$d.'-'.$h.$min;
+            $ts = strtotime($y.'-'.$mo.'-'.$d.' '.$h.':'.$min.' UTC');
+            $ret[$id] = $ts;
+        }
+
+        return $ret;
+    }
+
     public function listJson($type = null)
     {
         if (null === $type) {
@@ -293,12 +318,13 @@ class Vg
     }
 
     /**
-     * @param array $arr Array([deg] => 18, [min] => 25, [sec] => 83, [dir] => N)
+     * @param  array $arr Array([deg] => 18, [min] => 25, [sec] => 83, [dir] => N)
+     * @return float
      */
     public static function DMStoDEC(array $arr = array())
     {
         $ret = $arr['deg'] + ( ( ($arr['min']*60) + $arr['sec'] ) / 3600 );
-        if ($arr['dir']=='S' || $arr['dir']=='W') {
+        if ('S' === $arr['dir'] || 'W' === $arr['dir']) {
             return -$ret;
         }
 

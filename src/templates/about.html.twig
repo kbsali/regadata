@@ -21,53 +21,30 @@
                 <h2>Complet</h2>
                 <p>Tous les pointages publiés pour tous les bateaux</p>
                 <ul>
-                    {% for file in lFull %}
-                        <li><a href="{{ file }}">{{ file }}</a>
-                    {% endfor %}
+                    <li><a target="_blank" href="/json/FULL.json" rel="tooltip" title="Accès JSON">/json/FULL.json</a>
                 </ul>
             </div>
             <div class="span4">
                 <h2>Par voile</h2>
                 <p>Tous les pointages publiés par bateau</p>
                 <ul>
-                    {% for file in lSail %}
+                    {% for sail, skipper in sk %}
                         <li>
-                            <a target="_blank" href="'.$file.'" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a>
-                            <a href="'.str_replace(array('/json', '.json'), '', $file).'" rel="tooltip" title="Voir les graphes"><i class="icon-signal"></i>asdfasdf</a>
+                            <a target="_blank" href="/json/sail/{{ sail }}.json" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a>
+                            <a target="_blank" href="/sail/{{ sail }}" rel="tooltip" title="Voir les graphes"><i class="icon-signal"></i> {{ skipper }}</a>
+
                     {% endfor %}
-                    {#
-                    <?php foreach($this->lSail as $file) {
-                        // /json/sail/ESP4.json
-                        $s = '|/json/sail/(.*?).json|s';
-                        preg_match($s, $file, $m);
-                        echo '<li>';
-                        echo '<a target="_blank" href="'.$file.'" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a> ';
-                        echo '<a href="'.str_replace(array('/json', '.json'), '', $file).'" rel="tooltip" title="Voir les graphes"><i class="icon-signal"></i>';
-                        echo $m[1].' - '.$this->firstReport[$m[1]]['skipper'].'</a>';
-                    } ?>
-                    #}
                 </ul>
             </div>
             <div class="span4">
                 <h2>Par classement</h2>
                 <p>Tous les classements publiés</p>
                 <ul>
-                    {% for file in lReport %}
+                    {% for dt, ts in reports %}
                         <li>
-                            <a target="_blank" href="'.$file.'" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a>
-                            <a href="'.str_replace(array('/json', '.json'), '', $file).'" rel="tooltip" title="Voir les graphes"><i class="icon-signal"></i>asdfasdf</a>
+                            <a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a>
+                            <a href="/reports/{{ dt }}" rel="tooltip" title="Voir les graphes"><i class="icon-signal"></i> {{ ts|date }}</a>
                     {% endfor %}
-                    {#
-                    <?php foreach($this->lReport as $file) {
-                        $s = '|/json/reports/(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2}).json|s';
-                        preg_match($s, $file, $m);
-                        list($bla, $y, $mo, $d, $h, $min) = $m;
-                        echo '<li>';
-                        echo '<a target="_blank" href="'.$file.'" rel="tooltip" title="Accès JSON"><i class="icon-download"></i></a> ';
-                        echo '<a href="'.str_replace(array('/json', '.json'), '', $file).'" rel="tooltip" title="Voir le classement"><i class="icon-th-list"></i>';
-                        echo $y.'-'.$mo.'-'.$d.' '.$h.':'.$min.'</a>';
-                    } ?>
-                    #}
                 </ul>
             </div>
         </div>

@@ -9,19 +9,17 @@
                 <a class="brand" href="/">#VG2012 - OpenData</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="/about">A propos</a></li>
-                        <li><a href="/reports/latest">Dernier Classement</a></li>
-                        {#
+                        <li class="active"><a href="#">Home</a>
+                        <li><a href="/about">A propos</a>
+                        <li><a href="/reports/latest">Dernier Classement</a>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bateaux <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                            <?php foreach ($this->_lSail as $sail) { ?>
-                                <li><a href="<?php echo $sail ?>"><?php echo $sail ?></a></li>
-                            <?php } ?>
+                            {% for sail, skipper in sk %}
+                                <li><a href="/sail/{{ sail }}">{{ skipper }}</a>
+                            {% endfor %}
                             </ul>
                         </li>
-                        #}
                     </ul>
                 </div><!--/.nav-collapse -->
             </div>
