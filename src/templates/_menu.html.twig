@@ -9,19 +9,19 @@
                 <a class="brand" href="/">#VG2012 - OpenData</a>
                 <div class="nav-collapse">
                     <ul class="nav">
-                        <li class="active"><a href="#">Home</a>
-                        <li><a href="/about">A propos</a>
-                        <li><a href="/reports/latest">Dernier Classement</a>
+                        <li {% if 'homepage' == active %}class="active"{% endif %}><a href="/">Home</a>
+                        <li {% if 'reports' == active %}class="active"{% endif %}><a href="/reports/latest">Dernier Classement</a>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bateaux <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                             {% for sail, skipper in sk %}
-                                <li><a href="/sail/{{ sail }}">{{ skipper }}</a>
+                                <li {% if sail == active %}class="active"{% endif %}><a href="/sail/{{ sail }}">{{ skipper }}</a>
                             {% endfor %}
                             </ul>
                         </li>
+                        <li {% if 'about' == active %}class="active"{% endif %}><a href="/about">A propos</a>
                     </ul>
-                </div><!--/.nav-collapse -->
+                </div>
             </div>
         </div>
     </div>

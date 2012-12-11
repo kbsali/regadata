@@ -28,7 +28,8 @@
     <script type="text/javascript">window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 </head>
 <body>
-    {% include '_menu.html.twig' %}
+    {% set active = active|default(null) %}
+    {% include '_menu.html.twig' with { 'active': active } %}
 
     <div class="container-fluid">
 

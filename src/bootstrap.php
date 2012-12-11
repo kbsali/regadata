@@ -2,6 +2,9 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
+
 $app = new Silex\Application();
 
 $app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
@@ -14,7 +17,6 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
 ));
 
 // ----- Translator
-use Symfony\Component\Translation\Loader\YamlFileLoader;
 $app->register(new Silex\Provider\TranslationServiceProvider(), array(
     'locale_fallback' => 'en',
 ));
@@ -48,6 +50,11 @@ $app->before(function() use ($app) {
     $app['_lSail'] = array_map(function($s) {
         return str_replace(array('/json', '.json'), '', $s);
     }, $app['lSail']);
+});
+
+
+$app->error(function (\Exception $e, $code) {
+    return new Response('We are sorry, but something went terribly wrong.');
 });
 
 return $app;
