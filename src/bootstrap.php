@@ -45,16 +45,11 @@ $app->before(function() use ($app) {
     asort($sk);
     $app['sk']   = $sk;
     $app['twig']->addGlobal('sk', $app['sk']);
-
-    $app['lSail'] = $app['srv.vg']->listJson('sail');
-    $app['_lSail'] = array_map(function($s) {
-        return str_replace(array('/json', '.json'), '', $s);
-    }, $app['lSail']);
 });
 
 
-$app->error(function (\Exception $e, $code) {
-    return new Response('We are sorry, but something went terribly wrong.');
-});
+// $app->error(function (\Exception $e, $code) {
+//     return new Response('We are sorry, but something went terribly wrong.');
+// });
 
 return $app;

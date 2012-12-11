@@ -55,69 +55,34 @@ $app->get('/about', function () use ($app) {
     $firstReport = $app['srv.vg']->parseJson($first);
 
     return $app['twig']->render('about.html.twig', array(
-        'lFull'       => $app['srv.vg']->listJson(),
-        'lSail'       => $app['lSail'],
-        '_lSail'      => $app['_lSail'],
-        'rndSail'     => $app['_lSail'][array_rand($app['_lSail'])],
+        'rndSail'     => array_rand($app['sk']),
         'reports'     => $app['srv.vg']->getReportsById($reports),
-        'firstReport' => $firstReport,
     ));
 });
-
-function extractSailInfo($arr, $app)
-{
-    return array(
-        'info'             => end($arr),
-        'rank'             => $app['srv.vg']->filterBy($arr, 'rank', 1),
-        'dtl'              => $app['srv.vg']->filterBy($arr, 'dtl', 1),
-        't24hour_distance' => $app['srv.vg']->filterBy($arr, '24hour_distance', 1),
-        't24hour_speed'    => $app['srv.vg']->filterBy($arr, '24hour_speed', 1),
-    );
-}
 
 $app->get('/compare', function (Request $request) use ($app) {
-    return $app->redirect('/sail/'.$request->get('sail1').'/'.$request->get('sail2'));
+    return $app->redirect('/sail/'.$request->get('sail1').'-'.$request->get('sail2'));
 });
 
-$app->get('/sail/{id1}/{id2}', function ($id1, $id2) use ($app) {
-    $arr   = $app['srv.vg']->parseJson('/sail/'.$id1.'.json');
-    $info1 = extractSailInfo($arr, $app);
-
-    $arr   = $app['srv.vg']->parseJson('/sail/'.$id2.'.json');
-    $info2 = extractSailInfo($arr, $app);
-
-    return $app['twig']->render('sail/sail_compare.html.twig', array(
-
-        'info1'             => $info1['info'],
-        'rank1'             => json_encode(array('label' => $id1, 'data' => $info1['rank'])),
-        'dtl1'              => json_encode(array('label' => $id1, 'data' => $info1['dtl'])),
-        't24hour_distance1' => json_encode(array('label' => $id1, 'data' => $info1['t24hour_distance'])),
-        't24hour_speed1'    => json_encode(array('label' => $id1, 'data' => $info1['t24hour_speed'])),
-
-        'info2'             => $info2['info'],
-        'rank2'             => json_encode(array('label' => $id2, 'data' => $info2['rank'])),
-        'dtl2'              => json_encode(array('label' => $id2, 'data' => $info2['dtl'])),
-        't24hour_distance2' => json_encode(array('label' => $id2, 'data' => $info2['t24hour_distance'])),
-        't24hour_speed2'    => json_encode(array('label' => $id2, 'data' => $info2['t24hour_speed'])),
-
-        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $id1),
-        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], $id2, '... avec'),
-    ));
-});
-
-$app->get('/sail/{id1}', function ($id1) use ($app) {
-    $arr   = $app['srv.vg']->parseJson('/sail/'.$id1.'.json');
-    $info1 = extractSailInfo($arr, $app);
+$app->get('/sail/{ids}', function ($ids) use ($app) {
+    $ids = explode('-', $ids);
+    $infos = array();
+    foreach($ids as $id) {
+        $info = $app['srv.vg']->getFullSailInfo($id);
+        $infos[] = array(
+            'info'             => $info['info'],
+            'rank'             => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['rank'])),
+            'dtl'              => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['dtl'])),
+            't24hour_distance' => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_distance'])),
+            't24hour_speed'    => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_speed'])),
+        );
+    }
 
     return $app['twig']->render('sail/sail.html.twig', array(
-        'info1'             => $info1['info'],
-        'rank1'             => json_encode(array('label' => $id1, 'data' => $info1['rank'])),
-        'dtl1'              => json_encode(array('label' => $id1, 'data' => $info1['dtl'])),
-        't24hour_distance1' => json_encode(array('label' => $id1, 'data' => $info1['t24hour_distance'])),
-        't24hour_speed1'    => json_encode(array('label' => $id1, 'data' => $info1['t24hour_speed'])),
+        'infos' => $infos,
 
-        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $id1),
-        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], null, '... avec'),
+        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $ids[0]),
+        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], isset($ids[1]) ? $ids[1] : null, '... avec'),
     ));
 });
 

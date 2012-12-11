@@ -14,6 +14,18 @@ class Vg
         $this->jsonDir = $root.$jsonDir;
     }
 
+    public function getFullSailInfo($id)
+    {
+        $arr = $this->parseJson('/sail/'.$id.'.json');
+        return array(
+            'info'             => end($arr),
+            'rank'             => $this->filterBy($arr, 'rank', 1),
+            'dtl'              => $this->filterBy($arr, 'dtl', 1),
+            't24hour_distance' => $this->filterBy($arr, '24hour_distance', 1),
+            't24hour_speed'    => $this->filterBy($arr, '24hour_speed', 1),
+        );
+    }
+
     public function getSailSkipper($report)
     {
         $ret = array();
