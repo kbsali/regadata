@@ -4,7 +4,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 $app = require __DIR__.'/bootstrap.php';
 
-$app->get('/reports/{id}', function ($id) use ($app) {
+$app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
     $reports = $app['srv.vg']->listJson('reports');
     if ('latest' === $id) {
         $id = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
@@ -42,14 +42,14 @@ $app->get('/reports/{id}', function ($id) use ($app) {
     ));
 });
 
-$app->get('/doc/json', function () use ($app) {
+$app->get('/{_locale}/doc/json', function () use ($app) {
     return $app['twig']->render('doc/json.html.twig', array());
 });
 $app->get('/doc/json-format', function () use ($app) {
     return $app['twig']->render('doc/json-format.html.twig', array());
 });
 
-$app->get('/about', function () use ($app) {
+$app->get('/{_locale}/about', function () use ($app) {
     $reports     = $app['srv.vg']->listJson('reports');
     $first       = str_replace('/json', '', end($reports));
     $firstReport = $app['srv.vg']->parseJson($first);
@@ -60,22 +60,23 @@ $app->get('/about', function () use ($app) {
     ));
 });
 
-$app->get('/compare', function (Request $request) use ($app) {
-    return $app->redirect('/sail/'.$request->get('sail1').'-'.$request->get('sail2'));
+$app->get('/{_locale}/compare', function (Request $request) use ($app) {
+    return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('sail1').'-'.$request->get('sail2'));
 });
 
-$app->get('/sail/{ids}', function ($ids) use ($app) {
+$app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     $ids = explode('-', $ids);
     $infos = array();
-    foreach($ids as $id) {
-        $info = $app['srv.vg']->getFullSailInfo($id);
-        $infos[] = array(
-            'info'             => $info['info'],
-            'rank'             => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['rank'])),
-            'dtl'              => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['dtl'])),
-            't24hour_distance' => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_distance'])),
-            't24hour_speed'    => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_speed'])),
-        );
+    foreach ($ids as $id) {
+        if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
+            $infos[] = array(
+                'info'             => $info['info'],
+                'rank'             => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['rank'])),
+                'dtl'              => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['dtl'])),
+                't24hour_distance' => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_distance'])),
+                't24hour_speed'    => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_speed'])),
+            );
+        }
     }
 
     return $app['twig']->render('sail/sail.html.twig', array(
@@ -86,8 +87,12 @@ $app->get('/sail/{ids}', function ($ids) use ($app) {
     ));
 });
 
+$app->get('/{_locale}', function (Request $request) use ($app) {
+    return $app->redirect('/'.$request->getLocale().'/reports/latest');
+});
+
 $app->get('/', function () use ($app) {
-    return $app->redirect('/reports/latest');
+    return $app->redirect('/en/reports/latest');
 });
 
 return $app;

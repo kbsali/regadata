@@ -1,19 +1,23 @@
 <!doctype html>
-<html class="no-js" lang="en">
+<html class="no-js" lang="{{ app.request.locale }}">
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 
-    <title></title>
+    {% set title = title|default(null) %}
+    {% set extra_meta = extra_meta|default(null) %}
+    <title>{{ title }} | #VG2012 - OpenData</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Accédez aux classements du Vendée Globe 2012 et suivez la progression des marins de façon accessible">
-    <meta name="keywords" content="Vendée Globe 2012 #vg2012 Jérémie Beyou Arnaud Boissières Louis Burton Samantha Davies Bertrand de Broc Tanguy De Lamotte Kito de Pavant Alessandro Di Benedetto Jean-Pierre Dick François Gabart Mike Golding Marc Guillemot Zbigniew Gutkowski Jean Le Cam Armel Le Cléac´h Vincent Riou Javier Sansó Bernard Stamm Alex Thomson Dominique Wavre">
+    <meta name="description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
+    <meta name="keywords" content="{{ 'Vendée Globe 2012 #vg2012 Jérémie Beyou Arnaud Boissières Louis Burton Samantha Davies Bertrand de Broc Tanguy De Lamotte Kito de Pavant Alessandro Di Benedetto Jean-Pierre Dick François Gabart Mike Golding Marc Guillemot Zbigniew Gutkowski Jean Le Cam Armel Le Cléac´h Vincent Riou Javier Sansó Bernard Stamm Alex Thomson Dominique Wavre'|trans }}">
     <meta name="author" content="Kevin Saliou">
-    <meta property="og:title" content="#VG2012 - OpenData">
+    <meta property="og:title" content="{{ '#VG2012 - OpenData'|trans }}">
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://vg2012.saliou.name/">
-    <meta property="og:description" content="Accédez aux classements du Vendée Globe 2012 et suivez la progression des marins de façon accessible">
-
+    <meta property="og:description" content="{{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
+    {#
+    <link href="/css/bootstrap-combined.min.css" rel="stylesheet">
+    #}
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/css/bootstrap-combined.min.css" rel="stylesheet">
     {# <link rel="stylesheet" href="/css/bootstrap.min.css"> #}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -40,7 +44,7 @@
                 &copy; <a href="http://www.linkedin.com/in/kevinsaliou">Kevin Saliou</a>
                 <a href="mailto:kevin_AT_saliou_DOT_name"><i class="icon-envelope"></i></a>
                 2012
-                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vg2012.saliou.name/" data-text="Classements et graphes du Vendée Globe 2012" data-via="kbsali" data-lang="fr" data-hashtags="VG2012">Tweeter</a>
+                <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vg2012.saliou.name/" data-text="{{ 'Rankings and graphs of the Vendée Globe 2012'|trans }}" data-via="kbsali" data-lang="{{ app.request.locale }}" data-hashtags="VG2012">{{ 'Tweet'|trans }}</a>
             </p>
         </footer>
     </div>
@@ -48,13 +52,13 @@
     <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.1/js/bootstrap.min.js"></script>
     <script src="http://jschr.github.com/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
     <script src="http://jschr.github.com/bootstrap-modal/js/bootstrap-modal.js"></script>
-    #}
-    <script src="/js/bootstrap.min.js"></script>
     <script src="/js/bootstrap-modalmanager.js"></script>
     <script src="/js/bootstrap-modal.js"></script>
+    <script src="/js/script.js"></script>
+    #}
+    <script src="/js/bootstrap.min.js"></script>
     <script src="/js/jquery.flot.js"></script>
     <script src="/js/jquery.flot.time.js"></script>
-    <script src="/js/script.js"></script>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
     <script type="text/javascript">
     var _gaq = _gaq || [];

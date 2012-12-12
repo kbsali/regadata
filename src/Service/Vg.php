@@ -16,7 +16,10 @@ class Vg
 
     public function getFullSailInfo($id)
     {
-        $arr = $this->parseJson('/sail/'.$id.'.json');
+        if (false === $arr = $this->parseJson('/sail/'.$id.'.json')) {
+            return false;
+        }
+
         return array(
             'info'             => end($arr),
             'rank'             => $this->filterBy($arr, 'rank', 1),
@@ -82,7 +85,11 @@ class Vg
 
     public function parseJson($name = null)
     {
-        $json = file_get_contents($this->jsonDir.(null === $name ? '/FULL.json' : $name));
+        $f = $this->jsonDir.(null === $name ? '/FULL.json' : $name);
+        if (!file_exists($f)) {
+            return false;
+        }
+        $json = file_get_contents($f);
 
         return json_decode($json, true);
     }

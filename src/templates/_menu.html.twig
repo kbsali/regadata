@@ -6,20 +6,25 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="/">#VG2012 - OpenData</a>
+                <a class="brand" href="/">{{ '#VG2012 - OpenData'|trans }}</a>
                 <div class="nav-collapse">
+                        <p class="navbar-text pull-right">
+                            <a href="/fr" class="navbar-link">fr</a>
+                            <a href="/en" class="navbar-link">en</a>
+                        </p>
+
                     <ul class="nav">
-                        <li {% if 'homepage' == active %}class="active"{% endif %}><a href="/">Home</a>
-                        <li {% if 'reports' == active %}class="active"{% endif %}><a href="/reports/latest">Dernier Classement</a>
+                        <li{% if 'homepage' == active %} class="active"{% endif %}><a href="/">{{ 'Home'|trans }}</a></li>
+                        <li{% if 'reports' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/reports/latest">{{ 'Last ranking'|trans }}</a></li>
                         <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Bateaux <b class="caret"></b></a>
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                             {% for sail, skipper in sk %}
-                                <li {% if sail == active %}class="active"{% endif %}><a href="/sail/{{ sail }}">{{ skipper }}</a>
+                                <li{% if sail == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/sail/{{ sail }}">{{ skipper }}</a></li>
                             {% endfor %}
                             </ul>
                         </li>
-                        <li {% if 'about' == active %}class="active"{% endif %}><a href="/about">A propos</a>
+                        <li{% if 'about' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/about">{{ 'About'|trans }}</a></li>
                     </ul>
                 </div>
             </div>

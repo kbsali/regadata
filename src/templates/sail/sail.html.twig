@@ -1,13 +1,15 @@
 {% extends 'layout.html.twig' %}
 {% set active = infos[0].info.sail %}
+{% set title = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
+{% set extra_meta = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
 
 {% block container_content %}
     <div class="row-fluid">
-        <form method="get" action="/compare">
+        <form method="get" action="/{{ app.request.locale }}/compare">
         <div class="span12 c">
             {{ sail1|raw }}
             {{ sail2|raw }}
-            <button type="submit" class="btn" style="margin-bottom: 10px">Compare!</button>
+            <button type="submit" class="btn" style="margin-bottom: 10px">{{ 'Compare!'|trans }}</button>
         </form>
     </div>
     <div class="row-fluid">
@@ -15,31 +17,31 @@
         <div class="span3">
             <h3>{{ info.info.skipper }}</h3>
             <dl>
-                <dt>Bateau</dt>
+                <dt>{{ 'Boat'|trans }}</dt>
                 <dd>{{ info.info.boat }} [{{ info.info.sail }}]</dd>
-                <dt>Distance parcourue / à parcourir</dt>
+                <dt>{{ 'Distance traveled / to finish'|trans }}</dt>
                 <dd>
                     <div class="progress">
                         <div class="bar" style="width:{{ '%.2f' | format((24016.60-info.info.dtf)/24016.60*100) }}%">
-                            {{ 24016.60-info.info.dtf }} <abbr title="Nautical Miles">nm</abbr>
+                            {{ 24016.60-info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
                         </div>
                         <div class="togo">
-                            {{ info.info.dtf }} <abbr title="Nautical Miles">nm</abbr>
+                            {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
                         </div>
                     </div>
                 </dd>
             </dl>
-            <p>Source : <a target="_blank" href="/json/sail/{{ info.info.sail }}.json" rel="tooltip" title="Accès JSON"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a></p>
+            <p>{{ 'Source'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a></p>
         </div>
         <div class="span3">
             <dl>
-                <dt>Dernier pointage</dt>
+                <dt>{{ 'Last ranking'|trans }}</dt>
                 <dd>{{ info.info.timestamp|date }}</dd>
-                <dt>Position au classement</dt>
+                <dt>{{ 'Rank'|trans }}</dt>
                 <dd>{{ info.info.rank }}</dd>
-                <dt>Coordonnées</dt>
+                <dt>{{ 'Coordinates'|trans }}</dt>
                 <dd>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</dd>
-                <dt>Cap</dt>
+                <dt>{{ 'Heading'|trans }}</dt>
                 <dd>{{ info.info['1hour_heading'] }}&deg;</dd>
             </dl>
         </div>
@@ -47,21 +49,21 @@
     </div>
     <div class="row-fluid">
         <div class="span6">
-            <h3>Position au classement</h3>
+            <h3>{{ 'Rank'|trans }}</h3>
             <div id="rank" class="chart"></div>
         </div>
         <div class="span6">
-            <h3>Distance du leader</h3>
+            <h3>{{ 'Distance To Leader'|trans }}</h3>
             <div id="dtl" class="chart"></div>
         </div>
     </div>
     <div class="row-fluid">
         <div class="span6">
-            <h3>Distance sur 24 heures</h3>
+            <h3>{{ 'Distance last 24 hours'|trans }}</h3>
             <div id="24hour_distance" class="chart"></div>
         </div>
         <div class="span6">
-            <h3>Vitesse sur 24 heures</h3>
+            <h3>{{ 'Speed last 24 hours'|trans }}</h3>
             <div id="24hour_speed" class="chart"></div>
         </div>
     </div>
