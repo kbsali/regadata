@@ -1,4 +1,5 @@
-*.DS_Store
 /cache/*
+/xls/*
+/web/json/*
 /vendor/*
 composer.lock

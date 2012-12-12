@@ -47,7 +47,7 @@ class Vg
             preg_match($s, $file, $m);
             list($bla, $y, $mo, $d, $h, $min) = $m;
             $id = $y.$mo.$d.'-'.$h.$min;
-            $ts = strtotime($y.'-'.$mo.'-'.$d.' '.$h.':'.$min.' UTC');
+            $ts = strtotime($y.'-'.$mo.'-'.$d.' '.$h.':'.$min.' -1 hour UTC');
             $ret[$id] = $ts;
         }
 
