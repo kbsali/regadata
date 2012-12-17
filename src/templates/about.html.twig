@@ -44,7 +44,7 @@
                     {% for dt, ts in reports %}
                         <li>
                             <a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
-                            <a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ ts|date }}</a>
+                            <a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-signal"></i> {{ ts }} {{ ts|date }}</a>
                     {% endfor %}
                 </ul>
             </div>

@@ -31,6 +31,7 @@ class VgXls
 
         $master = array();
         $files = glob($this->xlsDir.'/*');
+        sort($files);
         foreach ($files as $file) {
             try {
                 $xlsx = new XLSXReader($file);
