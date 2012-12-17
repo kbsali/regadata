@@ -2,4 +2,5 @@
 /xls/*
 /web/json/*
 /vendor/*
+/src/config.ini
 composer.lock

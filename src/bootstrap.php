@@ -11,7 +11,7 @@ use Silex\Provider\TwigServiceProvider;
 $app = new Silex\Application();
 
 $app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
-$app['debug'] = true;
+$app['debug'] = (bool)$app['config']['debug'];
 
 // ----- Translator
 $app->register(new TranslationServiceProvider(), array(

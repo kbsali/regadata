@@ -1,3 +1,4 @@
 xlsDir  = '/xls'
 jsonDir = '/web/json'
 docRoot = '/web'
+debug = true
