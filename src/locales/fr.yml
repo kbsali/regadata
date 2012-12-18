@@ -52,6 +52,7 @@
 
 
 'Race progress for %boat%': 'Progression en course pour %boat%'
+'... with':                 '... avec'
 'Compare!':                 'Comparer!'
 'Boat':                     'Bateau'
 'Distance traveled / to finish': 'Distance parcourue / à parcourir'
@@ -67,7 +68,7 @@
 'Rankings and graphs of the Vendée Globe 2012': 'Classements et graphes du Vendée Globe 2012'
 
 
-'Complete':                         'Complet'
+'Full':                             'Complet'
 'All the rankings published for all the boats': 'Tous les pointages publiés pour tous les bateaux'
 'Per boat':                         'Par bateau'
 'All rankings published per boat':  'Tous les pointages publiés par bateau'
@@ -75,3 +76,6 @@
 'See the report':                   'Voir le classement'
 'Per ranking':                      'Par classement'
 'All published rankings':           'Tous les classements publiés'
+"Let's open the data : VG 2012 Open Data!": 'Ouvrons les données : VG 2012 Open Data!'
+'Random boat':                      'Bateau au hasard'
+'JSON Doc':                         'JSON Doc'

@@ -5,11 +5,8 @@
 
 {% block container_content %}
             {% include '_pagination.html.twig' with { 'p': pagination } %}
-
             <table class="table table-condensed table-bordered table-hover table-striped">
-                <caption>
-                    {{ 'Ranking : %date%'|trans({'%date%':r.timestamp|date}) }}
-                <caption>
+                <caption>{{ 'Ranking : %date%'|trans({'%date%':r.timestamp|date}) }}</caption>
                 <thead>
                     <tr>
                         <th colspan="2">&nbsp;</th>
@@ -76,10 +73,8 @@
                     {% endfor %}
                 </tbody>
             </table>
-
             {% include '_pagination.html.twig' with { 'p': pagination } %}
-
-            <p>
+            <p class="tooltips">
                 {{ 'Source'|trans }} : <a target="_blank" href="{{ source }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ source }}</a>
                 {{ 'Map'|trans }} : <a target="_blank" href="http://tracking2012.vendeeglobe.org/fr/"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
             </p>

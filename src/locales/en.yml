@@ -3,6 +3,7 @@
 'About':            'About'
 'Boats':            'Boats'
 
+
 'Documentation':    'Documentation'
 'Description of the data available in the Json files': 'Description of the data available in the Json files'
 'Index':            'Index'
@@ -52,6 +53,7 @@
 
 
 'Race progress for %boat%': 'Race progress for %boat%'
+'... with':                 '... with'
 'Compare!':                 'Compare!'
 'Boat':                     'Boat'
 'Distance traveled / to finish': 'Distance traveled / to finish'
@@ -67,7 +69,7 @@
 'Rankings and graphs of the Vendée Globe 2012': 'Rankings and graphs of the Vendée Globe 2012'
 
 
-'Complete':                         'Complet'
+'Full':                             'Full'
 'All the rankings published for all the boats': 'All the rankings published for all the boats'
 'Per boat':                         'Per boat'
 'All rankings published per boat':  'All rankings published per boat'
@@ -75,3 +77,6 @@
 'See the report':                   'See the report'
 'Per ranking':                      'Per ranking'
 'All published rankings':           'All published rankings'
+"Let's open the data : VG 2012 Open Data!": "Let's open the data : VG 2012 Open Data!"
+'Random boat':                      'Random boat'
+'JSON Doc':                         'JSON Doc'

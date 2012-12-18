@@ -83,7 +83,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
         'infos' => $infos,
 
         'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $ids[0]),
-        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], isset($ids[1]) ? $ids[1] : null, '... avec'),
+        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], isset($ids[1]) ? $ids[1] : null, $app['translator']->trans('... with')),
     ));
 });
 

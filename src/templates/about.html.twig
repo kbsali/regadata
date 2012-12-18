@@ -4,22 +4,22 @@
 
 {% block container_content %}
         <div class="hero-unit" lang="fr">
-            <h2>Ouvrons les données : VG 2012 Open Data! <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vg2012.saliou.name/" data-text="Classements et graphes du Vendée Globe 2012" data-via="kbsali" data-lang="fr" data-hashtags="VG2012">{{ 'Tweet'|trans }}</a></h2>
+            <h2>{{ "Let's open the data : VG 2012 Open Data!"|trans }} <a href="https://twitter.com/share" class="twitter-share-button" data-url="http://vg2012.saliou.name/" data-text="Classements et graphes du Vendée Globe 2012" data-via="kbsali" data-lang="fr" data-hashtags="VG2012">{{ 'Tweet'|trans }}</a></h2>
             <p>Je suis le <strong><a href="http://www.vendeeglobe.org/fr/">Vendée Globe</a></strong> de près, et surtout bien-sûr <strong>les classements</strong>! Mais malheureusement ces <a href="http://www.vendeeglobe.org/fr/classements.html">classements</a> sont plutôt légers et les <a href="http://www.vendeeglobe.org/fr/classement-historiques.html">version détaillés</a> sont au <strong>format fermé Excel</strong>, peu exploitable et donc pas très pratique à mon goût. De plus, j'aimerais par exemple avoir des <a href="/{{ app.request.locale }}/sail/{{ rndSail }}">graphes</a> sur l'évolution des positions de chaque marin, ou de sa vitesse; ou encore la distance qu'il y a entre le 1er et le dernier au cours du temps, etc... Pas possible sans avoir un accès facile à toutes ces données!</p>
             <p>J'ai donc implémenté une solution pour exporter toutes ces données au <strong>format <a href="http://www.json.org/">JSON</a></strong> afin de pouvoir les <strong>exploiter beaucoup plus facilement</strong>! Ceci pourrait permettre aux développeurs de proposer des <strong>tableaux, graphes et autres cartes</strong> pour visualiser et analyser de façon différente les données de classements de cette régate.</p>
             <p>
-                <a href="/{{ app.request.locale }}/reports/latest" class="btn btn-success btn-large">Dernier classement</a>
-                <a href="/{{ app.request.locale }}/sail/{{ rndSail }}" class="btn btn-success btn-large">Bateau au hasard</a>
-                <a href="/{{ app.request.locale }}/doc/json" class="jsondoc btn btn-primary" target="_blank">JSON Doc</a>
+                <a href="/{{ app.request.locale }}/reports/latest" class="btn btn-success btn-large">{{ 'Last ranking'|trans }}</a>
+                <a href="/{{ app.request.locale }}/sail/{{ rndSail }}" class="btn btn-success btn-large">{{ 'Random boat'|trans }}</a>
+                <a href="/{{ app.request.locale }}/doc/json" class="jsondoc btn btn-primary" target="_blank">{{ 'JSON Doc'|trans }}</a>
             </p>
 
         </div>
         <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
         <!-- Example row of columns -->
-        <div class="row-fluid">
+        <div class="row-fluid tooltips">
             <div class="span4">
-                <h2>{{ 'Complete'|trans }}</h2>
+                <h2>{{ 'Full'|trans }}</h2>
                 <p>{{ 'All the rankings published for all the boats'|trans }}</p>
                 <ul>
                     <li><a target="_blank" href="/json/FULL.json" rel="tooltip" title="{{ 'Download JSON'|trans }}">/json/FULL.json</a>
@@ -31,7 +31,7 @@
                 <ul>
                     {% for sail, skipper in sk %}
                         <li>
-                            <a target="_blank" href="/json/sail/{{ sail }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
+                            <a target="_blank" href="/json/sail/{{ sail }}.json" rel="tooltip" data-placement="left" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
                             <a href="/{{ app.request.locale }}/sail/{{ sail }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper }}</a>
 
                     {% endfor %}
@@ -43,8 +43,8 @@
                 <ul>
                     {% for dt, ts in reports %}
                         <li>
-                            <a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
-                            <a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-signal"></i> {{ ts }} {{ ts|date }}</a>
+                            <a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" data-placement="left" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
+                            <a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-signal"></i> {{ ts|date }}</a>
                     {% endfor %}
                 </ul>
             </div>

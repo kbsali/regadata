@@ -16,6 +16,7 @@ class HtmlHelper
      * $name = 'my_dropdown';
      * $options = array( 'dingo', 'wombat', 'kangaroo' );
      * $selected = 1;
+     * $nullLabel = 'Choose your option';
      * echo htmlHelper::dropdown( $name, $options, $selected );
      */
     public function dropdown($name, array $options, $selected = null, $nullLabel = null)
@@ -24,9 +25,8 @@ class HtmlHelper
             $options = array(0 => $nullLabel) + $options;
         }
         $ret = '<select name="' . $name . '" id="' . $name . '">' . PHP_EOL;
-        $selected = $selected;
         foreach ($options as $key => $option) {
-            $select = $selected == $key ? ' selected="selected"' : '';
+            $select = $selected === $key ? ' selected="selected"' : '';
             $ret.= '<option value="' . $key . '"' . $select . '>' . $option . '</option>' . PHP_EOL;
         }
         $ret.= '</select>' . PHP_EOL;
@@ -35,7 +35,6 @@ class HtmlHelper
     }
     /**
      * -> http://www.phpro.org/tutorials/Dropdown-Select-With-PHP-and-MySQL.html
-     *
      * create a multi select dropdown menu
      * @param string $name
      * @param array  $options

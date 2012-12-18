@@ -8,11 +8,10 @@
                 </a>
                 <a class="brand" href="/">{{ '#VG2012 - OpenData'|trans }}</a>
                 <div class="nav-collapse">
-                        <p class="navbar-text pull-right">
-                            <a href="/fr" class="navbar-link">fr</a>
-                            <a href="/en" class="navbar-link">en</a>
-                        </p>
-
+                    <p class="navbar-text pull-right">
+                        <a class="{% if app.request.locale == 'fr' %}active {% endif %}navbar-link" href="/fr" title="En français">fr</a>
+                        <a class="{% if app.request.locale == 'en' %}active {% endif %}navbar-link" href="/en" title="In english">en</a>
+                    </p>
                     <ul class="nav">
                         <li{% if 'homepage' == active %} class="active"{% endif %}><a href="/">{{ 'Home'|trans }}</a></li>
                         <li{% if 'reports' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/reports/latest">{{ 'Last ranking'|trans }}</a></li>
@@ -24,6 +23,7 @@
                             {% endfor %}
                             </ul>
                         </li>
+                        <li{% if 'doc' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/doc/json">{{ 'Documentation'|trans }}</a></li>
                         <li{% if 'about' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/about">{{ 'About'|trans }}</a></li>
                     </ul>
                 </div>
