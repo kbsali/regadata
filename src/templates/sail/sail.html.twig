@@ -5,12 +5,13 @@
 
 {% block container_content %}
     <div class="row-fluid">
-        <form method="get" action="/{{ app.request.locale }}/compare">
         <div class="span12 c">
-            {{ sail1|raw }}
-            {{ sail2|raw }}
-            <button type="submit" class="btn" style="margin-bottom: 10px">{{ 'Compare!'|trans }}</button>
-        </form>
+            <form method="get" action="/{{ app.request.locale }}/compare">
+                {{ sail1|raw }}
+                {{ sail2|raw }}
+                <button type="submit" class="btn" style="margin-bottom: 10px">{{ 'Compare!'|trans }}</button>
+            </form>
+        </div>
     </div>
     <div class="row-fluid">
         {% for info in infos %}
