@@ -12,7 +12,10 @@
         "symfony/yaml": "2.1.*",
 
         "symfony/translation": "2.1.*",
-        "symfony/twig-bridge": "2.1.*"
+        "symfony/twig-bridge": "2.1.*",
+
+        "themattharris/tmhoauth": "dev-master",
+        "kud/tmhoauth-silex-service-provider": "dev-master"
     },
     "autoload"          : {
         "psr-0": {

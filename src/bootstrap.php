@@ -7,16 +7,19 @@ use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\HttpFoundation\Request;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Kud\Silex\Provider\TmhOAuthServiceProvider;
 
 $app = new Silex\Application();
 
 $app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
 $app['debug'] = (bool)$app['config']['debug'];
+$app['tmhoauth.config'] = array(
+    'consumer_key'    => $app['config']['consumer_key'],
+    'consumer_secret' => $app['config']['consumer_secret'],
+);
 
-// ----- Translator
-$app->register(new TranslationServiceProvider(), array(
-    'locale_fallback' => 'en',
-));
+// --- Providers
+$app->register(new TranslationServiceProvider());
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
     $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
@@ -26,7 +29,6 @@ $app['translator'] = $app->share($app->extend('translator', function($translator
 }));
 $app['translator.domains'] = array();
 
-// ----- Twig
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => __DIR__.'/templates',
     'twig.options' => array(
@@ -34,6 +36,9 @@ $app->register(new TwigServiceProvider(), array(
     ),
 ));
 
+$app->register(new TmhOAuthServiceProvider());
+
+// --- Before
 $app->before(function(Request $request) use ($app) {
 
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
