@@ -87,6 +87,12 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     ));
 });
 
+$app->get('/tweet', function () use ($app) {
+    $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+      'status' => '#vg2012 latest ranking available http://vg2012.saliou.name/en dernier classement disponible http://vg2012.saliou.name/fr'
+    ));
+});
+
 $app->get('/{_locale}', function (Request $request) use ($app) {
     return $app->redirect('/'.$request->getLocale().'/reports/latest');
 });

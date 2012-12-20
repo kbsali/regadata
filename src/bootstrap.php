@@ -16,6 +16,8 @@ $app['debug'] = (bool)$app['config']['debug'];
 $app['tmhoauth.config'] = array(
     'consumer_key'    => $app['config']['consumer_key'],
     'consumer_secret' => $app['config']['consumer_secret'],
+    'user_token'      => $app['config']['user_token'],
+    'user_secret'     => $app['config']['user_secret'],
 );
 
 // --- Providers
