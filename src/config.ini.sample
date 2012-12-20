@@ -2,3 +2,5 @@ xlsDir  = '/xls'
 jsonDir = '/web/json'
 docRoot = '/web'
 debug = true
+consumer_key = 'ENTER_HERE_YOUR_TWITTER_CONSUMER_KEY'
+consumer_secret = 'ENTER_HERE_YOUR_TWITTER_CONSUMER_SECRET'
