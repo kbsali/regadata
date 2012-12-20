@@ -33,3 +33,36 @@ body {
     text-align: center;
     font-size: 12px;
 }
+
+/*
+@media (max-width: 640px) {
+    #report tr#subheader :nth-child(1) {display: none;}
+    #report tr :nth-child(1) {display: none;}
+    #report tr :nth-child(2) {display: none;}
+
+    #report tr#subheader :nth-child(2) {display: none;}
+    #report tr :nth-child(3) {display: none;}
+    #report tr :nth-child(4) {display: none;}
+
+    #report tr#subheader :nth-child(3) {display: none;}
+    #report tr :nth-child(5) {display: none;}
+    #report tr :nth-child(6) {display: none;}
+    #report tr :nth-child(7) {display: none;}
+
+    #report tr#subheader :nth-child(4) {display: none;}
+    #report tr :nth-child(8) {display: none;}
+    #report tr :nth-child(9) {display: none;}
+    #report tr :nth-child(10) {display: none;}
+    #report tr :nth-child(11) {display: none;}
+
+    #report tr#subheader :nth-child(5) {display: none;}
+    #report tr :nth-child(12) {display: none;}
+    #report tr :nth-child(13) {display: none;}
+    #report tr :nth-child(14) {display: none;}
+    #report tr :nth-child(15) {display: none;}
+
+    #report tr#subheader :nth-child(6) {display: none;}
+    #report tr :nth-child(16) {display: none;}
+    #report tr :nth-child(17) {display: none;}
+}
+*/

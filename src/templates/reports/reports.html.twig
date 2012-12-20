@@ -5,7 +5,7 @@
 
 {% block container_content %}
             {% include '_pagination.html.twig' with { 'p': pagination } %}
-            <table class="table table-condensed table-bordered table-hover table-striped">
+            <table class="table table-condensed table-bordered table-hover table-striped" id="report">
                 <caption>{{ 'Ranking : %date%'|trans({'%date%':r.timestamp|date}) }}</caption>
                 <thead>
                     <tr>
@@ -17,28 +17,28 @@
                         <th class="c borderleft" colspan="2">&nbsp;</th>
                     </tr>
                     <tr>
-                        <th class="t">{{ 'Rank'|trans }}</th>
-                        <th class="t">{{ 'Skipper [Boat]'|trans}}</th>
+                        <th scope="col" class="t">{{ 'Rank'|trans }}</th>
+                        <th scope="col" class="t">{{ 'Skipper [Boat]'|trans}}</th>
 
-                        <th class="c t borderleft"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'lat_dms'|trans }}</abbr>)</th>
-                        <th class="c t"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'lat_dms'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
 
-                        <th class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
-                        <th class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
 
-                        <th class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
-                        <th class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
 
-                        <th class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
-                        <th class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
 
-                        <th class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
-                        <th class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                     </tr>
                 </thead>
                 <tbody>
