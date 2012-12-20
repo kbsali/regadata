@@ -54,7 +54,7 @@ $console
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if(strlen($_tweet)<=140) {
             $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-              'status' => $tweet
+              'status' => $_tweet
             ));
         }
 
@@ -68,7 +68,7 @@ $console
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if(strlen($_tweet)<=140) {
             $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-              'status' => $tweet
+              'status' => $_tweet
             ));
         }
     })
