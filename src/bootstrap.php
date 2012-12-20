@@ -40,6 +40,15 @@ $app->register(new TwigServiceProvider(), array(
 
 $app->register(new TmhOAuthServiceProvider());
 
+
+$app['srv.vg'] = $app->share(function($app) {
+    return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);
+});
+
+$app['srv.vgxls'] = $app->share(function($app) {
+    return new Service\VgXls($app['config']['xlsDir'], $app['config']['jsonDir']);
+});
+
 // --- Before
 $app->before(function(Request $request) use ($app) {
 
@@ -48,10 +57,6 @@ $app->before(function(Request $request) use ($app) {
     if('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
-
-    $app['srv.vg'] = $app->share(function($app) {
-        return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);
-    });
 
     $app['html'] = $app->share(function($app) {
         return new Util\HtmlHelper();

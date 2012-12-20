@@ -1,7 +1,10 @@
 <?php
+
+namespace Service;
+
 class VgXls
 {
-    private $xlsDir, $jsonDir;
+    public $xlsDir, $jsonDir;
 
     public function __construct($xlsDir, $jsonDir)
     {
@@ -10,6 +13,19 @@ class VgXls
         $this->jsonDir = $root.$jsonDir;
     }
 
+    public function listMissingXlsx()
+    {
+        $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
+        $s = '<a href="http://tracking2012.vendeeglobe.org/download/(.*?)" title="Cliquer pour télécharger" target="_blank">';
+        preg_match_all('|'.$s.'|s', $html, $matches);
+        $ret = array();
+        foreach ($matches[1] as $xlsx) {
+            if (!file_exists($this->xlsDir.'/'.$xlsx)) {
+                $ret[] = $xlsx;
+            }
+        }
+        return $ret;
+    }
     public function downloadXlsx()
     {
         $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
@@ -34,8 +50,8 @@ class VgXls
         sort($files);
         foreach ($files as $file) {
             try {
-                $xlsx = new XLSXReader($file);
-            } catch (Exception $e) {
+                $xlsx = new \XLSXReader($file);
+            } catch (\Exception $e) {
                 continue;
             }
             $data  = $xlsx->getSheetData('fr');

@@ -80,3 +80,5 @@
 "Let's open the data : VG 2012 Open Data!": "Let's open the data : VG 2012 Open Data!"
 'Random boat':                      'Random boat'
 'JSON Doc':                         'JSON Doc'
+
+'#vg2012 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#vg2012 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'

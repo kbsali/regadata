@@ -1,20 +1,22 @@
 {
     "minimum-stability" : "stable",
     "require"           : {
-        "silex/silex"     : "1.*@dev",
+        "silex/silex"        : "1.*@dev",
 
-        "twig/twig"       : "1.*",
+        "twig/twig"          : "1.*",
 
-        "doctrine/dbal"   : "2.*",
-        "doctrine/common" : "2.*",
+        "doctrine/dbal"      : "2.*",
+        "doctrine/common"    : "2.*",
 
-        "symfony/config": "2.1.*",
-        "symfony/yaml": "2.1.*",
+        "symfony/config"     : "2.1.*",
+        "symfony/yaml"       : "2.1.*",
 
         "symfony/translation": "2.1.*",
         "symfony/twig-bridge": "2.1.*",
 
-        "themattharris/tmhoauth": "dev-master",
+        "symfony/console"    : "2.1.*",
+
+        "themattharris/tmhoauth"             : "dev-master",
         "kud/tmhoauth-silex-service-provider": "dev-master"
     },
     "autoload"          : {

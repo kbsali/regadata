@@ -113,6 +113,7 @@ class Vg
 
         return $ret;
     }
+
     public static function extractJsonBy($idx = null, $limitFactor = 10)
     {
         if (null === $idx) {
@@ -139,5 +140,16 @@ class Vg
         }
 
         return json_encode($ret);
+    }
+
+    public static function extractMaxByKey($report, $key)
+    {
+        $max = null;
+        foreach ($report as $r) {
+            if(null === $max || $r[$key] > $max[$key]) {
+                $max = $r;
+            }
+        }
+        return $max;
     }
 }

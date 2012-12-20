@@ -79,3 +79,5 @@
 "Let's open the data : VG 2012 Open Data!": 'Ouvrons les données : VG 2012 Open Data!'
 'Random boat':                      'Bateau au hasard'
 'JSON Doc':                         'JSON Doc'
+
+'#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%' : '#vg2012 Dernier classement disponible, skipper le plus rapide sur les dernières 24h %skipper% (%miles% nm) %url%'
