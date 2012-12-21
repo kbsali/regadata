@@ -48,7 +48,11 @@ $console
         $params['%url%'] = 'http://vg2012.saliou.name/fr/reports/latest';
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
         if(strlen($_tweet)>140) {
-            $params['%url%'] = 'http://tinyurl.com/vg2012fr';
+            /*
+            http://tinyurl.com/vg2012fr
+            http://goo.gl/AQyJL
+             */
+            $params['%url%'] = 'http://goo.gl/AQyJL';
             $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
@@ -62,7 +66,13 @@ $console
         $params['%url%'] = 'http://vg2012.saliou.name/en/reports/latest';
         $_tweet = $app['translator']->trans($tweet, $params);
         if(strlen($_tweet)>140) {
-            $params['%url%'] = 'http://tinyurl.com/vg2012en';
+            /*
+            http://tinyurl.com/vg2012en
+            http://myurl.in/vg2012en
+            http://yep.it/vg2012en
+            http://goo.gl/YwGgM
+             */
+            $params['%url%'] = 'http://goo.gl/YwGgM';
             $_tweet = $app['translator']->trans($tweet, $params);
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
