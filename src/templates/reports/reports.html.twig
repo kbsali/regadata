@@ -9,12 +9,12 @@
                 <caption>{{ 'Ranking : %date%'|trans({'%date%':r.timestamp|date}) }}</caption>
                 <thead>
                     <tr>
-                        <th colspan="2">&nbsp;</th>
-                        <th class="c borderleft" colspan="2">{{ 'Ranking'|trans }}</th>
-                        <th class="c borderleft" colspan="3">{{ '1 hour'|trans }}</th>
-                        <th class="c borderleft" colspan="4">{{ 'Last ranking'|trans }}</th>
-                        <th class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
-                        <th class="c borderleft" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="2">{{ 'Ranking'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="3">{{ '1 hour'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="4">{{ 'Last ranking'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="2">&nbsp;</th>
                     </tr>
                     <tr>
                         <th scope="col" class="t">{{ 'Rank'|trans }}</th>
@@ -54,18 +54,18 @@
                         <td>{{ r.lon_dms }}</td>
 
                         <td class="r borderleft">{{ r['1hour_heading'] }}</td>
-                        <td class="r">{{ '%.1f' | format(r['1hour_speed']) }}</td>
-                        <td class="r">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
+                        <td class="r 1hspeed">{{ '%.1f' | format(r['1hour_speed']) }}</td>
+                        <td class="r 1hvmg">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
 
                         <td class="r borderleft">{{ r.lastreport_heading }}</td>
-                        <td class="r">{{ '%.1f' | format(r.lastreport_speed) }}</td>
-                        <td class="r">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
-                        <td class="r">{{ '%.1f' | format(r.lastreport_distance) }}</td>
+                        <td class="r lrspeed">{{ '%.1f' | format(r.lastreport_speed) }}</td>
+                        <td class="r lrvmg">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
+                        <td class="r lrdistance">{{ '%.1f' | format(r.lastreport_distance) }}</td>
 
                         <td class="r borderleft">{{ r['24hour_heading'] }}</td>
-                        <td class="r">{{ '%.1f' | format(r['24hour_speed']) }}</td>
-                        <td class="r">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
-                        <td class="r">{{ '%.1f' | format(r['24hour_distance']) }}</td>
+                        <td class="r 24hspeed">{{ '%.1f' | format(r['24hour_speed']) }}</td>
+                        <td class="r 24hvmg">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
+                        <td class="r 24hdistance">{{ '%.1f' | format(r['24hour_distance']) }}</td>
 
                         <td class="r borderleft">{{ r['dtf'] }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
@@ -77,5 +77,7 @@
             <p class="tooltips">
                 {{ 'Source'|trans }} : <a target="_blank" href="{{ source }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ source }}</a>
                 {{ 'Map'|trans }} : <a target="_blank" href="http://tracking2012.vendeeglobe.org/fr/"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
+                <br>
+                * {{ 'Bold numbers are the greatest values of the report'|trans }}
             </p>
 {% endblock %}
