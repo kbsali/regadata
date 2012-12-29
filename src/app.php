@@ -25,11 +25,11 @@ $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
     $first = str_replace(array('/json', '.json'), '', end($reports));
 
     $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
-
     return $app['twig']->render('reports/reports.html.twig', array(
         'r'      => current($report),
         'report' => $report,
         'source' => '/json/reports/'.$id.'.json',
+        'start_date' => strtotime($app['config']['start_date']),
 
         'pagination' => array(
             'first'   => $first,
@@ -69,6 +69,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     $infos = array();
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
+            $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
             $infos[] = array(
                 'info'             => $info['info'],
                 'rank'             => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['rank'])),

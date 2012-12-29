@@ -14,7 +14,7 @@
                         <th scope="colgroup" class="c borderleft" colspan="3">{{ '1 hour'|trans }}</th>
                         <th scope="colgroup" class="c borderleft" colspan="4">{{ 'Last ranking'|trans }}</th>
                         <th scope="colgroup" class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
-                        <th scope="colgroup" class="c borderleft" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="3">&nbsp;</th>
                     </tr>
                     <tr>
                         <th scope="col" class="t">{{ 'Rank'|trans }}</th>
@@ -39,6 +39,8 @@
 
                         <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Real total distance travelled'|trans }}">{{ 'RTDT'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Overall average speed'|trans }}">{{ 'OAS'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -67,8 +69,10 @@
                         <td class="r 24hvmg">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
                         <td class="r 24hdistance">{{ '%.1f' | format(r['24hour_distance']) }}</td>
 
-                        <td class="r borderleft">{{ r['dtf'] }}</td>
+                        <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
+                        <td class="r total_distance">{{ '%.1f' | format(r['total_distance']) }}</td>
+                        <td class="r oas">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

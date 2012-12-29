@@ -3,6 +3,11 @@ body {
     padding-bottom: 40px;
 }
 
+.brand span {
+    background: url("/img/logo-20.png") no-repeat 0 3px;
+    padding-left: 25px;
+}
+
 .r {
     text-align: right !important;
 }

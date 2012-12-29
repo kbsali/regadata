@@ -45,7 +45,7 @@ class VgXls
     {
         require(__DIR__.'/../Util/XLSXReader.php');
 
-        $master = array();
+        $master = $total = array();
         $files = glob($this->xlsDir.'/*');
         sort($files);
         foreach ($files as $file) {
@@ -61,6 +61,11 @@ class VgXls
                 if (false === $r = $this->_cleanRow($row, $ts)) {
                     continue;
                 }
+                if(!isset($total[$r['sail']])) {
+                    $total[$r['sail']] = 0;
+                }
+                $total[$r['sail']]+= $r['lastreport_distance'];
+                $r['total_distance'] = $total[$r['sail']];
                 $daily[$r['sail']]       = $r;
                 $master[$r['sail']][$ts] = $r;
 

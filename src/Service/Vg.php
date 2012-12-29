@@ -152,4 +152,35 @@ class Vg
         }
         return $max;
     }
+
+    public function skipperToTwitter($s)
+    {
+        $arr = array(
+            // 'Dominique Wavre'
+            // 'Gutowski Zbigniew'
+            // 'Louis Burton'
+            // 'Marc Guillemot'
+            "Armel Le Cléac'h"        => '@VoileBanquePop',
+            'Alessandro Di Benedetto' => '@Team_Plastique',
+            'Alex Thomson'            => '@AlexThomson99',
+            'Arnaud Boissières'       => '@AKENAVerandas60',
+            'Bernard Stamm'           => '@Poujoulat_Stamm',
+            'Bertrand De Broc'        => '@BertranddeBroc',
+            'François Gabart'         => '@francoisgabart', // '@Macif60',
+            'Javier Sanso'            => '@AccionaSailing',
+            'Jean Le Cam'             => '@LeCam_SynerCiel',
+            'Jean-Pierre Dick'        => '@Dick_JeanPierre',
+            'Jérémie Beyou'           => '@JeremieBeyou',
+            'Kito De Pavant'          => '@GroupeBel60',
+            'Mike Golding'            => '@GoldingMike',
+            'Mike Golding'            => '@Mike_Golding',
+            'Samantha Davies'         => '@samanthadavies',
+            'Tanguy Delamotte'        => '@TanguyDeLamotte',
+            'Vincent Riou'            => '@Vincent_Riou',
+        );
+        if(!isset($arr[$s])) {
+            return $s;
+        }
+        return $arr[$s];
+    }
 }
