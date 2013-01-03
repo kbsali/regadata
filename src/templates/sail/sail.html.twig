@@ -13,6 +13,7 @@
             </form>
         </div>
     </div>
+
     <div class="row-fluid">
         {% for info in infos %}
         <div class="span3">
@@ -44,18 +45,19 @@
                 <dt>{{ 'Heading'|trans }}</dt>
                 <dd>{{ info.info['1hour_heading'] }}&deg;</dd>
             </dl>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span6">
             <p class="tooltips">
-                {{ 'Source'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a><br>
-                * {{ 'Sum of the distances travelled between each ranking since race start'|trans }}<br>
-                ** {{ 'Average speed since race start based on the real distance travelled'|trans }}
+                {{ 'Source'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a>
             </p>
         </div>
         {% endfor %}
     </div>
+    <div class="row-fluid">
+        <p>
+            * {{ 'Sum of the distances travelled between each ranking since race start'|trans }}<br>
+            ** {{ 'Average speed since race start based on the real distance travelled'|trans }}
+        </p>
+    </div>
+
     <div class="row-fluid">
         <div class="span6">
             <h3>{{ 'Rank'|trans }}</h3>
