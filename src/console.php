@@ -30,7 +30,7 @@ $console
 
 $console
     ->register('vg:tweet')
-    ->setDescription('Converts the xls files to json')
+    ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
         $reports = $app['srv.vg']->listJson('reports');

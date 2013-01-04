@@ -46,7 +46,8 @@
                 <dd>{{ info.info['1hour_heading'] }}&deg;</dd>
             </dl>
             <p class="tooltips">
-                {{ 'Source'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a>
+                {{ 'JSON'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a><br>
+                {{ 'KML'|trans }} : <a target="_blank" href="/{{ app.request.locale }}/json/sail/{{ info.info.sail }}.kml" rel="tooltip" data-placement="right" title="{{ 'Download KML'|trans }}"><i class="icon-globe"></i> /json/sail/{{ info.info.sail }}.kml</a>
             </p>
         </div>
         {% endfor %}

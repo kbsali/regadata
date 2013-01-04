@@ -14,6 +14,25 @@ class Vg
         $this->jsonDir = $root.$jsonDir;
     }
 
+    public function getSailCoordinates($id)
+    {
+        if (false === $arr = $this->parseJson('/sail/'.$id.'.json')) {
+            return false;
+        }
+
+        return $this->extractSailsCoordinates($arr);
+    }
+
+    public function extractSailsCoordinates(array $arr = array())
+    {
+        $ret = array();
+        foreach ($arr as $k => $v) {
+            $ret[$k] = $v['lon_dec'].','.$v['lat_dec'].',0';
+        }
+
+        return $ret;
+    }
+
     public function getFullSailInfo($id)
     {
         if (false === $arr = $this->parseJson('/sail/'.$id.'.json')) {
@@ -94,6 +113,12 @@ class Vg
         return json_decode($json, true);
     }
 
+    /**
+     * @param  array   $arr
+     * @param  string  $idx
+     * @param  integer $limitFactor
+     * @return array
+     */
     public function filterBy(array $arr = array(), $idx = null, $limitFactor = 10)
     {
         $i = 0;
@@ -172,11 +197,40 @@ class Vg
             'Jean-Pierre Dick'        => '@Dick_JeanPierre',
             'Jérémie Beyou'           => '@JeremieBeyou',
             'Kito De Pavant'          => '@GroupeBel60',
-            'Mike Golding'            => '@GoldingMike',
             'Mike Golding'            => '@Mike_Golding',
             'Samantha Davies'         => '@samanthadavies',
             'Tanguy Delamotte'        => '@TanguyDeLamotte',
             'Vincent Riou'            => '@Vincent_Riou',
+        );
+        if(!isset($arr[$s])) {
+            return $s;
+        }
+        return $arr[$s];
+    }
+
+    public static function skipperToColor($s)
+    {
+        $arr = array(
+            "Armel Le Cléac'h"        => '061e5a', // 'ff0000ff',
+            'Alessandro Di Benedetto' => '558a42',
+            'Alex Thomson'            => '06040f',
+            'Arnaud Boissières'       => '12cf10',
+            'Bernard Stamm'           => 'fac200',
+            'Bertrand De Broc'        => 'bf9c7c',
+            'Dominique Wavre'         => '013983',
+            'François Gabart'         => '0b2e82',
+            'Javier Sanso'            => 'd01f27',
+            'Jean Le Cam'             => '0d1517',
+            'Jean-Pierre Dick'        => '3399c1',
+            'Jérémie Beyou'           => 'f10200',
+            'Kito De Pavant'          => 'a71e2e',
+            'Louis Burton'            => '1e9436',
+            'Marc Guillemot'          => 'eb6c39',
+            'Mike Golding'            => 'a5ad00',
+            'Samantha Davies'         => '65ac36',
+            'Tanguy Delamotte'        => 'cc0107',
+            'Vincent Riou'            => 'fe640a',
+            'Gutowski Zbigniew'       => 'c86347',
         );
         if(!isset($arr[$s])) {
             return $s;

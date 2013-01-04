@@ -2,6 +2,8 @@
 
 namespace Service;
 
+use Service\Vg;
+
 class VgXls
 {
     public $xlsDir, $jsonDir;
@@ -46,11 +48,11 @@ class VgXls
         require(__DIR__.'/../Util/XLSXReader.php');
 
         $master = $total = array();
-        $files = glob($this->xlsDir.'/*');
-        sort($files);
-        foreach ($files as $file) {
+        $xlsxs = glob($this->xlsDir.'/*');
+        sort($xlsxs);
+        foreach ($xlsxs as $xlsx) {
             try {
-                $xlsx = new \XLSXReader($file);
+                $xlsx = new \XLSXReader($xlsx);
             } catch (\Exception $e) {
                 continue;
             }
@@ -73,12 +75,47 @@ class VgXls
             echo ' saving data to '.$this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json'.PHP_EOL;
             file_put_contents($this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json', json_encode($daily));
         }
+        // export to json
         foreach ($master as $sail => $partial) {
             echo ' saving '.$sail.' data to '.$this->jsonDir.'/sail/'.$sail.'.json'.PHP_EOL;
             file_put_contents($this->jsonDir.'/sail/'.$sail.'.json', json_encode($partial));
         }
+        // export to kml
+        foreach ($master as $sail => $partial) {
+            $this->arr2kml($partial);
+        }
+        // json (all in one file)
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.json'.PHP_EOL;
         file_put_contents($this->jsonDir.'/FULL.json', json_encode($master));
+    }
+
+    public function arr2kml(array $arr = array())
+    {
+        $info = current($arr);
+        $coordinates = $this->extractSailsCoordinates($arr);
+
+        $line = strtr($this->_line, array(
+            '%color%'       => 'FF'.Vg::skipperToColor($info['skipper']),
+            '%name%'        => $info['skipper'].' ['.$info['boat'].']',
+            '%coordinates%' => join(PHP_EOL, $coordinates),
+        ));
+
+        $points = array();
+        foreach($coordinates as $ts => $coordinate) {
+            $points[] = strtr($this->_point, array(
+                '%name%'        => date('Y-m-d H:i', $ts),
+                '%coordinates%' => $coordinate,
+            ));
+        }
+
+        echo ' saving '.$info['sail'].' pos to '.$this->jsonDir.'/sail/'.$info['sail'].'.kml'.PHP_EOL;
+        file_put_contents(
+            $this->jsonDir.'/sail/'.$info['sail'].'.kml',
+            strtr($this->_kml, array(
+                '%name%'    => $info['skipper'].' ['.$info['boat'].']',
+                '%content%' => $line.'<Folder><name>Positions</name>'.join(PHP_EOL, $points).'</Folder>',
+            ))
+        );
     }
 
     private function _getDate($data)
@@ -215,7 +252,8 @@ class VgXls
      */
     public static function strtoDMS($str)
     {
-        preg_match("|(\d{2})°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
+        // preg_match("|(\d)°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
+        preg_match("|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s", $str, $matches);
 
         return array(
             'deg' => $matches[1],
@@ -240,4 +278,47 @@ class VgXls
 
         return $ret;
     }
+
+
+    public function extractSailsCoordinates(array $arr = array())
+    {
+        $ret = array();
+        foreach ($arr as $k => $v) {
+            $ret[$k] = $v['lon_dec'].','.$v['lat_dec'].',0';
+        }
+
+        return $ret;
+    }
+
+    public $_kml = '<?xml version="1.0" encoding="utf-8" ?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+<Document>
+    %content%
+</Document>
+</kml>';
+
+    public $_line = '<Placemark>
+    <Style>
+        <LineStyle>
+            <color>%color%</color>
+        </LineStyle>
+        <PolyStyle>
+            <fill>0</fill>
+        </PolyStyle>
+    </Style>
+    <name>%name%</name>
+    <LineString>
+        <coordinates>
+            %coordinates%
+        </coordinates>
+    </LineString>
+</Placemark>';
+
+    public $_point = '<Placemark>
+    <!--<name>%name%</name>-->
+    <description>%name%</description>
+    <Point>
+        <coordinates>%coordinates%</coordinates>
+    </Point>
+</Placemark>';
 }
