@@ -95,7 +95,7 @@ class VgXls
         $coordinates = $this->extractSailsCoordinates($arr);
 
         $line = strtr($this->_line, array(
-            '%color%'       => 'FF'.Vg::skipperToColor($info['skipper']),
+            '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
             '%name%'        => $info['skipper'].' ['.$info['boat'].']',
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
@@ -103,7 +103,8 @@ class VgXls
         $points = array();
         foreach($coordinates as $ts => $coordinate) {
             $points[] = strtr($this->_point, array(
-                '%name%'        => date('Y-m-d H:i', $ts),
+                '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
+                '%name%'        => $info['skipper'].' '.date('Y-m-d H:i', $ts),
                 '%coordinates%' => $coordinate,
             ));
         }
@@ -290,6 +291,23 @@ class VgXls
         return $ret;
     }
 
+    public static function rgbToKml($color, $aa = 'ff')
+    {
+        $rr = substr($color, 0, 2);
+        $gg = substr($color, 2, 2);
+        $bb = substr($color, 4, 2);
+        return strtolower($aa.$bb.$gg.$rr);
+    }
+
+    public static function kmlToRgb($color)
+    {
+        $rr = substr($color, 6, 2);
+        $gg = substr($color, 4, 2);
+        $bb = substr($color, 2, 2);
+        return strtolower($rr.$gg.$bb);
+    }
+
+
     public $_kml = '<?xml version="1.0" encoding="utf-8" ?>
 <kml xmlns="http://www.opengis.net/kml/2.2">
 <Document>
@@ -317,6 +335,11 @@ class VgXls
     public $_point = '<Placemark>
     <!--<name>%name%</name>-->
     <description>%name%</description>
+    <Style>
+        <IconStyle>
+            <color>%color%</color>
+        </IconStyle>
+    </Style>
     <Point>
         <coordinates>%coordinates%</coordinates>
     </Point>
