@@ -32,8 +32,8 @@
                     {% for sail, skipper in sk %}
                         <li>
                             <a target="_blank" href="/json/sail/{{ sail }}.json" rel="tooltip" data-placement="left" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i></a>
+                            <a target="_blank" href="/json/sail/{{ sail }}.kml" rel="tooltip" data-placement="left" title="{{ 'Download KML'|trans }}"><i class="icon-globe"></i></a>
                             <a href="/{{ app.request.locale }}/sail/{{ sail }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper }}</a>
-
                     {% endfor %}
                 </ul>
             </div>
