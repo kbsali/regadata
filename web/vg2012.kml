@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<NetworkLink>
+    <name>#VG2012 - OpenData</name>
+    <open>1</open>
+    <Link>
+        <href>http://vg2012.saliou.name/json/FULL.kmz</href>
+        <refreshMode>onInterval</refreshMode>
+        <refreshInterval>3600</refreshInterval>
+    </Link>
+</NetworkLink>
+</kml>

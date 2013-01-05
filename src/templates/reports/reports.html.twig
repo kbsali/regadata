@@ -82,7 +82,9 @@
             {% include '_pagination.html.twig' with { 'p': pagination } %}
             <p class="tooltips">
                 {{ 'Source'|trans }} : <a target="_blank" href="{{ source }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ source }}</a>
-                {{ 'Map'|trans }} : <a target="_blank" href="http://tracking2012.vendeeglobe.org/fr/"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
+                | <a target="_blank" href="/vg2012.kmz"><i class="icon-download"></i> {{ '/vg2012.kmz'|trans }}</a>
+                | <a target="_blank" href="http://tracking2012.vendeeglobe.org/fr/"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
+                | <a target="_blank" href="http://goo.gl/BkQ71"><i class="icon-globe"></i> {{ 'Google Map'|trans }}</a>
                 <br>
                 * {{ 'Bold numbers are the greatest values of the report'|trans }}
             </p>
