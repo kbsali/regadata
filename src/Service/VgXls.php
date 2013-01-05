@@ -81,12 +81,42 @@ class VgXls
             file_put_contents($this->jsonDir.'/sail/'.$sail.'.json', json_encode($partial));
         }
         // export to kml
+        $kmlFull = $lineFull = $pointsFull = '';
         foreach ($master as $sail => $partial) {
-            $this->arr2kml($partial);
+            $kmlPartial = $this->arr2kml($partial);
+
+            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/'.$sail.'.kml'.PHP_EOL;
+            file_put_contents(
+                $this->jsonDir.'/sail/'.$sail.'.kml',
+                strtr($this->_kml, array(
+                    '%name%'    => $kmlPartial['name'],
+                    '%content%' => $kmlPartial['line'].strtr($this->_folder, array(
+                        '%name%'    => 'Positions',
+                        '%content%' => join(PHP_EOL, $kmlPartial['points']),
+                    ))
+                ))
+            );
+            $lineFull.= $kmlPartial['line'];
+            $pointsFull.= strtr($this->_folder, array(
+                '%name%'    => $kmlPartial['name'],
+                '%content%' => join(PHP_EOL, $kmlPartial['points']),
+            ));
         }
-        // json (all in one file)
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.json'.PHP_EOL;
+        // json (all in one file)
         file_put_contents($this->jsonDir.'/FULL.json', json_encode($master));
+
+        // kml (all in one file)
+        echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
+        file_put_contents($this->jsonDir.'/FULL.kml',
+            strtr($this->_kml, array(
+                '%name%'    => $kmlPartial['name'],
+                '%content%' => $lineFull.strtr($this->_folder, array(
+                    '%name%'    => 'Positions',
+                    '%content%' => $pointsFull,
+                ))
+            ))
+        );
     }
 
     public function arr2kml(array $arr = array())
@@ -109,13 +139,10 @@ class VgXls
             ));
         }
 
-        echo ' saving '.$info['sail'].' pos to '.$this->jsonDir.'/sail/'.$info['sail'].'.kml'.PHP_EOL;
-        file_put_contents(
-            $this->jsonDir.'/sail/'.$info['sail'].'.kml',
-            strtr($this->_kml, array(
-                '%name%'    => $info['skipper'].' ['.$info['boat'].']',
-                '%content%' => $line.'<Folder><name>Positions</name>'.join(PHP_EOL, $points).'</Folder>',
-            ))
+        return array(
+            'name'   => $info['skipper'].' ['.$info['boat'].']',
+            'line'   => $line,
+            'points' => $points,
         );
     }
 
@@ -344,4 +371,9 @@ class VgXls
         <coordinates>%coordinates%</coordinates>
     </Point>
 </Placemark>';
+
+    public $_folder = '<Folder>
+    <name>%name%</name>
+    %content%
+</Folder>';
 }
