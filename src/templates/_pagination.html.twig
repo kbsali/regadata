@@ -7,7 +7,7 @@
                         <a href="{{ p.prev is null ? '/#' : '/'~app.request.locale~p.prev }}">&lt; {{ 'prev'|trans }}</a>
                     </li>
 
-                    <li class="disabled">
+                    <li class="disabled hidden-phone">
                         <a href="#">{{ 'Ranking %x% of %y%'|trans({'%x%': p.current, '%y%': p.total }) }}</a>
                     </li>
 
