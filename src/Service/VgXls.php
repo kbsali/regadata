@@ -47,7 +47,7 @@ class VgXls
     {
         require(__DIR__.'/../Util/XLSXReader.php');
 
-        $master = $total = $yesterday = array();
+        $master = $total = $yesterday = $first = array();
         $xlsxs = glob($this->xlsDir.'/*');
         sort($xlsxs);
         foreach ($xlsxs as $xlsx) {
@@ -76,6 +76,13 @@ class VgXls
             echo ' saving data to '.$this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json'.PHP_EOL;
             file_put_contents($this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json', json_encode($daily));
         }
+        foreach ($daily as $r) {
+            if(1 == $r['rank']) {
+                $first['lat_dec'] = $r['lat_dec'];
+                $first['lon_dec'] = $r['lon_dec'];
+            }
+        }
+
         // export to json
         foreach ($master as $sail => $partial) {
             echo ' saving '.$sail.' data to '.$this->jsonDir.'/sail/'.$sail.'.json'.PHP_EOL;
@@ -84,6 +91,7 @@ class VgXls
         // export to kml
         $kmlFull = $lineFull = $pointsFull = '';
         foreach ($master as $sail => $partial) {
+            $end = end($partial);
             $kmlPartial = $this->arr2kml($partial);
 
             echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/'.$sail.'.kml'.PHP_EOL;
@@ -91,10 +99,16 @@ class VgXls
                 $this->jsonDir.'/sail/'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
-                    '%content%' => $kmlPartial['line'].strtr($this->_folder, array(
-                        '%name%'    => 'Positions',
-                        '%content%' => join(PHP_EOL, $kmlPartial['points']),
-                    ))
+                    '%content%' => $kmlPartial['line'].
+                        strtr($this->_folder, array(
+                            '%name%'    => 'Positions',
+                            '%content%' => join(PHP_EOL, $kmlPartial['points']),
+                        )).
+                        strtr($this->_camera, array(
+                            '%lon%' => $end['lon_dec'],
+                            '%lat%' => $end['lat_dec'],
+                            '%alt%' => 2000000,
+                        ))
                 ))
             );
             $lineFull.= $kmlPartial['line'];
@@ -112,10 +126,16 @@ class VgXls
         file_put_contents($this->jsonDir.'/FULL.kml',
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
-                '%content%' => $lineFull.strtr($this->_folder, array(
-                    '%name%'    => 'Positions',
-                    '%content%' => $pointsFull,
-                ))
+                '%content%' => $lineFull.
+                    strtr($this->_folder, array(
+                        '%name%'    => 'Positions',
+                        '%content%' => $pointsFull,
+                    )).
+                    strtr($this->_camera, array(
+                        '%lon%' => $first['lon_dec'],
+                        '%lat%' => $first['lat_dec'],
+                        '%alt%' => 2000000,
+                    ))
             ))
         );
     }
@@ -135,7 +155,12 @@ class VgXls
         foreach($coordinates as $ts => $coordinate) {
             $points[] = strtr($this->_point, array(
                 '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
-                '%name%'        => $info['skipper'].' '.date('Y-m-d H:i', $ts),
+                '%description%' => '<p>'.date('Y-m-d H:i', $ts).'<br>'.$info['skipper'].' ['.$info['boat'].']</p>
+<ul>
+<li>Heading 1hr : '.$info['1hour_heading'].'</li>
+<li>Speed 1hr : '.$info['1hour_speed'].'</li>
+<li>VMG 1hr : '.$info['1hour_vmg'].'</li>
+</ul>',
                 '%coordinates%' => $coordinate,
             ));
         }
@@ -361,8 +386,11 @@ class VgXls
 </Placemark>';
 
     public $_point = '<Placemark>
-    <!--<name>%name%</name>-->
-    <description>%name%</description>
+    <description>
+    <![CDATA[
+        %description%
+    ]]>
+    </description>
     <Style>
         <IconStyle>
             <color>%color%</color>
@@ -377,4 +405,11 @@ class VgXls
     <name>%name%</name>
     %content%
 </Folder>';
+
+    public $_camera = '<Camera>
+    <longitude>%lon%</longitude>
+    <latitude>%lat%</latitude>
+    <altitude>%alt%</altitude>
+    <altitudeMode>relativeToSeaFloor</altitudeMode>
+</Camera>';
 }

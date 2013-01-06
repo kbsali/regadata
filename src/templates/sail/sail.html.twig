@@ -13,7 +13,6 @@
             </form>
         </div>
     </div>
-
     <div class="row-fluid">
         {% for info in infos %}
         <div class="span3">
@@ -79,10 +78,18 @@
             <div id="24hour_speed" class="chart"></div>
         </div>
     </div>
+    {#
+    <div class="row-fluid">
+        <div class="span6">
+            <h3>{{ 'Progress'|trans }}</h3>
+            <div id="dtl_diff" class="chart"></div>
+        </div>
+    </div>
+    #}
 
     <script type="text/javascript">
     $(function() {
-        var data, $rank = $("#rank"), $dtl = $("#dtl"), $24hour_distance = $("#24hour_distance"), $24hour_speed = $("#24hour_speed");
+        var data, $rank = $("#rank"), $dtl = $("#dtl"), $24hour_distance = $("#24hour_distance"), $24hour_speed = $("#24hour_speed"), $dtl_diff = $("dtl_diff");
         var options = {
             series: {
                 lines: {
@@ -119,6 +126,13 @@
         data.push({{ info.t24hour_speed|raw }});
         {% endfor %}
         $.plot($24hour_speed, data, options);
+        {#
+        data = [];
+        {% for info in infos %}
+        data.push({{ info.tdtl_diff|raw }});
+        {% endfor %}
+        $.plot($dtl_diff, data, options);
+        #}
 
         options.yaxis.transform = function (v) { return -v; };
         options.yaxis.tickSize = 2;

@@ -71,12 +71,14 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
+
             $infos[] = array(
                 'info'             => $info['info'],
                 'rank'             => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['rank'])),
                 'dtl'              => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['dtl'])),
                 't24hour_distance' => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_distance'])),
                 't24hour_speed'    => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['t24hour_speed'])),
+                'tdtl_diff'        => json_encode(array('label' => $info['info']['skipper'], 'data' => $info['tdtl_diff'])),
             );
         }
     }

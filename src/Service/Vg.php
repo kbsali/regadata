@@ -45,6 +45,7 @@ class Vg
             'dtl'              => $this->filterBy($arr, 'dtl', 1),
             't24hour_distance' => $this->filterBy($arr, '24hour_distance', 1),
             't24hour_speed'    => $this->filterBy($arr, '24hour_speed', 1),
+            'tdtl_diff'        => $this->filterBy($arr, 'dtl_diff', 1),
         );
     }
 
