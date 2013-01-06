@@ -23,11 +23,11 @@ function getMax(_class) {
             var c = 'icon-resize-horizontal';
             var b = 'label-info';
             if($(this).text() < 0) {
-                c = 'icon-arrow-down';
-                b = 'label-important';
-            } else if($(this).text() > 0) {
                 c = 'icon-arrow-up';
                 b = 'label-success';
+            } else if($(this).text() > 0) {
+                c = 'icon-arrow-down';
+                b = 'label-important';
             }
             $(this).find("i").addClass(c);
             $(this).find("span").addClass(b);
