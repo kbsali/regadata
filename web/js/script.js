@@ -18,19 +18,5 @@ function getMax(_class) {
         for(var i=0;i<clmax.length;i++) {
             getMax(clmax[i])
         }
-        $("#report td.dtl_diff").each(function(rowIndex) {
-            console.log($(this).text());
-            var c = 'icon-resize-horizontal';
-            var b = 'label-info';
-            if($(this).text() < 0) {
-                c = 'icon-arrow-up';
-                b = 'label-success';
-            } else if($(this).text() > 0) {
-                c = 'icon-arrow-down';
-                b = 'label-important';
-            }
-            $(this).find("i").addClass(c);
-            $(this).find("span").addClass(b);
-        });
     })
 }(window.jQuery)
