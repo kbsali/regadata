@@ -21,10 +21,11 @@ $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
         $file = $reports[$idx - 1];
         $next = str_replace(array('/json', '.json'), '', $file);
     }
-    $last = str_replace(array('/json', '.json'), '', $reports[0]);
+    $last  = str_replace(array('/json', '.json'), '', $reports[0]);
     $first = str_replace(array('/json', '.json'), '', end($reports));
 
     $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
+
     return $app['twig']->render('reports/reports.html.twig', array(
         'r'      => current($report),
         'report' => $report,

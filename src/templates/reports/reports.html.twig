@@ -14,14 +14,15 @@
                         <th scope="colgroup" class="c borderleft borderrigtht" colspan="3">{{ '1 hour'|trans }}</th>
                         <th scope="colgroup" class="c" colspan="4">{{ 'Last ranking'|trans }}</th>
                         <th scope="colgroup" class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
-                        <th scope="colgroup" class="c borderleft" colspan="3">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="3">{{ 'Overall'|trans }}</th>
                     </tr>
                     <tr>
                         <th scope="col" class="t">{{ 'Rank'|trans }}</th>
                         <th scope="col" class="t">{{ 'Skipper [Boat]'|trans}}</th>
 
-                        <th scope="col" class="c t borderleft"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t hidden-phone borderleft"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t hidden-phone"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
 
                         <th scope="col" class="c t hidden-phone borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
                         <th scope="col" class="c t hidden-phone">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
@@ -41,6 +42,7 @@
                         <th scope="col" class="c t hidden-phone hidden-tablet"><abbr title="{{ 'Overall average speed'|trans }}">{{ 'OAS'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
 
                         <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Progress'|trans }}">{{ 'DTLD'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                     </tr>
                 </thead>
@@ -53,8 +55,8 @@
                             <span class="hidden-phone hidden-tablet">[<a href="/{{ app.request.locale }}/sail/{{ r.sail }}">{{ r.boat }}</a>]</span>
                         </td>
 
-                        <td class="borderleft">{{ r.lat_dms }}</td>
-                        <td>{{ r.lon_dms }}</td>
+                        <td class="hidden-phone borderleft">{{ r.lat_dms }}</td>
+                        <td class="hidden-phone">{{ r.lon_dms }}</td>
 
                         <td class="r borderleft hidden-phone">{{ r['1hour_heading'] }}</td>
                         <td class="r 1hspeed hidden-phone">{{ '%.1f' | format(r['1hour_speed']) }}</td>
@@ -74,6 +76,7 @@
                         <td class="r oas hidden-phone hidden-tablet">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
 
                         <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
+                        <td class="r dtl_diff"><span class="label">{{ '%.1f' | format(r['dtl_diff']) }} <i class="icon-white"></i></span></td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
                     </tr>
                     {% endfor %}

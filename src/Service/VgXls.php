@@ -47,7 +47,7 @@ class VgXls
     {
         require(__DIR__.'/../Util/XLSXReader.php');
 
-        $master = $total = array();
+        $master = $total = $yesterday = array();
         $xlsxs = glob($this->xlsDir.'/*');
         sort($xlsxs);
         foreach ($xlsxs as $xlsx) {
@@ -68,9 +68,10 @@ class VgXls
                 }
                 $total[$r['sail']]+= $r['lastreport_distance'];
                 $r['total_distance'] = $total[$r['sail']];
+                $r['dtl_diff'] = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
                 $daily[$r['sail']]       = $r;
+                $yesterday[$r['sail']]   = $r;
                 $master[$r['sail']][$ts] = $r;
-
             }
             echo ' saving data to '.$this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json'.PHP_EOL;
             file_put_contents($this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json', json_encode($daily));
