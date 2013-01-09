@@ -94,12 +94,14 @@ class VgXls
             $end = end($partial);
             $kmlPartial = $this->arr2kml($partial);
 
+            // line + points
             echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/'.$sail.'.kml'.PHP_EOL;
             file_put_contents(
                 $this->jsonDir.'/sail/'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
-                    '%content%' => $kmlPartial['line'].
+                    '%content%' =>
+                        $kmlPartial['line'].
                         strtr($this->_folder, array(
                             '%name%'    => 'Positions',
                             '%content%' => join(PHP_EOL, $kmlPartial['points']),
@@ -109,6 +111,24 @@ class VgXls
                             '%lat%' => $end['lat_dec'],
                             '%alt%' => 2000000,
                         ))
+                ))
+            );
+            // line only
+            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/trace_'.$sail.'.kml'.PHP_EOL;
+            file_put_contents(
+                $this->jsonDir.'/sail/trace_'.$sail.'.kml',
+                strtr($this->_kml, array(
+                    '%name%'    => $kmlPartial['name'],
+                    '%content%' => $kmlPartial['line']
+                ))
+            );
+            // points only
+            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/points_'.$sail.'.kml'.PHP_EOL;
+            file_put_contents(
+                $this->jsonDir.'/sail/points_'.$sail.'.kml',
+                strtr($this->_kml, array(
+                    '%name%'    => $kmlPartial['name'],
+                    '%content%' => join(PHP_EOL, $kmlPartial['points'])
                 ))
             );
             $lineFull.= $kmlPartial['line'];
@@ -121,12 +141,13 @@ class VgXls
         // json (all in one file)
         file_put_contents($this->jsonDir.'/FULL.json', json_encode($master));
 
-        // kml (all in one file)
+        // kml (all in one file - line + points)
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/FULL.kml',
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
-                '%content%' => $lineFull.
+                '%content%' =>
+                    $lineFull.
                     strtr($this->_folder, array(
                         '%name%'    => 'Positions',
                         '%content%' => $pointsFull,
@@ -136,6 +157,22 @@ class VgXls
                         '%lat%' => $first['lat_dec'],
                         '%alt%' => 2000000,
                     ))
+            ))
+        );
+        // kml (all in one file - line only)
+        echo ' saving FULL data to '.$this->jsonDir.'/trace_FULL.kml'.PHP_EOL;
+        file_put_contents($this->jsonDir.'/trace_FULL.kml',
+            strtr($this->_kml, array(
+                '%name%'    => $kmlPartial['name'],
+                '%content%' => $lineFull
+            ))
+        );
+        // kml (all in one file - points only)
+        echo ' saving FULL data to '.$this->jsonDir.'/points_FULL.kml'.PHP_EOL;
+        file_put_contents($this->jsonDir.'/points_FULL.kml',
+            strtr($this->_kml, array(
+                '%name%'    => $kmlPartial['name'],
+                '%content%' => $pointsFull
             ))
         );
     }
