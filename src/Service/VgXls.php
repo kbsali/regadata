@@ -184,7 +184,8 @@ class VgXls
         <td>'.$info['24hour_vmg'].'</td>
         <td>'.$info['24hour_distance'].'</td>
     </tr>
-</table>',
+</table>
+<p>Source : http://vg2012.saliou.name</p>',
             ));
         }
 
