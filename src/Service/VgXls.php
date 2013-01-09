@@ -184,7 +184,7 @@ class VgXls
 
         $line = strtr($this->_line, array(
             '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
-            '%name%'        => $info['skipper'].' ['.$info['boat'].']',
+            '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
 
@@ -197,6 +197,7 @@ class VgXls
                 '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/kml/shapes/arrow.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading']+180,
                 '%coordinates%' => $coordinate,
+                // '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
                 '%description%' => '<p>'.date('Y-m-d H:i', $ts).'
 <br>#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].']</p>
 <table>
@@ -423,8 +424,13 @@ class VgXls
 
 
     public $_kml = '<?xml version="1.0" encoding="utf-8" ?>
-<kml xmlns="http://www.opengis.net/kml/2.2">
+<kml xmlns="http://www.opengis.net/kml/2.2"
+     xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
+    <atom:author>
+        <atom:name>Kevin Saliou</atom:name>
+    </atom:author>
+    <atom:link href="http://vg2012.saliou.name" />
     %content%
 </Document>
 </kml>';
