@@ -152,16 +152,39 @@ class VgXls
         ));
 
         $points = array();
+        $i = 0;$j = count($coordinates);
         foreach($coordinates as $ts => $coordinate) {
+            $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
-                '%description%' => '<p>'.date('Y-m-d H:i', $ts).'<br>'.$info['skipper'].' ['.$info['boat'].']</p>
-<ul>
-<li>Heading 1hr : '.$info['1hour_heading'].'</li>
-<li>Speed 1hr : '.$info['1hour_speed'].'</li>
-<li>VMG 1hr : '.$info['1hour_vmg'].'</li>
-</ul>',
+                '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/kml/shapes/arrow.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%heading%'     => $info['1hour_heading']+180,
                 '%coordinates%' => $coordinate,
+                '%description%' => '<p>'.date('Y-m-d H:i', $ts).'
+<br>#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].']</p>
+<table>
+    <tr>
+        <td>&nbsp;</td>
+        <td><strong>Heading</strong></td>
+        <td><strong>Speed</strong></td>
+        <td><strong>VMG</strong></td>
+        <td><strong>Distance</strong></td>
+    </tr>
+    <tr>
+        <td><strong>1 hour</strong></td>
+        <td>'.$info['1hour_heading'].'</td>
+        <td>'.$info['1hour_speed'].'</td>
+        <td>'.$info['1hour_vmg'].'</td>
+        <td>'.$info['1hour_distance'].'</td>
+    </tr>
+    <tr>
+        <td><strong>24 hours</strong></td>
+        <td>'.$info['24hour_heading'].'</td>
+        <td>'.$info['24hour_speed'].'</td>
+        <td>'.$info['24hour_vmg'].'</td>
+        <td>'.$info['24hour_distance'].'</td>
+    </tr>
+</table>',
             ));
         }
 
@@ -393,6 +416,10 @@ class VgXls
     </description>
     <Style>
         <IconStyle>
+            <Icon>
+                <href>%icon%</href>
+            </Icon>
+            <heading>%heading%</heading>
             <color>%color%</color>
         </IconStyle>
     </Style>
