@@ -40,7 +40,7 @@ $console
         $tweet   = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
 
         $params = array(
-            '%skipper%' => $app['srv.vg']->skipperToTwitter($max['skipper']),
+            '%skipper%' => $app['srv.vg']->sailToTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
 

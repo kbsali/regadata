@@ -58,7 +58,7 @@
                             {% set class2 = 'icon-arrow-down' %}
                         {% endif %}
                     <tr>
-                        <td class="r"><span class="badge">{{ r.rank }}</span></td>
+                        <td class="r"><span class="badge" style="background: #{{ r.color }}">{{ r.rank }}</span></td>
                         <td>
                             <a href="/{{ app.request.locale }}/sail/{{ r.sail }}">{{ r.skipper }}</a>
                             <span class="hidden-phone hidden-tablet">[<a href="/{{ app.request.locale }}/sail/{{ r.sail }}">{{ r.boat }}</a>]</span>

@@ -67,8 +67,9 @@ class VgXls
                     $total[$r['sail']] = 0;
                 }
                 $total[$r['sail']]+= $r['lastreport_distance'];
-                $r['total_distance'] = $total[$r['sail']];
-                $r['dtl_diff'] = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                $r['total_distance']     = $total[$r['sail']];
+                $r['dtl_diff']           = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                $r['color']              = Vg::sailToColor($r['sail']);
                 $daily[$r['sail']]       = $r;
                 $yesterday[$r['sail']]   = $r;
                 $master[$r['sail']][$ts] = $r;
@@ -183,7 +184,7 @@ class VgXls
         $coordinates = $this->extractSailsCoordinates($arr);
 
         $line = strtr($this->_line, array(
-            '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
+            '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
             '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
@@ -193,7 +194,7 @@ class VgXls
         foreach($coordinates as $ts => $coordinate) {
             $i++;
             $points[] = strtr($this->_point, array(
-                '%color%'       => self::rgbToKml(Vg::skipperToColor($info['skipper'])),
+                '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
                 '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/kml/shapes/arrow.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading']+180,
                 '%coordinates%' => $coordinate,
@@ -328,7 +329,7 @@ class VgXls
             'rank'                => (int) $rank,
             'country'             => trim($coun),
             'sail'                => trim($sail),
-            'skipper'             => trim($sailor),
+            'skipper'             => str_replace('  ', ' ', trim($sailor)),
             'boat'                => trim($boat),
 
             'time'                => $time[0],
@@ -406,12 +407,21 @@ class VgXls
         return $ret;
     }
 
-    public static function rgbToKml($color, $aa = 'ff')
+    public static function hexToKml($color, $aa = 'ff')
     {
         $rr = substr($color, 0, 2);
         $gg = substr($color, 2, 2);
         $bb = substr($color, 4, 2);
         return strtolower($aa.$bb.$gg.$rr);
+    }
+
+    public static function hexToRgb($color)
+    {
+        $rgb = array();
+        for ($x=0;$x<3;$x++) {
+            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
+        }
+        return $rgb;
     }
 
     public static function kmlToRgb($color)

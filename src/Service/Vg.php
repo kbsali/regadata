@@ -179,29 +179,29 @@ class Vg
         return $max;
     }
 
-    public function skipperToTwitter($s)
+    public function sailToTwitter($s)
     {
         $arr = array(
-            // 'Dominique Wavre'
-            // 'Gutowski Zbigniew'
-            // 'Louis Burton'
-            // 'Marc Guillemot'
-            "Armel Le Cléac'h"        => '@VoileBanquePop',
-            'Alessandro Di Benedetto' => '@Team_Plastique',
-            'Alex Thomson'            => '@AlexThomson99',
-            'Arnaud Boissières'       => '@AKENAVerandas60',
-            'Bernard Stamm'           => '@Poujoulat_Stamm',
-            'Bertrand De Broc'        => '@BertranddeBroc',
-            'François Gabart'         => '@francoisgabart', // '@Macif60',
-            'Javier Sanso'            => '@AccionaSailing',
-            'Jean Le Cam'             => '@LeCam_SynerCiel',
-            'Jean-Pierre Dick'        => '@Dick_JeanPierre',
-            'Jérémie Beyou'           => '@JeremieBeyou',
-            'Kito De Pavant'          => '@GroupeBel60',
-            'Mike  Golding'           => '@Mike_Golding',
-            'Samantha Davies'         => '@samanthadavies',
-            'Tanguy Delamotte'        => '@TanguyDeLamotte',
-            'Vincent Riou'            => '@Vincent_Riou',
+            // 'SUI9'
+            // 'POL2'
+            // 'FRA35'
+            // 'FRA25'
+            "FRA19"   => '@VoileBanquePop',
+            'FRA44'   => '@Team_Plastique',
+            'GBR99'   => '@AlexThomson99',
+            'FRA14'   => '@AKENAVerandas60',
+            'SUI2012' => '@Poujoulat_Stamm',
+            'FRA62'   => '@BertranddeBroc',
+            'FRA301'  => '@francoisgabart', // '@Macif60',
+            'ESP4'    => '@AccionaSailing',
+            'FRA59'   => '@LeCam_SynerCiel',
+            'FRA06'   => '@Dick_JeanPierre',
+            'FRA001'  => '@JeremieBeyou',
+            'FRA360'  => '@GroupeBel60',
+            'GBR3'    => '@Mike_Golding',
+            'FRA29'   => '@samanthadavies',
+            'FRA72'   => '@TanguyDeLamotte',
+            'FRA85'   => '@Vincent_Riou',
         );
         if(!isset($arr[$s])) {
             return $s;
@@ -209,29 +209,29 @@ class Vg
         return $arr[$s];
     }
 
-    public static function skipperToColor($s)
+    public static function sailToColor($s)
     {
         $arr = array(
-            "Armel Le Cléac'h"        => 'FF0014', // 'ff0000ff',
-            'Alessandro Di Benedetto' => '00B414',
-            'Alex Thomson'            => 'BEBEBE',
-            'Arnaud Boissières'       => 'F01478',
-            'Bernard Stamm'           => '780A78',
-            'Bertrand De Broc'        => '14F0F0',
-            'Dominique Wavre'         => '0078FF',
-            'François Gabart'         => 'F0C878',
-            'Javier Sanso'            => 'FFF014',
-            'Jean Le Cam'             => '00783C',
-            'Jean-Pierre Dick'        => '14FAF0',
-            'Jérémie Beyou'           => 'F07800',
-            'Kito De Pavant'          => '1428B4',
-            'Louis Burton'            => 'B478DC',
-            'Marc Guillemot'          => '14A000',
-            'Mike  Golding'           => 'B4B414',
-            'Samantha Davies'         => 'F01E78',
-            'Tanguy Delamotte'        => '00786E',
-            'Vincent Riou'            => 'C87814',
-            'Gutowski Zbigniew'       => '007896',
+            "FRA19"   => '9ba5bd', // '061e5a',
+            'FRA44'   => '558a42',
+            'GBR99'   => '06040f',
+            'FRA14'   => '12cf10',
+            'SUI2012' => 'fac200',
+            'FRA62'   => 'bf9c7c',
+            'SUI9'    => '013983',
+            'FRA301'  => '0b2e82',
+            'ESP4'    => 'd01f27',
+            'FRA59'   => '9ea1a2', // '0d1517',
+            'FRA06'   => '3399c1',
+            'FRA001'  => 'f10200',
+            'FRA360'  => 'a71e2e',
+            'FRA35'   => '1e9436',
+            'FRA25'   => 'eb6c39',
+            'GBR3'    => 'a5ad00',
+            'FRA29'   => '65ac36',
+            'FRA72'   => 'cc0107',
+            'FRA85'   => 'fe640a',
+            'POL2'    => 'c86347',
         );
         if(!isset($arr[$s])) {
             return $s;
