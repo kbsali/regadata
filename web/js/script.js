@@ -14,7 +14,7 @@ function getMax(_class) {
         $(".tooltips").tooltip({
             selector: "a[rel=tooltip]"
         });
-        var clmax = ["1hspeed", "1hvmg", "lrspeed", "lrvmg", "lrdistance", "24hspeed", "24hvmg", "24hdistance", "total_distance", "oas", "dtl_diff"];
+        var clmax = ["1hspeed", "1hvmg", "lrspeed", "lrvmg", "lrdistance", "24hspeed", "24hvmg", "24hdistance", "total_distance", "oas", "dtl_diff", "dtp"];
         for(var i=0;i<clmax.length;i++) {
             getMax(clmax[i])
         }

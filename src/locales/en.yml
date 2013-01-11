@@ -3,7 +3,6 @@
 'About':            'About'
 'Boats':            'Boats'
 
-
 'Documentation':    'Documentation'
 'Description of the data available in the Json files': 'Description of the data available in the Json files'
 'Index':            'Index'
@@ -41,8 +40,10 @@
 'Distance':                 'Distance'
 'DTL':                      'DTL'
 'Distance To Leader':       'Distance To Leader'
-'DTLD':                     'DTLD'
-'Progress':                 'Progress'
+'DTLC':                     'DTLC'
+'Distance To Leader Change': 'Distance To Leader Change'
+'DTP':                      'DTP'
+'Distance To Predecessor':  'Distance To Predecessor'
 'RTDT':                     'RTDT'
 'OAS':                      'OAS'
 'Source':                   'Source'
