@@ -1,7 +1,13 @@
 {% extends 'layout.html.twig' %}
 {% set active = infos[0].info.sail %}
-{% set title = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
-{% set extra_meta = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
+
+{% if infos|length > 1 %}
+    {% set title = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
+    {% set extra_meta = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
+{% else %}
+    {% set title = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
+    {% set extra_meta = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
+{% endif %}
 
 {% block container_content %}
     <div class="row-fluid">

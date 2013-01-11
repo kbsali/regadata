@@ -43,9 +43,21 @@ class VgXls
         }
     }
 
+    private function kmlDeparture()
+    {
+        return strtr($this->_folder, array(
+            '%name%'    => 'Departure / Arrival',
+            '%content%' => strtr($this->_departure, array(
+                '%name%'        => "Les Sables-d'Olonne",
+                '%coordinates%' => '-1.7833,46.4972'
+            ))
+        ));
+    }
+
     public function xls2json()
     {
         require(__DIR__.'/../Util/XLSXReader.php');
+
 
         $master = $total = $yesterday = $first = array();
         $xlsxs = glob($this->xlsDir.'/*');
@@ -102,7 +114,10 @@ class VgXls
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
                     '%content%' =>
-                        $kmlPartial['line'].
+                        strtr($this->_folder, array(
+                            '%name%'    => 'Trace',
+                            '%content%' => $kmlPartial['line']
+                        )).
                         strtr($this->_folder, array(
                             '%name%'    => 'Positions',
                             '%content%' => join(PHP_EOL, $kmlPartial['points']),
@@ -111,7 +126,8 @@ class VgXls
                             '%lon%' => $end['lon_dec'],
                             '%lat%' => $end['lat_dec'],
                             '%alt%' => 2000000,
-                        ))
+                        )).
+                        $this->kmlDeparture()
                 ))
             );
             // line only
@@ -120,7 +136,9 @@ class VgXls
                 $this->jsonDir.'/sail/trace_'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
-                    '%content%' => $kmlPartial['line']
+                    '%content%' =>
+                        $kmlPartial['line'].
+                        $this->kmlDeparture()
                 ))
             );
             // points only
@@ -129,7 +147,9 @@ class VgXls
                 $this->jsonDir.'/sail/points_'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
-                    '%content%' => join(PHP_EOL, $kmlPartial['points'])
+                    '%content%' =>
+                        join(PHP_EOL, $kmlPartial['points']).
+                        $this->kmlDeparture()
                 ))
             );
             $lineFull.= $kmlPartial['line'];
@@ -148,7 +168,10 @@ class VgXls
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
                 '%content%' =>
-                    $lineFull.
+                    strtr($this->_folder, array(
+                        '%name%'    => 'Trace',
+                        '%content%' => $lineFull
+                    )).
                     strtr($this->_folder, array(
                         '%name%'    => 'Positions',
                         '%content%' => $pointsFull,
@@ -157,7 +180,8 @@ class VgXls
                         '%lon%' => $first['lon_dec'],
                         '%lat%' => $first['lat_dec'],
                         '%alt%' => 2000000,
-                    ))
+                    )).
+                    $this->kmlDeparture()
             ))
         );
         // kml (all in one file - line only)
@@ -165,7 +189,9 @@ class VgXls
         file_put_contents($this->jsonDir.'/trace_FULL.kml',
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
-                '%content%' => $lineFull
+                '%content%' =>
+                    $lineFull.
+                    $this->kmlDeparture()
             ))
         );
         // kml (all in one file - points only)
@@ -173,7 +199,9 @@ class VgXls
         file_put_contents($this->jsonDir.'/points_FULL.kml',
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
-                '%content%' => $pointsFull
+                '%content%' =>
+                    $pointsFull.
+                    $this->kmlDeparture()
             ))
         );
     }
@@ -195,8 +223,8 @@ class VgXls
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
-                '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/kml/shapes/arrow.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
-                '%heading%'     => $info['1hour_heading']+180,
+                '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/dir_walk_0.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 // '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
                 '%description%' => '<p>'.date('Y-m-d H:i', $ts).'
@@ -449,6 +477,7 @@ class VgXls
     <Style>
         <LineStyle>
             <color>%color%</color>
+            <width>1</width>
         </LineStyle>
         <PolyStyle>
             <fill>0</fill>
@@ -477,6 +506,13 @@ class VgXls
             <color>%color%</color>
         </IconStyle>
     </Style>
+    <Point>
+        <coordinates>%coordinates%</coordinates>
+    </Point>
+</Placemark>';
+
+    public $_departure = '<Placemark>
+    <name>%name%</name>
     <Point>
         <coordinates>%coordinates%</coordinates>
     </Point>
