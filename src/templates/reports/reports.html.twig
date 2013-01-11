@@ -43,7 +43,7 @@
 
                         <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader Change'|trans }}">{{ 'DTLC'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t"><abbr title="{{ 'Distance to Predecessor'|trans }}">{{ 'DTP'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t hidden-phone"><abbr title="{{ 'Distance to Predecessor'|trans }}">{{ 'DTP'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                     </tr>
                 </thead>
@@ -88,7 +88,7 @@
 
                         <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
                         <td class="r dtl_diff"><span class="label {{ class1 }}">{{ '%.1f' | format(r['dtl_diff']|abs) }} <i class="icon-white {{ class2 }}"></i></span></td>
-                        <td class="r dtp">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
+                        <td class="r dtp hidden-phone">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
                         {% set dtp = r['dtl'] %}
                     </tr>
