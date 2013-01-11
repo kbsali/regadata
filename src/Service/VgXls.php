@@ -227,29 +227,33 @@ class VgXls
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 // '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
-                '%description%' => '<p>'.date('Y-m-d H:i', $ts).'
-<br>#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].']</p>
-<table>
+                '%description%' => '<p>
+'.date('Y-m-d H:i', $ts).'
+<br>#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].']
+<br>DTF : '.$info['dtf'].' nm
+<br>DTL : '.$info['dtl'].' nm
+</p>
+<table border="1" padding="0" cellspacing="0">
     <tr>
         <td>&nbsp;</td>
-        <td><strong>Heading</strong></td>
-        <td><strong>Speed</strong></td>
-        <td><strong>VMG</strong></td>
-        <td><strong>Distance</strong></td>
+        <td nowrap><strong>Heading (º)</strong></td>
+        <td nowrap><strong>Speed (kn)</strong></td>
+        <td nowrap><strong>VMG (kn)</strong></td>
+        <td nowrap><strong>Distance (nm)</strong></td>
     </tr>
     <tr>
-        <td><strong>1 hour</strong></td>
-        <td>'.$info['1hour_heading'].'</td>
-        <td>'.$info['1hour_speed'].'</td>
-        <td>'.$info['1hour_vmg'].'</td>
-        <td>'.$info['1hour_distance'].'</td>
+        <td nowrap><strong>1 hour</strong></td>
+        <td align="right">'.$info['1hour_heading'].'</td>
+        <td align="right">'.$info['1hour_speed'].'</td>
+        <td align="right">'.$info['1hour_vmg'].'</td>
+        <td align="right">'.$info['1hour_distance'].'</td>
     </tr>
     <tr>
-        <td><strong>24 hours</strong></td>
-        <td>'.$info['24hour_heading'].'</td>
-        <td>'.$info['24hour_speed'].'</td>
-        <td>'.$info['24hour_vmg'].'</td>
-        <td>'.$info['24hour_distance'].'</td>
+        <td nowrap><strong>24 hours</strong></td>
+        <td align="right">'.$info['24hour_heading'].'</td>
+        <td align="right">'.$info['24hour_speed'].'</td>
+        <td align="right">'.$info['24hour_vmg'].'</td>
+        <td align="right">'.$info['24hour_distance'].'</td>
     </tr>
 </table>
 <p>Source : http://vg2012.saliou.name</p>',
