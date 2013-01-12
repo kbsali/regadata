@@ -552,10 +552,8 @@ class VgXls
 <table border="0" cellpadding="1">
     <tr>
         <td colspan="3">
+            [%boat%]<br>
             %date%
-            <hr color="%color%">
-            <h3>%name%</h3>
-            [%boat%]</p>
             <hr color="%color%">
         </td>
     </tr>
