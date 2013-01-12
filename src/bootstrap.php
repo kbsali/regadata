@@ -40,6 +40,15 @@ $app->register(new TwigServiceProvider(), array(
 
 $app->register(new TmhOAuthServiceProvider());
 
+if(!isset($app['imagine.factory'])) {
+    $app['imagine.factory'] = 'Imagick';
+}
+
+$app['imagine'] = $app->share(function ($app) {
+    $class = sprintf('\Imagine\%s\Imagine', $app['imagine.factory']);
+    return new $class();
+});
+
 
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);

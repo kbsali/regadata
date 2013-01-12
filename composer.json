@@ -17,13 +17,15 @@
         "symfony/console"    : "2.1.*",
 
         "themattharris/tmhoauth"             : "dev-master",
-        "kud/tmhoauth-silex-service-provider": "dev-master"
+        "kud/tmhoauth-silex-service-provider": "dev-master",
+
+        "imagine/Imagine": "dev-develop"
     },
     "autoload"          : {
         "psr-0": {
             "Repository": "src/",
-            "Util": "src/",
-            "Service": "src/"
+            "Util"      : "src/",
+            "Service"   : "src/"
         }
     }
 }

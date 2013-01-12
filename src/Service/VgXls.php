@@ -253,7 +253,7 @@ class VgXls
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
-                '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/img/boat_marker.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 '%name%'        => $j === $i ? '#'.$info['rank'].' '.$info['skipper'] : '',
@@ -523,7 +523,7 @@ class VgXls
             <Icon>
                 <href>%icon%</href>
             </Icon>
-            <heading>%heading%</heading>
+            <!-- <heading>%heading%</heading> -->
             <color>%color%</color>
         </IconStyle>
     </Style>

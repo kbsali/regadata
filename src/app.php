@@ -46,9 +46,18 @@ $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
 $app->get('/{_locale}/doc/json', function () use ($app) {
     return $app['twig']->render('doc/json.html.twig', array());
 });
+
 $app->get('/doc/json-format', function () use ($app) {
     return $app['twig']->render('doc/json-format.html.twig', array());
 });
+
+// $app->get('/img/boat.png', function () use ($app) {
+//     $image = $app['imagine']
+//         ->open(__DIR__.'/../web/img/boat_marker.png')
+//         ->rotate(90)
+//         ->save(__DIR__.'/../web/img/boat_90.png')
+//     ;
+// });
 
 $app->get('/{_locale}/about', function () use ($app) {
     $reports     = $app['srv.vg']->listJson('reports');
