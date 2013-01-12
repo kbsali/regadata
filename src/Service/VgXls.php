@@ -485,9 +485,11 @@ class VgXls
 <kml xmlns="http://www.opengis.net/kml/2.2"
      xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
+    <!--
     <atom:author>
         <atom:name>Kevin Saliou</atom:name>
     </atom:author>
+    -->
     <atom:link href="http://vg2012.saliou.name" />
     %content%
 </Document>
