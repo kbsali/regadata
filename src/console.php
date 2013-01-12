@@ -32,11 +32,12 @@ $console
     ->register('vg:rotate_icons')
     ->setDescription('Creates icons rotated from 0 to 360º')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $color = new Imagine\Image\Color('000', 100);
         for($i=0; $i<=360; $i++) {
             $output->writeln('<info>Generating web/icons/boat_'.$i.'.png</info>');
             $image = $app['imagine']
                 ->open(__DIR__.'/../web/img/boat_marker.png')
-                ->rotate($i)
+                ->rotate($i, $color)
                 ->save(__DIR__.'/../web/icons/boat_'.$i.'.png')
             ;
         }
