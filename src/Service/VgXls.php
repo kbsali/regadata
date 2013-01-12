@@ -117,7 +117,7 @@ class VgXls
 
     public function export2kml(array $arr = array())
     {
-        $kmlFull = $lineFull = $pointsFull = '';
+        $kmlFull = $lineFull = $pointsFull = $lastPosFull = '';
         foreach ($arr as $sail => $partial) {
             $end = end($partial);
             $kmlPartial = $this->arr2kml($partial);
@@ -137,6 +137,10 @@ class VgXls
                             '%name%'    => 'Positions',
                             '%content%' => join(PHP_EOL, $kmlPartial['points']),
                         )).
+                        strtr($this->_folder, array(
+                            '%name%'    => 'Last Position',
+                            '%content%' => $kmlPartial['last_pos']
+                        )).
                         // strtr($this->_camera, array(
                         //     '%lon%' => $end['lon_dec'],
                         //     '%lat%' => $end['lat_dec'],
@@ -152,6 +156,7 @@ class VgXls
                 strtr($this->_kml, array(
                     '%name%'    => $kmlPartial['name'],
                     '%content%' =>
+                        $kmlPartial['last_pos'].
                         $kmlPartial['line'].
                         $this->kmlDeparture()
                 ))
@@ -167,8 +172,9 @@ class VgXls
                         $this->kmlDeparture()
                 ))
             );
-            $lineFull.= $kmlPartial['line'];
-            $pointsFull.= strtr($this->_folder, array(
+            $lineFull    .= $kmlPartial['line'];
+            $lastPosFull .= $kmlPartial['last_pos'];
+            $pointsFull  .= strtr($this->_folder, array(
                 '%name%'    => $kmlPartial['name'],
                 '%content%' => join(PHP_EOL, $kmlPartial['points']),
             ));
@@ -188,6 +194,10 @@ class VgXls
                         '%name%'    => 'Positions',
                         '%content%' => $pointsFull,
                     )).
+                    strtr($this->_folder, array(
+                        '%name%'    => 'Last Positions',
+                        '%content%' => $lastPosFull,
+                    )).
                     // strtr($this->_camera, array(
                     //     '%lon%' => $first['lon_dec'],
                     //     '%lat%' => $first['lat_dec'],
@@ -202,7 +212,14 @@ class VgXls
             strtr($this->_kml, array(
                 '%name%'    => $kmlPartial['name'],
                 '%content%' =>
-                    $lineFull.
+                    strtr($this->_folder, array(
+                        '%name%'    => 'Trace',
+                        '%content%' => $lineFull
+                    )).
+                    strtr($this->_folder, array(
+                        '%name%'    => 'Last Positions',
+                        '%content%' => $lastPosFull,
+                    )).
                     $this->kmlDeparture()
             ))
         );
@@ -259,9 +276,10 @@ class VgXls
         }
 
         return array(
-            'name'   => $info['skipper'].' ['.$info['boat'].']',
-            'line'   => $line.end($points),
-            'points' => $points,
+            'name'     => $info['skipper'].' ['.$info['boat'].']',
+            'line'     => $line,
+            'last_pos' => end($points),
+            'points'   => $points,
         );
     }
 
