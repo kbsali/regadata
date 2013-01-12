@@ -2,16 +2,28 @@
 <kml xmlns="http://earth.google.com/kml/2.2">
     <Document>
         <NetworkLink>
-            <name>#VG2012 - OpenData</name>
-            <open>1</open>
+            <name>#VG2012 - OpenData (Traces)</name>
+            <open>0</open>
             <Link>
-                <href>http://vg2012.saliou.name/json/FULL.kmz</href>
+                <href>http://vg2012.saliou.name/json/trace_FULL.kmz</href>
+                <refreshMode>onInterval</refreshMode>
+                <refreshInterval>3600</refreshInterval>
+            </Link>
+        </NetworkLink>
+        <NetworkLink>
+            <name>#VG2012 - OpenData (Positions)</name>
+            <open>0</open>
+            <visibility>0</visibility>
+            <Link>
+                <href>http://vg2012.saliou.name/json/points_FULL.kmz</href>
                 <refreshMode>onInterval</refreshMode>
                 <refreshInterval>3600</refreshInterval>
             </Link>
         </NetworkLink>
         <NetworkLink>
             <name>WXTiles - Wind (10m)</name>
+            <open>0</open>
+            <visibility>0</visibility>
             <Link>
                 <href>http://kml.wxtiles.com/current/wx.wind.kmz</href>
                 <refreshMode>onInterval</refreshMode>
