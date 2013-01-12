@@ -62,7 +62,12 @@ class VgXls
         $master = $total = $yesterday = $first = array();
         $xlsxs = glob($this->xlsDir.'/*');
         sort($xlsxs);
+        $i = 0;
         foreach ($xlsxs as $xlsx) {
+            // if($i === 10) {
+            //     break;
+            // }
+            $i++;
             try {
                 $xlsx = new \XLSXReader($xlsx);
             } catch (\Exception $e) {
@@ -96,14 +101,24 @@ class VgXls
             }
         }
 
-        // export to json
-        foreach ($master as $sail => $partial) {
+        $this->export2json($master);
+        $this->export2kml($master);
+    }
+
+    public function export2json(array $arr = array())
+    {
+        foreach ($arr as $sail => $partial) {
             echo ' saving '.$sail.' data to '.$this->jsonDir.'/sail/'.$sail.'.json'.PHP_EOL;
             file_put_contents($this->jsonDir.'/sail/'.$sail.'.json', json_encode($partial));
         }
-        // export to kml
+        echo ' saving FULL data to '.$this->jsonDir.'/FULL.json'.PHP_EOL;
+        file_put_contents($this->jsonDir.'/FULL.json', json_encode($arr));
+    }
+
+    public function export2kml(array $arr = array())
+    {
         $kmlFull = $lineFull = $pointsFull = '';
-        foreach ($master as $sail => $partial) {
+        foreach ($arr as $sail => $partial) {
             $end = end($partial);
             $kmlPartial = $this->arr2kml($partial);
 
@@ -122,11 +137,11 @@ class VgXls
                             '%name%'    => 'Positions',
                             '%content%' => join(PHP_EOL, $kmlPartial['points']),
                         )).
-                        strtr($this->_camera, array(
-                            '%lon%' => $end['lon_dec'],
-                            '%lat%' => $end['lat_dec'],
-                            '%alt%' => 2000000,
-                        )).
+                        // strtr($this->_camera, array(
+                        //     '%lon%' => $end['lon_dec'],
+                        //     '%lat%' => $end['lat_dec'],
+                        //     '%alt%' => 2000000,
+                        // )).
                         $this->kmlDeparture()
                 ))
             );
@@ -158,9 +173,6 @@ class VgXls
                 '%content%' => join(PHP_EOL, $kmlPartial['points']),
             ));
         }
-        echo ' saving FULL data to '.$this->jsonDir.'/FULL.json'.PHP_EOL;
-        // json (all in one file)
-        file_put_contents($this->jsonDir.'/FULL.json', json_encode($master));
 
         // kml (all in one file - line + points)
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
@@ -176,11 +188,11 @@ class VgXls
                         '%name%'    => 'Positions',
                         '%content%' => $pointsFull,
                     )).
-                    strtr($this->_camera, array(
-                        '%lon%' => $first['lon_dec'],
-                        '%lat%' => $first['lat_dec'],
-                        '%alt%' => 2000000,
-                    )).
+                    // strtr($this->_camera, array(
+                    //     '%lon%' => $first['lon_dec'],
+                    //     '%lat%' => $first['lat_dec'],
+                    //     '%alt%' => 2000000,
+                    // )).
                     $this->kmlDeparture()
             ))
         );
@@ -204,6 +216,7 @@ class VgXls
                     $this->kmlDeparture()
             ))
         );
+
     }
 
     public function arr2kml(array $arr = array())
@@ -223,46 +236,31 @@ class VgXls
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
-                '%icon%'        => $j ===  $i ? 'http://maps.google.com/mapfiles/dir_walk_0.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/img/boat_marker.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
-                // '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
-                '%description%' => '<p>
-'.date('Y-m-d H:i', $ts).'
-<br>#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].']
-<br>DTF : '.$info['dtf'].' nm
-<br>DTL : '.$info['dtl'].' nm
-</p>
-<table border="1" padding="0" cellspacing="0">
-    <tr>
-        <td>&nbsp;</td>
-        <td nowrap><strong>Heading (º)</strong></td>
-        <td nowrap><strong>Speed (kn)</strong></td>
-        <td nowrap><strong>VMG (kn)</strong></td>
-        <td nowrap><strong>Distance (nm)</strong></td>
-    </tr>
-    <tr>
-        <td nowrap><strong>1 hour</strong></td>
-        <td align="right">'.$info['1hour_heading'].'</td>
-        <td align="right">'.$info['1hour_speed'].'</td>
-        <td align="right">'.$info['1hour_vmg'].'</td>
-        <td align="right">'.$info['1hour_distance'].'</td>
-    </tr>
-    <tr>
-        <td nowrap><strong>24 hours</strong></td>
-        <td align="right">'.$info['24hour_heading'].'</td>
-        <td align="right">'.$info['24hour_speed'].'</td>
-        <td align="right">'.$info['24hour_vmg'].'</td>
-        <td align="right">'.$info['24hour_distance'].'</td>
-    </tr>
-</table>
-<p>Source : http://vg2012.saliou.name</p>',
+                '%name%'        => $j === $i ? '#'.$info['rank'].' '.$info['skipper'] : '',
+                '%description%' => strtr($this->_table, array(
+                    '%name%'            => '#'.$info['rank'].' '.$info['skipper'],
+                    '%boat%'            => $info['boat'],
+                    '%date%'            => date('Y-m-d H:i', $ts),
+                    '%color%'           => '#'.Vg::sailToColor($info['sail']),
+                    '%1hour_speed%'     => $info['1hour_speed'],
+                    '%24hour_speed%'    => $info['24hour_speed'],
+                    '%1hour_distance%'  => $info['1hour_distance'],
+                    '%24hour_distance%' => $info['24hour_distance'],
+                    '%1hour_vmg%'       => $info['1hour_vmg'],
+                    '%24hour_vmg%'      => $info['24hour_vmg'],
+                    '%1hour_heading%'   => $info['1hour_heading'],
+                    '%dtf%'             => $info['dtf'],
+                    '%dtl%'             => $info['dtl'],
+                ))
             ));
         }
 
         return array(
             'name'   => $info['skipper'].' ['.$info['boat'].']',
-            'line'   => $line,
+            'line'   => $line.end($points),
             'points' => $points,
         );
     }
@@ -496,6 +494,7 @@ class VgXls
 </Placemark>';
 
     public $_point = '<Placemark>
+    <name>%name%</name>
     <description>
     <![CDATA[
         %description%
@@ -533,4 +532,45 @@ class VgXls
     <altitude>%alt%</altitude>
     <altitudeMode>relativeToSeaFloor</altitudeMode>
 </Camera>';
+
+    public $_table = '
+<table border="0" cellpadding="1">
+    <tr>
+        <td colspan="3">
+            %date%
+            <hr color="%color%">
+            <h3>%name%</h3>
+            [%boat%]</p>
+            <hr color="%color%">
+        </td>
+    </tr>
+    <tr>
+        <td>Speed (kn)</td>
+        <td>%1hour_speed%</td>
+        <td>%24hour_speed%</td>
+    </tr>
+    <tr>
+        <td>Distance (nm)</td>
+        <td>%1hour_distance%</td>
+        <td>%24hour_distance%</td>
+    </tr>
+    <tr>
+        <td>VMG (nm)</td>
+        <td>%1hour_vmg%</td>
+        <td>%24hour_vmg%</td>
+    </tr>
+    <tr>
+        <td>Heading (º)</td>
+        <td colspan="2">%1hour_heading%</td>
+    </tr>
+    <tr>
+        <td>DTF (nm)</td>
+        <td colspan="2">%dtf%</td>
+    </tr>
+    <tr>
+        <td>DTL (nm)</td>
+        <td colspan="2">%dtl%</td>
+    </tr>
+</table>
+<p>Source : http://vg2012.saliou.name</p>';
 }

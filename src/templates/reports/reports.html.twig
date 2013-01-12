@@ -51,16 +51,16 @@
                     {% set dtp = 0 %}
                     {% for r in report %}
                         {% set class1 = 'label-info' %}
-                        {% set class2 = 'icon-resize-horizontal' %}
+                        {% set class2 = 'icon-circle-arrow-right' %}
                         {% if r['dtl_diff'] < 0 %}
                             {% set class1 = 'label-success' %}
-                            {% set class2 = 'icon-arrow-up' %}
+                            {% set class2 = 'icon-circle-arrow-up' %}
                         {% elseif r['dtl_diff'] > 0 %}
                             {% set class1 = 'label-important' %}
-                            {% set class2 = 'icon-arrow-down' %}
+                            {% set class2 = 'icon-circle-arrow-down' %}
                         {% endif %}
                     <tr>
-                        <td class="r"><span class="badge" style="background: #{{ r.color }}">{{ r.rank }}</span></td>
+                        <td class="r"><span class="badge">{{ r.rank }} <i class="icon-circle" style="color: #{{ r.color }}"></i></span></td>
                         <td>
                             <a href="/{{ app.request.locale }}/sail/{{ r.sail }}">{{ r.skipper }}</a>
                             <span class="hidden-phone hidden-tablet">[<a href="/{{ app.request.locale }}/sail/{{ r.sail }}">{{ r.boat }}</a>]</span>
