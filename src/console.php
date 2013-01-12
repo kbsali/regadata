@@ -29,6 +29,21 @@ $console
 ;
 
 $console
+    ->register('vg:rotate_icons')
+    ->setDescription('Creates icons rotated from 0 to 360º')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        for($i=0; $i<=360; $i++) {
+            $output->writeln('<info>Generating web/icons/boat_'.$i.'.png</info>');
+            $image = $app['imagine']
+                ->open(__DIR__.'/../web/img/boat_marker.png')
+                ->rotate($i)
+                ->save(__DIR__.'/../web/icons/boat_'.$i.'.png')
+            ;
+        }
+    })
+;
+
+$console
     ->register('vg:tweet')
     ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
