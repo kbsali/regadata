@@ -2,6 +2,7 @@
 'Home':             'Home'
 'About':            'About'
 'Boats':            'Boats'
+'Map':              'Map'
 
 'Documentation':    'Documentation'
 'Description of the data available in the Json files': 'Description of the data available in the Json files'
@@ -126,3 +127,5 @@
 'Distance To Final':                'Distance To Final'
 'Distance To Leader':               'Distance To Leader'
 'Json Preview':                     'Json Preview'
+
+'Map of the race':  'Map of the race'

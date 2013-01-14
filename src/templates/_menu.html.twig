@@ -23,6 +23,7 @@
                             {% endfor %}
                             </ul>
                         </li>
+                        <li{% if 'map' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/map">{{ 'Map'|trans }}</a></li>
                         <li{% if 'doc' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/doc/json">{{ 'Documentation'|trans }}</a></li>
                         <li{% if 'about' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/about">{{ 'About'|trans }}</a></li>
                     </ul>

@@ -4,6 +4,14 @@ use Symfony\Component\HttpFoundation\Request;
 
 $app = require __DIR__.'/bootstrap.php';
 
+// REDIRECT OLD URLS (indexed by search engines)
+$app->get('/reports/{id}', function (Request $request) use ($app) {
+    return $app->redirect('/'.$request->getLocale().'/reports/'.$request->get('id'));
+});
+$app->get('/sail/{id}', function (Request $request) use ($app) {
+    return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('id'));
+});
+
 $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
     $reports = $app['srv.vg']->listJson('reports');
     if ('latest' === $id) {
@@ -41,6 +49,10 @@ $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
             'total'   => count($reports),
         )
     ));
+});
+
+$app->get('/{_locale}/map', function () use ($app) {
+    return $app['twig']->render('map/map.html.twig', array());
 });
 
 $app->get('/{_locale}/doc/json', function () use ($app) {

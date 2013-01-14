@@ -2,6 +2,7 @@
 'Home':             'Home'
 'About':            'A propos'
 'Boats':            'Bateaux'
+'Map':              'Carte'
 
 'Documentation':    'Documentation'
 'Description of the data available in the Json files': 'Description des données disponibles dans les fichiers Json'
@@ -126,3 +127,5 @@
 'Distance To Final':                "Distance de l'arrivée"
 'Distance To Leader':               'Distance du premier'
 'Json Preview':                     'Aperçu Json'
+
+'Map of the race':  'Carte de la course'
