@@ -53,8 +53,13 @@ class Vg
     {
         $ret = array();
         foreach ($report as $sail => $info) {
-            $ret[$sail] = $info['skipper'].' ['.$info['boat'].']';
+            $ret[$sail] = array(
+                'skipper' => $info['skipper'],
+                'boat'    => $info['boat'],
+                'color'   => self::sailToColor($info['sail'])
+            );
         }
+        asort($ret);
 
         return $ret;
     }

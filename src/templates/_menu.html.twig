@@ -19,7 +19,7 @@
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                             {% for sail, skipper in sk %}
-                                <li{% if sail == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/sail/{{ sail }}">{{ skipper }}</a></li>
+                                <li{% if sail == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/sail/{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
                             {% endfor %}
                             </ul>
                         </li>

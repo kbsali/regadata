@@ -1,62 +1,121 @@
 {% extends 'layout.html.twig' %}
 {% set active = infos[0].info.sail %}
+{% set bodyId = 'high' %}
 
 {% if infos|length > 1 %}
     {% set title = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
     {% set extra_meta = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
+    {% set compare_lbl = '<i class="icon-sign-blank" style="color: #' ~ infos[1].info.color ~ '"></i> ' ~ infos[1].info.skipper %}
 {% else %}
     {% set title = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
     {% set extra_meta = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
+    {% set compare_lbl = 'Compare with...'|trans() %}
 {% endif %}
 
 {% block container_content %}
-    <div class="row-fluid">
-        <div class="span12 c">
-            <form method="get" action="/{{ app.request.locale }}/compare">
-                {{ sail1|raw }}
-                {{ sail2|raw }}
-                <button type="submit" class="btn" style="margin-bottom: 10px">{{ 'Compare!'|trans }}</button>
-            </form>
-        </div>
-    </div>
+
     <div class="row-fluid">
         {% for info in infos %}
-        <div class="span3">
-            <h3>{{ info.info.skipper }}</h3>
-            <dl>
-                <dt>{{ 'Boat'|trans }}</dt>
-                <dd>{{ info.info.boat }} [{{ info.info.sail }}]</dd>
-                <dt>{{ 'Distance to finish'|trans }}</dt>
-                <dd>
-                    <div class="progress">
-                        <div class="bar" style="width:{{ '%.2f' | format((24016.60-info.info.dtf)/24016.60*100) }}%"></div>
-                        <div class="togo">
-                            {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+        <div class="span6 sail">
+            <table class="table">
+                <tr>
+                    <td colspan="2">
+                        <h3>
+                        {% if loop.index0 == 0 %}
+                            <i class="icon-sign-blank" style="color: #{{ info.info.color }}"></i> #{{ info.info.rank }} {{ info.info.skipper }}
+                        {% else %}
+                            #{{ info.info.rank }}
+                            <div class="btn-group">
+                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                    {{ compare_lbl|raw }}
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                    {% for sail, skipper in sk %}
+                                    <li>
+                                        <a href="/{{ app.request.locale }}/sail/{{ infos[0].info.sail }}-{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                        </h3>
+                    </td>
+                    <td colspan="2">
+                        <div class="progress">
+                            <div class="bar" style="width:{{ '%.2f' | format((24016.60-info.info.dtf)/24016.60*100) }}%"></div>
+                            <div class="togo">
+                                {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+                            </div>
                         </div>
-                    </div>
-                </dd>
-                <dt>{{ 'Real total distance travelled'|trans }} * / {{ 'Overall average speed'|trans }} **</dt>
-                <dd>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></dd>
-            </dl>
-        </div>
-        <div class="span3">
-            <dl>
-                <dt>{{ 'Last ranking'|trans }}</dt>
-                <dd>{{ info.info.timestamp|date }}</dd>
-                <dt>{{ 'Rank'|trans }}</dt>
-                <dd>{{ info.info.rank }}</dd>
-                <dt>{{ 'Coordinates'|trans }}</dt>
-                <dd>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</dd>
-                <dt>{{ 'Heading'|trans }}</dt>
-                <dd>{{ info.info['1hour_heading'] }}&deg;</dd>
-            </dl>
-            <p class="tooltips">
-                {{ 'JSON'|trans }} : <a target="_blank" href="/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a><br>
-                {{ 'KMZ'|trans }} : <a target="_blank" href="/json/sail/{{ info.info.sail }}.kmz" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> /json/sail/{{ info.info.sail }}.kmz</a>
-            </p>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{ 'Last ranking'|trans }}</th>
+                    <td>{{ info.info.timestamp|date }}</td>
+                    <th>{{ 'Boat'|trans }}</th>
+                    <td>{{ info.info.boat }} [{{ info.info.sail }}]</td>
+                </tr>
+                <tr>
+                    <th>{{ 'Heading'|trans }}</th>
+                    <td>{{ info.info['1hour_heading'] }}&deg;</td>
+                    <th>{{ 'Coordinates'|trans }}</th>
+                    <td>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</td>
+                </tr>
+                <tr>
+                    <th>{{ 'Distance to finish'|trans }}</th>
+                    <td>
+                        {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+                    </td>
+                    <th>{{ 'Distance to leader'|trans }}</th>
+                    <td>
+                        {{ info.info.dtl }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+                    </td>
+                </tr>
+                <tr>
+                    <th>{{ 'Real total distance travelled'|trans }} * /<br>{{ 'Overall average speed'|trans }} **</th>
+                    <td>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></td>
+                    <th>{{ 'Coordinates'|trans }}</th>
+                    <td>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</td>
+                </tr>
+                <tr class="tooltips">
+                    <td colspan="2">
+                        <strong>{{ 'JSON'|trans }}</strong>
+                        <a target="_blank" href="/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a>
+                    </td>
+                    <td colspan="2">
+                        <strong>{{ 'KMZ'|trans }}</strong>
+                        <a target="_blank" href="/json/sail/{{ info.info.sail }}.kmz" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> /json/sail/{{ info.info.sail }}.kmz</a>
+                    </td>
+                </tr>
+            </table>
         </div>
         {% endfor %}
-    </div>
+
+        {% if infos|length == 1 %}
+            <div class="span6">
+                <table class="table">
+                    <tr>
+                        <td colspan="2">
+                            <h3>
+                                <div class="btn-group">
+                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                                        {{ compare_lbl }}
+                                        <span class="caret"></span>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                        {% for sail, skipper in sk %}
+                                        <li>
+                                            <a href="/{{ app.request.locale }}/sail/{{ infos[0].info.sail }}-{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </h3>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        {% endif %}
+    </div>{# row-fluid #}
     <div class="row-fluid">
         <p>
             * {{ 'Sum of the distances travelled between each ranking since race start'|trans }}<br>

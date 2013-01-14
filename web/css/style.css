@@ -2,9 +2,17 @@ body {
     padding-top: 41px;
     /*padding-bottom: 40px;*/
 }
+body#high {
+    padding-top: 60px;
+    /*padding-bottom: 40px;*/
+}
 /* http://stackoverflow.com/a/14258496 */
 .navbar-fixed-top, .navbar-fixed-bottom {
     position: fixed;
+}
+
+.navbar-fixed-top {
+    margin-bottom: 0;
 }
 
 .brand span {
@@ -60,6 +68,12 @@ body {
   display:inline;
 }
 
-.navbar-fixed-top {
-    margin-bottom: 0;
+.sail .progress {
+    margin-top: 18px;
+}
+@media (max-width: 767px) {
+    .navbar .container-fluid {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
 }

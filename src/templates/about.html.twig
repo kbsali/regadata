@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 {% set active = 'about' %}
 {% set title = 'About' %}
+{% set bodyId = 'high' %}
 
 {% block container_content %}
         <div class="hero-unit" lang="fr">
@@ -35,7 +36,7 @@
                 <ul>
                     {% for sail, skipper in sk %}
                         <li>
-                            <a href="/{{ app.request.locale }}/sail/{{ sail }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper }}</a>
+                            <a href="/{{ app.request.locale }}/sail/{{ sail }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
                             <ul>
                                 <li><a target="_blank" href="/json/sail/{{ sail }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ sail }}.json</a>
                                 <li><a target="_blank" href="/json/sail/{{ sail }}.kmz" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> /json/sail/{{ sail }}.kmz</a>
@@ -49,9 +50,9 @@
                 <ul>
                     {% for dt, ts in reports %}
                         <li>
-                            <a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/reports/{{ dt }}.json</a>
+                            <a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ ts|date }}</a>
                             <ul>
-                                <li><a href="/{{ app.request.locale }}/reports/{{ dt }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ ts|date }}</a>
+                                <li><a target="_blank" href="/json/reports/{{ dt }}.json" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/reports/{{ dt }}.json</a>
                             </ul>
                     {% endfor %}
                 </ul>

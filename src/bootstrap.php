@@ -74,9 +74,7 @@ $app->before(function(Request $request) use ($app) {
     $reports     = $app['srv.vg']->listJson('reports');
     $first       = str_replace('/json', '', end($reports));
     $firstReport = $app['srv.vg']->parseJson($first);
-    $sk          = $app['srv.vg']->getSailSkipper($firstReport);
-    asort($sk);
-    $app['sk']   = $sk;
+    $app['sk']   = $app['srv.vg']->getSailSkipper($firstReport);
     $app['twig']->addGlobal('sk', $app['sk']);
 });
 

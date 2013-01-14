@@ -1,3 +1,4 @@
+{% set bodyId = bodyId|default('normal') %}
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
 <!doctype html>
@@ -32,7 +33,7 @@
     <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
-    <link rel="stylesheet" href="/css/style.css?1">
+    <link rel="stylesheet" href="/css/style.css?2">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
@@ -40,7 +41,7 @@
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
     <script type="text/javascript">window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 </head>
-<body>
+<body id="{{ bodyId }}">
     {% set active = active|default(null) %}
     {% include '_menu.html.twig' with { 'active': active } %}
     <div class="container-fluid" id="main">

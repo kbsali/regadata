@@ -87,8 +87,9 @@ $app->get('/{_locale}/compare', function (Request $request) use ($app) {
 });
 
 $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
-    $ids = explode('-', $ids);
+    $ids   = explode('-', $ids);
     $infos = array();
+
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
@@ -107,9 +108,6 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
 
     return $app['twig']->render('sail/sail.html.twig', array(
         'infos' => $infos,
-
-        'sail1'    => $app['html']->dropdown('sail1', $app['sk'], $ids[0]),
-        'sail2'    => $app['html']->dropdown('sail2', $app['sk'], isset($ids[1]) ? $ids[1] : null, $app['translator']->trans('... with')),
     ));
 });
 
