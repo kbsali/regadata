@@ -62,14 +62,14 @@ $console
 
         // in french
         $params['%url%'] = 'http://vg2012.saliou.name/fr/reports/latest';
-        $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
+        $_tweet = $app->trans($tweet, $params, 'messages', 'fr');
         if(strlen($_tweet)>140) {
             /*
             http://tinyurl.com/vg2012fr
             http://goo.gl/AQyJL
              */
             $params['%url%'] = 'http://goo.gl/AQyJL';
-            $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
+            $_tweet = $app->trans($tweet, $params, 'messages', 'fr');
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if(strlen($_tweet)<=140) {
@@ -80,7 +80,7 @@ $console
 
         // in english
         $params['%url%'] = 'http://vg2012.saliou.name/en/reports/latest';
-        $_tweet = $app['translator']->trans($tweet, $params);
+        $_tweet = $app->trans($tweet, $params);
         if(strlen($_tweet)>140) {
             /*
             http://tinyurl.com/vg2012en
@@ -89,7 +89,7 @@ $console
             http://goo.gl/YwGgM
              */
             $params['%url%'] = 'http://goo.gl/YwGgM';
-            $_tweet = $app['translator']->trans($tweet, $params);
+            $_tweet = $app->trans($tweet, $params);
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if(strlen($_tweet)<=140) {

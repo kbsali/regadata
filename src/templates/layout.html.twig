@@ -18,7 +18,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://vg2012.saliou.name{{ app.request.getRequestURI() }}">
     <meta property="og:description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
-    <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="http://vg2012.saliou.name/reports.rss">
+    <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
     {#
     <link href="/css/bootstrap-combined.min.css" rel="stylesheet">
     <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">

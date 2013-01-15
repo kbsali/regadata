@@ -9,7 +9,19 @@ use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 use Kud\Silex\Provider\TmhOAuthServiceProvider;
 
-$app = new Silex\Application();
+class MyApp extends Silex\Application
+{
+    // use Silex\Application\TwigTrait;
+    // use Silex\Application\SecurityTrait;
+    // use Silex\Application\FormTrait;
+    use Silex\Application\UrlGeneratorTrait;
+    // use Silex\Application\SwiftmailerTrait;
+    // use Silex\Application\MonologTrait;
+    use Silex\Application\TranslationTrait;
+}
+
+// $app = new Silex\Silex\application();
+$app = new MyApp();
 
 $app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
 $app['debug'] = (bool)$app['config']['debug'];
@@ -39,6 +51,7 @@ $app->register(new TwigServiceProvider(), array(
 ));
 
 $app->register(new TmhOAuthServiceProvider());
+$app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 if(!isset($app['imagine.factory'])) {
     $app['imagine.factory'] = 'Imagick';

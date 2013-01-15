@@ -6,26 +6,26 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <a class="brand" href="/"><span>{{ '#VG2012 - OpenData'|trans }}</span></a>
+                <a class="brand" href="{{ path('_homepage') }}"><span>{{ '#VG2012 - OpenData'|trans }}</span></a>
                 <div class="nav-collapse">
                     <p class="navbar-text pull-right">
-                        <a class="{% if app.request.locale == 'fr' %}active {% endif %}navbar-link" href="/fr" title="En français">fr</a>
-                        <a class="{% if app.request.locale == 'en' %}active {% endif %}navbar-link" href="/en" title="In english">en</a>
+                        <a class="{% if app.request.locale == 'fr' %}active {% endif %}navbar-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'fr'})) }}" title="En français">fr</a>
+                        <a class="{% if app.request.locale == 'en' %}active {% endif %}navbar-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'en'})) }}" title="In english">en</a>
                     </p>
                     <ul class="nav">
-                        <li{% if 'homepage' == active %} class="active"{% endif %}><a href="/">{{ 'Home'|trans }}</a></li>
-                        <li{% if 'reports' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/reports/latest">{{ 'Last ranking'|trans }}</a></li>
+                        <li{% if 'homepage' == active %} class="active"{% endif %}><a href="{{ path('_homepage') }}">{{ 'Home'|trans }}</a></li>
+                        <li{% if 'reports' == active %} class="active"{% endif %}><a href="{{ path('report', {id: 'latest'}) }}">{{ 'Last ranking'|trans }}</a></li>
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
                             {% for sail, skipper in sk %}
-                                <li{% if sail == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/sail/{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
+                                <li{% if sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
                             {% endfor %}
                             </ul>
                         </li>
-                        <li{% if 'map' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/map">{{ 'Map'|trans }}</a></li>
-                        <li{% if 'doc' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/doc/json">{{ 'Documentation'|trans }}</a></li>
-                        <li{% if 'about' == active %} class="active"{% endif %}><a href="/{{ app.request.locale }}/about">{{ 'About'|trans }}</a></li>
+                        <li{% if 'map' == active %} class="active"{% endif %}><a href="{{ path('map') }}">{{ 'Map'|trans }}</a></li>
+                        <li{% if 'doc' == active %} class="active"{% endif %}><a href="{{ path('doc_json') }}">{{ 'Documentation'|trans }}</a></li>
+                        <li{% if 'about' == active %} class="active"{% endif %}><a href="{{ path('about') }}">{{ 'About'|trans }}</a></li>
                     </ul>
                 </div>
             </div>
