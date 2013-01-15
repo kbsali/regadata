@@ -76,6 +76,7 @@ $app->before(function(Request $request) use ($app) {
     $firstReport = $app['srv.vg']->parseJson($first);
     $app['sk']   = $app['srv.vg']->getSailSkipper($firstReport);
     $app['twig']->addGlobal('sk', $app['sk']);
+    $app['twig']->addGlobal('debug', $app['debug']);
 });
 
 // $app->error(function (\Exception $e, $code) {

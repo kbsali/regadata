@@ -16,7 +16,7 @@
                         <th scope="colgroup" class="c" colspan="4">{{ 'Last ranking'|trans }}</th>
                         <th scope="colgroup" class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
                         <th scope="colgroup" class="c borderleft" colspan="2">&nbsp;</th>
-                        <th scope="colgroup" class="c borderleft" colspan="3">{{ 'Overall'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="4">{{ 'Overall'|trans }}</th>
                     </tr>
                     <tr>
                         <th scope="col" class="t">{{ 'Rank'|trans }}</th>
@@ -89,7 +89,7 @@
 
                         <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
                         <td class="r dtl_diff"><span class="label {{ class1 }}">{{ '%.1f' | format(r['dtl_diff']|abs) }} <i class="icon-white {{ class2 }}"></i></span></td>
-                        <td class="r dtp{{ full ? '' : ' F' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
+                        <td class="r dtp{{ full ? '' : ' hidden-phone hidden-tablet' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
                         {% set dtp = r['dtl'] %}
                     </tr>
