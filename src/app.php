@@ -1,6 +1,7 @@
 <?php
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 $app = require __DIR__.'/bootstrap.php';
 
@@ -10,6 +11,37 @@ $app->get('/reports/{id}', function (Request $request) use ($app) {
 });
 $app->get('/sail/{id}', function (Request $request) use ($app) {
     return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('id'));
+});
+
+$app->get('/reports.rss', function (Request $request) use ($app) {
+
+    $feed = new Suin\RSSWriter\Feed();
+
+    $channel = new Suin\RSSWriter\Channel();
+    $channel
+        ->title("VG2012 rankings")
+        ->description("All the rankings of the Vendée Globe 2012")
+        ->url('http://vg2012.saliou.name')
+        ->language('en')
+        ->copyright('Copyright 2012, Kevin Saliou')
+        ->appendTo($feed)
+    ;
+    $reports = $app['srv.vg']->getReportsById(
+        $app['srv.vg']->listJson('reports')
+    );
+    foreach ($reports as $report => $ts) {
+        $item = new Suin\RSSWriter\Item();
+        $item
+            ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
+            // ->description("<div>Blog body</div>")
+            ->url('http://vg2012.saliou.name/en/reports/'.$report)
+            ->guid('http://vg2012.saliou.name/en/reports/'.$report, true)
+            ->pubDate($ts)
+            ->appendTo($channel)
+        ;
+    }
+
+    return new Response($feed, 200, array('Content-Type' => 'application/rss+xml'));
 });
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
