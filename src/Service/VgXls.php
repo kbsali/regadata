@@ -262,15 +262,15 @@ class VgXls
                     '%boat%'            => $info['boat'],
                     '%date%'            => date('Y-m-d H:i', $ts),
                     '%color%'           => '#'.Vg::sailToColor($info['sail']),
-                    '%1hour_speed%'     => $info['1hour_speed'],
-                    '%24hour_speed%'    => $info['24hour_speed'],
-                    '%1hour_distance%'  => $info['1hour_distance'],
-                    '%24hour_distance%' => $info['24hour_distance'],
-                    '%1hour_vmg%'       => $info['1hour_vmg'],
-                    '%24hour_vmg%'      => $info['24hour_vmg'],
+                    '%1hour_speed%'     => sprintf('%.1f', $info['1hour_speed']),
+                    '%24hour_speed%'    => sprintf('%.1f', $info['24hour_speed']),
+                    '%1hour_distance%'  => sprintf('%.1f', $info['1hour_distance']),
+                    '%24hour_distance%' => sprintf('%.1f', $info['24hour_distance']),
+                    '%1hour_vmg%'       => sprintf('%.1f', $info['1hour_vmg']),
+                    '%24hour_vmg%'      => sprintf('%.1f', $info['24hour_vmg']),
                     '%1hour_heading%'   => $info['1hour_heading'],
-                    '%dtf%'             => $info['dtf'],
-                    '%dtl%'             => $info['dtl'],
+                    '%dtf%'             => sprintf('%.1f', $info['dtf']),
+                    '%dtl%'             => sprintf('%.1f', $info['dtl']),
                 ))
             ));
         }
@@ -549,7 +549,7 @@ class VgXls
 </Camera>';
 
     public $_table = '
-<table border="0" cellpadding="1">
+<table border="0" cellpadding="1" cellspacing="1">
     <tr>
         <td colspan="3">
             [%boat%]<br>
@@ -558,31 +558,31 @@ class VgXls
         </td>
     </tr>
     <tr>
-        <td>Speed (kn)</td>
-        <td>%1hour_speed%</td>
-        <td>%24hour_speed%</td>
+        <td nowrap>Speed (kn) [1h / 24h]&nbsp;</td>
+        <td align="right">%1hour_speed%&nbsp;&nbsp;</td>
+        <td align="right">%24hour_speed%</td>
     </tr>
     <tr>
-        <td>Distance (nm)</td>
-        <td>%1hour_distance%</td>
-        <td>%24hour_distance%</td>
+        <td nowrap>Distance (nm) [1h / 24h]&nbsp;</td>
+        <td align="right">%1hour_distance%&nbsp;&nbsp;</td>
+        <td align="right">%24hour_distance%</td>
     </tr>
     <tr>
-        <td>VMG (nm)</td>
-        <td>%1hour_vmg%</td>
-        <td>%24hour_vmg%</td>
+        <td nowrap>VMG (kn) [1h / 24h]&nbsp;</td>
+        <td align="right">%1hour_vmg%&nbsp;&nbsp;</td>
+        <td align="right">%24hour_vmg%</td>
     </tr>
     <tr>
-        <td>Heading (º)</td>
-        <td colspan="2">%1hour_heading%</td>
+        <td nowrap>Heading (º)&nbsp;</td>
+        <td colspan="2" align="right">%1hour_heading%</td>
     </tr>
     <tr>
-        <td>DTF (nm)</td>
-        <td colspan="2">%dtf%</td>
+        <td nowrap>DTF (nm)&nbsp;</td>
+        <td colspan="2" align="right">%dtf%</td>
     </tr>
     <tr>
-        <td>DTL (nm)</td>
-        <td colspan="2">%dtl%</td>
+        <td nowrap>DTL (nm)&nbsp;</td>
+        <td colspan="2" align="right">%dtl%</td>
     </tr>
 </table>
 <p>Source : http://vg2012.saliou.name</p>';
