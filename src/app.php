@@ -12,7 +12,7 @@ $app->get('/sail/{id}', function (Request $request) use ($app) {
     return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('id'));
 });
 
-$app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
+$app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
     $reports = $app['srv.vg']->listJson('reports');
     if ('latest' === $id) {
         $id = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
@@ -35,10 +35,11 @@ $app->get('/{_locale}/reports/{id}', function ($id) use ($app) {
     $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
 
     return $app['twig']->render('reports/reports.html.twig', array(
-        'r'      => current($report),
-        'report' => $report,
-        'source' => '/json/reports/'.$id.'.json',
+        'r'          => current($report),
+        'report'     => $report,
+        'source'     => '/json/reports/'.$id.'.json',
         'start_date' => strtotime($app['config']['start_date']),
+        'full'       => null !== $request->get('full'),
 
         'pagination' => array(
             'first'   => $first,

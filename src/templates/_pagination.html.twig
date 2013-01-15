@@ -1,22 +1,21 @@
             <div class="pagination pagination-centered">
                 <ul>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '#' : '/'~app.request.locale~p.first }}">&lt;&lt; {{ 'first'|trans }}</a>
+                        <a href="{{ p.prev is null ? '#' : '/'~app.request.locale~p.first }}">&lt;&lt;</a>
                     </li>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '/#' : '/'~app.request.locale~p.prev }}">&lt; {{ 'prev'|trans }}</a>
+                        <a href="{{ p.prev is null ? '/#' : '/'~app.request.locale~p.prev }}">&lt;</a>
                     </li>
 
                     <li class="disabled hidden-phone">
                         <a href="#">{{ 'Ranking %x% of %y%'|trans({'%x%': p.current, '%y%': p.total }) }}</a>
                     </li>
 
-
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.next }}">{{ 'next'|trans }} &gt;</a>
+                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.next }}">&gt;</a>
                     </li>
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.last }}">{{ 'last'|trans }} &gt;&gt;</a>
+                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.last }}">&gt;&gt;</a>
                     </li>
                 </ul>
             </div>
