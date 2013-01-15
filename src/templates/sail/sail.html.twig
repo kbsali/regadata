@@ -33,7 +33,7 @@
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                                     {% for sail, skipper in sk %}
                                     <li>
-                                        <a href="/{{ app.request.locale }}/sail/{{ infos[0].info.sail }}-{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -80,11 +80,11 @@
                 <tr class="tooltips">
                     <td colspan="2">
                         <strong>{{ 'JSON'|trans }}</strong>
-                        <a target="_blank" href="/json/sail/{{ info.info.sail }}.json" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> /json/sail/{{ info.info.sail }}.json</a>
+                        <a target="_blank" href="{{ path('sail_json', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {id: info.info.sail}) }}</a>
                     </td>
                     <td colspan="2">
                         <strong>{{ 'KMZ'|trans }}</strong>
-                        <a target="_blank" href="/json/sail/{{ info.info.sail }}.kmz" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> /json/sail/{{ info.info.sail }}.kmz</a>
+                        <a target="_blank" href="{{ path('sail_kmz', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {id: info.info.sail}) }}</a>
                     </td>
                 </tr>
             </table>
@@ -105,7 +105,7 @@
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
                                         {% for sail, skipper in sk %}
                                         <li>
-                                            <a href="/{{ app.request.locale }}/sail/{{ infos[0].info.sail }}-{{ sail }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
                                         {% endfor %}
                                     </ul>
                                 </div>

@@ -13,15 +13,15 @@ $app->get('/sail/{id}', function (Request $request) use ($app) {
     return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('id'));
 });
 
-$app->get('/reports.rss', function (Request $request) use ($app) {
+$app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
 
     $feed = new Suin\RSSWriter\Feed();
 
     $channel = new Suin\RSSWriter\Channel();
     $channel
-        ->title("VG2012 rankings")
-        ->description("All the rankings of the Vendée Globe 2012")
-        ->url('http://vg2012.saliou.name')
+        ->title($app->trans('VG2012 rankings'))
+        ->description($app->trans('All the rankings of the Vendée Globe 2012'))
+        ->url($app->url('homepage'))
         ->language('en')
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
@@ -32,17 +32,21 @@ $app->get('/reports.rss', function (Request $request) use ($app) {
     foreach ($reports as $report => $ts) {
         $item = new Suin\RSSWriter\Item();
         $item
-            ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
+            ->title($app->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
             // ->description("<div>Blog body</div>")
-            ->url('http://vg2012.saliou.name/en/reports/'.$report)
-            ->guid('http://vg2012.saliou.name/en/reports/'.$report, true)
+            ->url($app->url('report', array('id' => $report)))
+            ->guid($app->url('report', array('id' => $report)), true)
             ->pubDate($ts)
             ->appendTo($channel)
         ;
     }
 
     return new Response($feed, 200, array('Content-Type' => 'application/rss+xml'));
-});
+})->bind('reports_rss');
+
+$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
+$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
+$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
     $reports = $app['srv.vg']->listJson('reports');
@@ -82,27 +86,19 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
             'total'   => count($reports),
         )
     ));
-});
+})->bind('report');
 
 $app->get('/{_locale}/map', function () use ($app) {
     return $app['twig']->render('map/map.html.twig', array());
-});
+})->bind('map');
 
 $app->get('/{_locale}/doc/json', function () use ($app) {
     return $app['twig']->render('doc/json.html.twig', array());
-});
+})->bind('doc_json');
 
 $app->get('/doc/json-format', function () use ($app) {
     return $app['twig']->render('doc/json-format.html.twig', array());
-});
-
-// $app->get('/img/boat.png', function () use ($app) {
-//     $image = $app['imagine']
-//         ->open(__DIR__.'/../web/img/boat_marker.png')
-//         ->rotate(90)
-//         ->save(__DIR__.'/../web/img/boat_90.png')
-//     ;
-// });
+})->bind('doc_format');
 
 $app->get('/{_locale}/about', function () use ($app) {
     $reports     = $app['srv.vg']->listJson('reports');
@@ -110,14 +106,10 @@ $app->get('/{_locale}/about', function () use ($app) {
     $firstReport = $app['srv.vg']->parseJson($first);
 
     return $app['twig']->render('about.html.twig', array(
-        'rndSail'     => array_rand($app['sk']),
-        'reports'     => $app['srv.vg']->getReportsById($reports),
+        'rndSail' => array_rand($app['sk']),
+        'reports' => $app['srv.vg']->getReportsById($reports),
     ));
-});
-
-$app->get('/{_locale}/compare', function (Request $request) use ($app) {
-    return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('sail1').'-'.$request->get('sail2'));
-});
+})->bind('about');
 
 $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     $ids   = explode('-', $ids);
@@ -138,24 +130,21 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
             );
         }
     }
-
     return $app['twig']->render('sail/sail.html.twig', array(
         'infos' => $infos,
     ));
-});
+})->bind('sail');
 
-$app->get('/tweet', function () use ($app) {
-    $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-      'status' => '#vg2012 latest ranking available http://vg2012.saliou.name/en dernier classement disponible http://vg2012.saliou.name/fr'
-    ));
-});
-
-$app->get('/{_locale}', function (Request $request) use ($app) {
-    return $app->redirect('/'.$request->getLocale().'/reports/latest');
-});
+$app->get('/{_locale}', function () use ($app) {
+    return $app->redirect(
+        $app->path('report', array('id' => 'latest'))
+    );
+})->bind('_homepage');
 
 $app->get('/', function () use ($app) {
-    return $app->redirect('/en/reports/latest');
-});
+    return $app->redirect(
+        $app->path('report', array('id' => 'latest'))
+    );
+})->bind('homepage');
 
 return $app;
