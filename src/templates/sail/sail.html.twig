@@ -21,9 +21,13 @@
                 <tr>
                     <td colspan="2">
                         <h3>
+                            <span class="geo">
+                                <span class="latitude"><span class="value-title" title="{{ info.info.lat_dec }}"></span></span>
+                                <span class="longitude"><span class="value-title" title="{{ info.info.lon_dec }}"></span></span>
                         {% if loop.index0 == 0 %}
                             <i class="icon-sign-blank" style="color: #{{ info.info.color }}"></i> #{{ info.info.rank }} {{ info.info.skipper }}
                         {% else %}
+                            {# two sails compared #}
                             #{{ info.info.rank }}
                             <div class="btn-group">
                                 <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -38,6 +42,7 @@
                                 </ul>
                             </div>
                         {% endif %}
+                            </span>
                         </h3>
                     </td>
                     <td colspan="2">
@@ -91,6 +96,7 @@
         </div>
         {% endfor %}
 
+        {# only one sail selected #}
         {% if infos|length == 1 %}
             <div class="span6">
                 <table class="table">
@@ -115,6 +121,7 @@
                 </table>
             </div>
         {% endif %}
+
     </div>{# row-fluid #}
     <div class="row-fluid">
         <p>

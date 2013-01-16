@@ -2,7 +2,7 @@
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
 <!doctype html>
-<html class="no-js" lang="{{ app.request.locale }}">
+<html class="no-js" lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/WebPage">
 <head>
     <meta charset="utf-8">
     <title>{{ title }} | {{ '#VG2012 - OpenData'|trans }}</title>
@@ -18,6 +18,7 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://vg2012.saliou.name{{ app.request.getRequestURI() }}">
     <meta property="og:description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
+    <meta itemprop="image" content="http://vg2012.saliou.name/img/logo.png">
     <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
     {#
     <link href="/css/bootstrap-combined.min.css" rel="stylesheet">
@@ -50,11 +51,10 @@
         <hr>
         <footer>
             <p>
-                &copy; <a href="http://www.linkedin.com/in/kevinsaliou">Kevin Saliou</a>
-                <a href="mailto:kevin_AT_saliou_DOT_name"><i class="icon-envelope"></i></a>
+                &copy; <span itemprop="name author"><a href="http://www.linkedin.com/in/kevinsaliou" itemprop="url">Kevin Saliou</a></span>
+                <a itemprop="email" href="mailto:kevin_AT_saliou_DOT_name"><i class="icon-envelope"></i></a>
                 2012
                 <a class="btn btn-mini" href="http://twitter.com/VG2012RaceData" target="_blank"><i class="icon-twitter icon-large"></i> Follow @VG2012RaceData</a>
-
             </p>
         </footer>
     </div>

@@ -63,8 +63,12 @@
                     <tr>
                         <td class="r"><span class="badge">{{ r.rank }} <i class="icon-circle" style="color: #{{ r.color }}"></i></span></td>
                         <td>
-                            <a href="{{ path('sail', {ids: r.sail}) }}">{{ r.skipper }}</a>
-                            <span class="hidden-phone hidden-tablet">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
+                            <span class="geo">
+                                <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
+                                <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
+                                <a href="{{ path('sail', {ids: r.sail}) }}">{{ r.skipper }}</a>
+                                <span class="hidden-phone hidden-tablet">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
+                            </span>
                         </td>
 
                         <td class="borderleft{{ full ? '' : ' hidden-phone' }}">{{ r.lat_dms }}</td>
