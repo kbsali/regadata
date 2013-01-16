@@ -19,9 +19,10 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
 
     $channel = new Suin\RSSWriter\Channel();
     $channel
-        ->title($app->trans('VG2012 rankings'))
-        ->description($app->trans('All the rankings of the Vendée Globe 2012'))
-        ->url($app->url('homepage'))
+        ->title($app['translator']->trans('VG2012 rankings'))
+        ->description($app['translator']->trans('All the rankings of the Vendée Globe 2012'))
+        // ->url($app->url('homepage'))
+        ->url($app['url_generator']->generate('homepage', array(), true))
         ->language('en')
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
@@ -32,10 +33,15 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     foreach ($reports as $report => $ts) {
         $item = new Suin\RSSWriter\Item();
         $item
-            ->title($app->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
+            ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
             // ->description("<div>Blog body</div>")
-            ->url($app->url('report', array('id' => $report)))
-            ->guid($app->url('report', array('id' => $report)), true)
+
+            // ->url($app->url('report', array('id' => $report)))
+            ->url($app['url_generator']->generate('report', array('id' => $report), true))
+
+            // ->guid($app->url('report', array('id' => $report)), true)
+            ->guid($app['url_generator']->generate('report', array('id' => $report), true), true)
+
             ->pubDate($ts)
             ->appendTo($channel)
         ;
@@ -137,13 +143,15 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
 
 $app->get('/{_locale}', function () use ($app) {
     return $app->redirect(
-        $app->path('report', array('id' => 'latest'))
+        // $app->path('report', array('id' => 'latest'))
+        $app['url_generator']->generate('report', array('id' => 'latest'))
     );
 })->bind('_homepage');
 
 $app->get('/', function () use ($app) {
     return $app->redirect(
-        $app->path('report', array('id' => 'latest'))
+        // $app->path('report', array('id' => 'latest'))
+        $app['url_generator']->generate('report', array('id' => 'latest'))
     );
 })->bind('homepage');
 
