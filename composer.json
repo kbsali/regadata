@@ -20,7 +20,8 @@
         "kud/tmhoauth-silex-service-provider": "dev-master",
 
         "imagine/Imagine": "dev-develop",
-        "suin/php-rss-writer": ">=1.0"
+        "suin/php-rss-writer": ">=1.0",
+        "evert/sitemap-php": "dev-master"
     },
     "autoload"          : {
         "psr-0": {

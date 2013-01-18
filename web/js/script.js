@@ -20,10 +20,10 @@ function showmap() {
     var myOptions = {
         center: new google.maps.LatLng(0, 0),
         zoom: 3,
-        mapTypeId: google.maps.MapTypeId.SATELLITE
+        mapTypeId: google.maps.MapTypeId.TERRAIN
     };
     map = new google.maps.Map(document.getElementById("map"), myOptions);
-    kml = new google.maps.KmlLayer('http://vg2012.saliou.name/json/trace_FULL.kmz',{ preserveViewport : true });
+    kml = new google.maps.KmlLayer("http://vg2012.saliou.name/json/trace_FULL.kmz",{ preserveViewport : true });
     kml.setMap(map);
     $(document.getElementById("main")).css("padding", 0);
     $(document.getElementById("map")).height(document.documentElement.clientHeight-115);

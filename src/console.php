@@ -29,6 +29,22 @@ $console
 ;
 
 $console
+    ->register('vg:sitemap')
+    ->setDescription('Generates a sitemap!')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
+        $sitemap
+            ->addItem('/projects', '0.8')
+            ->addItem('/somepage')
+            ->addItem('/hiddenpage', '0.4', 'yearly', '01-01-2011')
+            ->addItem('/rss')
+            ->createSitemapIndex('http://example.com/sitemap/', 'Today')
+        ;
+
+    })
+;
+
+$console
     ->register('vg:rotate_icons')
     ->setDescription('Creates icons rotated from 0 to 360º')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
@@ -61,38 +77,42 @@ $console
         );
 
         // in french
-        $params['%url%'] = 'http://vg2012.saliou.name/fr/reports/latest';
+        // $params['%url%'] = 'http://vg2012.saliou.name/fr/reports/latest';
+        $params['%url%'] = 'goo.gl/B8yKv';
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        if(strlen($_tweet)>140) {
+        if(strlen($_tweet) > 140) {
             /*
             http://tinyurl.com/vg2012fr
             http://goo.gl/AQyJL
+            goo.gl/B8yKv (includes UTM_SOURCE ...)
              */
             $params['%url%'] = 'http://goo.gl/AQyJL';
             $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if(strlen($_tweet)<=140) {
+        if(strlen($_tweet) <= 140) {
             $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
               'status' => $_tweet
             ));
         }
 
         // in english
-        $params['%url%'] = 'http://vg2012.saliou.name/en/reports/latest';
+        // $params['%url%'] = 'http://vg2012.saliou.name/en/reports/latest';
+        $params['%url%'] = 'goo.gl/3VJyD';
         $_tweet = $app['translator']->trans($tweet, $params);
-        if(strlen($_tweet)>140) {
+        if(strlen($_tweet) > 140) {
             /*
             http://tinyurl.com/vg2012en
             http://myurl.in/vg2012en
             http://yep.it/vg2012en
             http://goo.gl/YwGgM
+            goo.gl/3VJyD (includes UTM_SOURCE ...)
              */
             $params['%url%'] = 'http://goo.gl/YwGgM';
             $_tweet = $app['translator']->trans($tweet, $params);
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if(strlen($_tweet)<=140) {
+        if(strlen($_tweet) <= 140) {
             $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
               'status' => $_tweet
             ));
