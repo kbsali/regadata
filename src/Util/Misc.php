@@ -7,7 +7,7 @@ class Misc
     public static function sitemapPing($url, $debug = false)
     {
         $pings = array(
-            'http://submissions.ask.com/ping?sitemap=',
+            // 'http://submissions.ask.com/ping?sitemap=',
             'http://www.google.com/webmasters/sitemaps/ping?sitemap=',
             'http://www.bing.com/webmaster/ping.aspx?siteMap='
         );
