@@ -4,7 +4,7 @@ namespace Util;
 
 class Misc
 {
-    public static function sitemapPing($url)
+    public static function sitemapPing($url, $debug = false)
     {
         $pings = array(
             'http://submissions.ask.com/ping?sitemap=',
@@ -13,8 +13,11 @@ class Misc
         );
         foreach ($pings as $ping) {
             $cmd = 'wget -nv -O /dev/null "'.$ping.urlencode($url).'"';
-            echo $cmd.PHP_EOL;
-            // system($cmd);
+            if($debug) {
+                echo $cmd.PHP_EOL;
+            } else {
+                system($cmd);
+            }
         }
 
     }
