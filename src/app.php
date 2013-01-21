@@ -141,7 +141,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
 })->bind('sail');
 
 $app->get('/gensitemap', function (Request $request) use ($app) {
-    if('127.0.0.1' !== $request->getClientIp()) {
+    if(!in_array($request->getClientIp(), array('127.0.0.1', $app['config']['authIp']))) {
         return new Response('Not allowed', 401);
     }
     $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
