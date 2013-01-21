@@ -1,4 +1,5 @@
 xlsDir  = '/xls'
+smDir  = '/xml'
 jsonDir = '/web/json'
 docRoot = '/web'
 debug = true
@@ -7,3 +8,6 @@ consumer_secret = 'ENTER_HERE_YOUR_TWITTER_CONSUMER_SECRET'
 user_token  = 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN'
 user_secret = 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN_SECRET'
 start_date = 'Saturday 10 November 2012 15:02'
+host = 'vg2012.saliou.name'
+schema = 'http://'
+smFileName = 'sitemap-index.xml'

@@ -29,18 +29,22 @@ $console
 ;
 
 $console
-    ->register('vg:sitemap')
-    ->setDescription('Generates a sitemap!')
+    ->register('vg:ping_sitemap')
+    ->setDescription('Generates sitemaps + Ping sitemap to different search engines!')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
-        $sitemap
-            ->addItem('/projects', '0.8')
-            ->addItem('/somepage')
-            ->addItem('/hiddenpage', '0.4', 'yearly', '01-01-2011')
-            ->addItem('/rss')
-            ->createSitemapIndex('http://example.com/sitemap/', 'Today')
-        ;
 
+        $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['config']['host'].'/gensitemap"';
+        $output->writeln('<info>'.$cmd.'</info>');
+        system($cmd);
+
+        $xmls = glob(__DIR__.'/../web/xml/*');
+        foreach ($xmls as $xml) {
+            if (basename($xml) === $app['config']['smFileName']) {
+                continue;
+            }
+            $url = $app['config']['schema'].$app['config']['host'].$app['config']['smDir'].'/'.basename($xml);
+            $app['misc']::sitemapPing($url);
+        }
     })
 ;
 

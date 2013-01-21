@@ -71,6 +71,10 @@ $app['srv.vgxls'] = $app->share(function($app) {
     return new Service\VgXls($app['config']['xlsDir'], $app['config']['jsonDir']);
 });
 
+$app['misc'] = $app->share(function($app) {
+    return new Util\Misc();
+});
+
 // --- Before
 $app->before(function(Request $request) use ($app) {
 
@@ -79,10 +83,11 @@ $app->before(function(Request $request) use ($app) {
     if('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
-
+    /*
     $app['html'] = $app->share(function($app) {
         return new Util\HtmlHelper();
     });
+    */
 
     $reports     = $app['srv.vg']->listJson('reports');
     $first       = str_replace('/json', '', end($reports));
