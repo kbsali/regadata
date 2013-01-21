@@ -14,7 +14,6 @@ $app->get('/sail/{id}', function (Request $request) use ($app) {
 });
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
-
     $feed = new Suin\RSSWriter\Feed();
 
     $channel = new Suin\RSSWriter\Channel();
@@ -140,6 +139,69 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
         'infos' => $infos,
     ));
 })->bind('sail');
+
+$app->get('/gensitemap', function (Request $request) use ($app) {
+    if('127.0.0.1' !== $request->getClientIp()) {
+        return new Response('Not allowed', 401);
+    }
+    $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
+    $sitemap->setPath(__DIR__.'/../web/xml/');
+
+    $reports = $app['srv.vg']->getReportsById(
+        $app['srv.vg']->listJson('reports')
+    );
+    $sails = $app['sk'];
+
+    // Routes NOT requiring _locale param
+    $arrNoLocle = array(
+        'reports_json' => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 0.5, 'freq' => 'daily'),
+        'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.5, 'freq' => 'hourly'),
+        'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.8, 'freq' => 'hourly'),
+        'doc_format'   => array('idx' => array(), 'prio' => 0.5, 'freq' => 'monthly'),
+        'homepage'     => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
+    );
+    // addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL) {
+    foreach($arrNoLocle as $route => $params) {
+        if(empty($params['idx'])) {
+            $u = $app['url_generator']->generate($route);
+            $sitemap->addItem($u, $params['prio'], $params['freq']);
+        } else {
+            extract($params['idx']); // $k, $v);
+            foreach($v as $vv) {
+                $u = $app['url_generator']->generate($route, array($k => $vv));
+                $sitemap->addItem($u, $params['prio'], $params['freq']);
+            }
+        }
+    }
+    // Routes REQUIRING _locale param
+    $arrLocle = array(
+        'reports_rss' => array('idx' => array(), 'prio' => 0.7, 'freq' => 'hourly'),
+        'report'      => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 1, 'freq' => 'hourly'),
+        'map'         => array('idx' => array(), 'prio' => 0.8, 'freq' => 'daily'),
+        'doc_json'    => array('idx' => array(), 'prio' => 0.2, 'freq' => 'monthly'),
+        'about'       => array('idx' => array(), 'prio' => 0.6, 'freq' => 'hourly'),
+        'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($sails)), 'prio' => 1, 'freq' => 'hourly'),
+        '_homepage'   => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
+    );
+    foreach($arrLocle as $route => $params) {
+        foreach(array('en', 'fr') as $_locale) {
+            if(empty($params['idx'])) {
+                $u = $app['url_generator']->generate($route, array('_locale' => $_locale));
+                $sitemap->addItem($u, $params['prio'], $params['freq']);
+            } else {
+                extract($params['idx']); // $k, $v);
+                foreach($v as $vv) {
+                    $u = $app['url_generator']->generate($route, array($k => $vv, '_locale' => $_locale));
+                   $sitemap->addItem($u, $params['prio'], $params['freq']);
+                }
+            }
+        }
+    }
+
+    $sitemap->createSitemapIndex($app['config']['schema'].$app['config']['host'].$app['config']['smDir'], 'Today');
+    return 'OK';
+
+})->bind('sitemap');
 
 $app->get('/{_locale}', function () use ($app) {
     return $app->redirect(
