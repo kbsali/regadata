@@ -6,11 +6,21 @@ use Symfony\Component\HttpFoundation\Response;
 $app = require __DIR__.'/bootstrap.php';
 
 // REDIRECT OLD URLS (indexed by search engines)
-$app->get('/reports/{id}', function (Request $request) use ($app) {
-    return $app->redirect('/'.$request->getLocale().'/reports/'.$request->get('id'));
+$app->get('/reports/{id}', function ($id) use ($app) {
+    $u = $app['url_generator']->generate('report', array('id' => $id));
+    return $app->redirect($u);
 });
-$app->get('/sail/{id}', function (Request $request) use ($app) {
-    return $app->redirect('/'.$request->getLocale().'/sail/'.$request->get('id'));
+$app->get('/sail/{id}', function ($id) use ($app) {
+    $u = $app['url_generator']->generate('sail', array('ids' => $id));
+    return $app->redirect($u);
+});
+$app->get('/{_locale}/json/sail/{id}.json', function ($id) use ($app) {
+    $u = $app['url_generator']->generate('sail_json', array('id' => $id));
+    return $app->redirect($u);
+});
+$app->get('/{_locale}/compare', function (Request $request) use ($app) {
+    $u = $app['url_generator']->generate('sail', array('ids' => $request->get('sail1').'-'.$request->get('sail2')));
+    return $app->redirect($u);
 });
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
