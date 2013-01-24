@@ -1,0 +1,34 @@
+<?php
+$app['config'] = array(
+    'xlsDir'          => '/xls',
+    'smDir'           => '/xml',
+    'jsonDir'         => '/web/json',
+    'docRoot'         => '/web',
+
+    'consumer_key'    => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_KEY',
+    'consumer_secret' => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_SECRET',
+
+    'user_token'      => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN',
+    'user_secret'     => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN_SECRET',
+
+    'start_date'      => 'saturday 10 november 2012 15:02',
+
+    'host'            => 'vg2012.saliou.name',
+    'schema'          => 'http://',
+
+    'smFileName'      => 'sitemap-index.xml',
+    'authIp'          => '127.0.0.1',
+);
+
+// Cache
+$app['cache.path'] = __DIR__ . '/../cache';
+
+// Http cache
+$app['http_cache.cache_dir'] = $app['cache.path'] . '/http';
+
+// Twig cache
+$app['twig.options.cache'] = $app['cache.path'] . '/twig';
+
+$app['assets.locale'] = false;
+
+$app['debug'] = false;

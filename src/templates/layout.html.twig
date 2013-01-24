@@ -20,15 +20,19 @@
     <meta property="og:description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
     <meta itemprop="image" content="http://vg2012.saliou.name/img/logo.png">
     <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
-    {#
-    <link href="/css/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-    #}
-    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
-    <!--[if IE 7]>
-    <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome-ie7.css" rel="stylesheet">
-    <![endif]-->
+
+    {% if assets_local == true %}
+        <link href="/css/bootstrap.min.css" rel="stylesheet">
+    {% else %}
+        {#
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
+        #}
+        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
+        <!--[if IE 7]>
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome-ie7.css" rel="stylesheet">
+        <![endif]-->
+    {% endif %}
 
     {# <link rel="stylesheet" href="/css/bootstrap.min.css"> #}
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -58,18 +62,19 @@
             </p>
         </footer>
     </div>
-    {#
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
-    <script src="http://jschr.github.com/bootstrap-modal/js/bootstrap-modalmanager.js"></script>
-    <script src="http://jschr.github.com/bootstrap-modal/js/bootstrap-modal.js"></script>
 
-    <script src="/js/bootstrap.min.js"></script>
-    <script src="/js/bootstrap-modalmanager.js"></script>
-    <script src="/js/bootstrap-modal.js"></script>
-    #}
-    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+    {% if assets_local == true %}
+        <script src="/js/bootstrap.min.js"></script>
+        {#
+        <script src="/js/bootstrap-modalmanager.js"></script>
+        <script src="/js/bootstrap-modal.js"></script>
+        #}
+    {% else %}
+        <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+    {% endif %}
     <script src="/js/jquery.flot.js"></script>
     <script src="/js/jquery.flot.time.js"></script>
+
     {% block extra_js %}{% endblock %}
     <script src="/js/script.js?4"></script>
     <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>

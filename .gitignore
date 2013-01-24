@@ -1,6 +1,7 @@
 /cache/*
 /xls/*
 /web/json/*
+/web/xml/*
 /vendor/*
-/src/config.ini
+/src/config.php
 composer.lock

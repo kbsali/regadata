@@ -2,11 +2,15 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
+
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\HttpFoundation\Request;
+
+use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+
 use Kud\Silex\Provider\TmhOAuthServiceProvider;
 
 class MyApp extends Silex\Application
@@ -23,8 +27,8 @@ class MyApp extends Silex\Application
 
 $app = new MyApp();
 
-$app['config'] = parse_ini_file(__DIR__.'/config.ini', TRUE);
-$app['debug'] = (bool)$app['config']['debug'];
+require __DIR__.'/config.php';
+
 $app['tmhoauth.config'] = array(
     'consumer_key'    => $app['config']['consumer_key'],
     'consumer_secret' => $app['config']['consumer_secret'],
@@ -33,6 +37,7 @@ $app['tmhoauth.config'] = array(
 );
 
 // --- Providers
+$app->register(new HttpCacheServiceProvider());
 $app->register(new TranslationServiceProvider());
 $app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
     $translator->addLoader('yaml', new YamlFileLoader());
@@ -46,7 +51,8 @@ $app['translator.domains'] = array();
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => __DIR__.'/templates',
     'twig.options' => array(
-        'cache' => __DIR__.'/../cache'
+        'cache'            => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
+        'strict_variables' => true
     ),
 ));
 
@@ -93,8 +99,10 @@ $app->before(function(Request $request) use ($app) {
     $first       = str_replace('/json', '', end($reports));
     $firstReport = $app['srv.vg']->parseJson($first);
     $app['sk']   = $app['srv.vg']->getSailSkipper($firstReport);
+
     $app['twig']->addGlobal('sk', $app['sk']);
     $app['twig']->addGlobal('debug', $app['debug']);
+    $app['twig']->addGlobal('assets_local', $app['assets.local']);
 });
 
 // $app->error(function (\Exception $e, $code) {

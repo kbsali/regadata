@@ -1,7 +1,10 @@
 <?php
 
-ini_set('display_errors', 0);
-
 $app = require __DIR__.'/../src/app.php';
 
-$app->run();
+ini_set('display_errors', $app['debug']);
+if ($app['debug']) {
+    error_reporting(-1);
+}
+
+$app['http_cache']->run();
