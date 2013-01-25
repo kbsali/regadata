@@ -60,8 +60,6 @@
 
 
 'Race progress for %boat%': 'Race progress for %boat%'
-'... with':                 '... with'
-'Compare!':                 'Compare!'
 'Compare with...':          'Compare with...'
 'Boat':                     'Boat'
 'Distance to finish':       'Distance to finish'
@@ -125,8 +123,6 @@
 'Last 24-hours speed':              'Last 24-hours speed'
 'Last 24-hours Velocity Made Good': 'Last 24-hours Velocity Made Good'
 'Last 24-hours distance':           'Last 24-hours distance'
-'Distance To Final':                'Distance To Final'
-'Distance To Leader':               'Distance To Leader'
 'Json Preview':                     'Json Preview'
 
 'Map of the race':  'Map of the race'

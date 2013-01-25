@@ -1,6 +1,7 @@
 {% set bodyId = bodyId|default('normal') %}
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
+
 <!doctype html>
 <html class="no-js" lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/WebPage">
 <head>
@@ -22,27 +23,31 @@
     <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
-        <link href="/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
+        {# <link href="/css/font-awesome.css" rel="stylesheet"> #}
+        <!--[if IE 7]>
+        <link href="/css/font-awesome-ie7.css" rel="stylesheet">
+        <![endif]-->
+        {# HTML5 shim, for IE6-8 support of HTML5 elements #}
+        <!--[if lt IE 9]>
+        <script src="/js/html5.js"></script>
+        <![endif]-->
     {% else %}
-        {#
-        <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css" rel="stylesheet">
-        #}
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
         <!--[if IE 7]>
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome-ie7.css" rel="stylesheet">
         <![endif]-->
-    {% endif %}
-
-    {# <link rel="stylesheet" href="/css/bootstrap.min.css"> #}
-    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
-    <!--[if lt IE 9]>
+        {# HTML5 shim, for IE6-8 support of HTML5 elements #}
+        <!--[if lt IE 9]>
         <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-    <![endif]-->
+        <![endif]-->
+    {% endif %}
     <link rel="stylesheet" href="/css/style.css?2">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
     <script type="text/javascript">window.jQuery || document.write('<script src="/js/jquery.min.js">\x3C/script>')</script>
     <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
     <script type="text/javascript">window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
@@ -65,14 +70,15 @@
 
     {% if assets_local == true %}
         <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/jquery.flot.js"></script>
         {#
         <script src="/js/bootstrap-modalmanager.js"></script>
         <script src="/js/bootstrap-modal.js"></script>
         #}
     {% else %}
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.7/jquery.flot.min.js"></script>
     {% endif %}
-    <script src="/js/jquery.flot.js"></script>
     <script src="/js/jquery.flot.time.js"></script>
 
     {% block extra_js %}{% endblock %}

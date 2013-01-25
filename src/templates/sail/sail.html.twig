@@ -71,7 +71,7 @@
                     <td>
                         {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
                     </td>
-                    <th>{{ 'Distance to leader'|trans }}</th>
+                    <th>{{ 'Distance To Leader'|trans }}</th>
                     <td>
                         {{ info.info.dtl }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
                     </td>
@@ -79,15 +79,9 @@
                 <tr>
                     <th>{{ 'Real total distance travelled'|trans }} * /<br>{{ 'Overall average speed'|trans }} **</th>
                     <td>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></td>
-                    <th>{{ 'Coordinates'|trans }}</th>
-                    <td>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</td>
-                </tr>
-                <tr class="tooltips">
                     <td colspan="2">
                         <strong>{{ 'JSON'|trans }}</strong>
-                        <a target="_blank" href="{{ path('sail_json', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {id: info.info.sail}) }}</a>
-                    </td>
-                    <td colspan="2">
+                        <a target="_blank" href="{{ path('sail_json', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {id: info.info.sail}) }}</a><br>
                         <strong>{{ 'KMZ'|trans }}</strong>
                         <a target="_blank" href="{{ path('sail_kmz', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {id: info.info.sail}) }}</a>
                     </td>

@@ -37,7 +37,7 @@
 'nm':                       'nm'
 'Nautical Miles':           'Miles Nautiques'
 'DTF':                      'DTF'
-'Distance To Final':        'Distance arrivée'
+'Distance To Final':        "Distance de l'arrivée"
 'Distance':                 'Distance'
 'DTL':                      'DTL'
 'Distance To Leader':       'Distance du Leader'
@@ -60,8 +60,6 @@
 
 
 'Race progress for %boat%': 'Progression en course pour %boat%'
-'... with':                 '... avec'
-'Compare!':                 'Comparer!'
 'Compare with...':          'Comparer avec...'
 'Boat':                     'Bateau'
 'Distance to finish':       'Distance à parcourir'
@@ -125,8 +123,6 @@
 'Last 24-hours speed':              'Vitesse dernières 24 heures'
 'Last 24-hours Velocity Made Good': 'Vitesse route directe dernières 24 heures'
 'Last 24-hours distance':           'Distance dernières 24 heures'
-'Distance To Final':                "Distance de l'arrivée"
-'Distance To Leader':               'Distance du premier'
 'Json Preview':                     'Aperçu Json'
 
 'Map of the race':  'Carte de la course'
