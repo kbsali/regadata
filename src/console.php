@@ -23,8 +23,9 @@ $console
 $console
     ->register('vg:convert')
     ->setDescription('Converts the xls files to json')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $app['srv.vgxls']->xls2json();
+        $app['srv.vgxls']->xls2json($input->getOption('file'));
     })
 ;
 

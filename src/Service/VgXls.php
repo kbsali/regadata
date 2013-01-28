@@ -54,13 +54,13 @@ class VgXls
         ));
     }
 
-    public function xls2json()
+    public function xls2json($file = null)
     {
         require(__DIR__.'/../Util/XLSXReader.php');
 
-
         $master = $total = $yesterday = $first = array();
-        $xlsxs = glob($this->xlsDir.'/*');
+
+        $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
         sort($xlsxs);
         $i = 0;
         foreach ($xlsxs as $xlsx) {
@@ -325,6 +325,8 @@ class VgXls
         [3]  =>  Alessandro Di Benedetto
         Team Plastique
         [4]  =>
+        OR [4] =>  Date d'arrivée  ( Date of arrival ) : 27/01/2013 14:18:40 UTC -  Temps de course  ( Race time ) : 78j 02h 16min 40s
+
         [5]  =>  03:00
 
         [6]  => 18°25.83'N
@@ -371,7 +373,48 @@ class VgXls
         */
         list($coun, $sail)   = explode(PHP_EOL, trim($row[2]));
         list($sailor, $boat) = explode(PHP_EOL, trim($row[3]));
-        preg_match("|(\d{2}):(\d{2})|", $row[5], $time);
+
+        $ret = array(
+            'rank'                => (int) $rank,
+            'country'             => trim($coun),
+            'sail'                => trim($sail),
+            'skipper'             => str_replace('  ', ' ', trim($sailor)),
+            'boat'                => trim($boat),
+
+            'time'                => 0,
+            'date'                => date('Y-m-d', $ts),
+            'timestamp'           => $ts,
+
+            'lat_dms'             => '-',
+            'lon_dms'             => '-',
+            'lat_dec'             => '-',
+            'lon_dec'             => '-',
+
+            '1hour_heading'       => '-',
+            '1hour_speed'         => 0,
+            '1hour_vmg'           => 0,
+            '1hour_distance'      => 0,
+
+            'lastreport_heading'  => '-',
+            'lastreport_speed'    => 0,
+            'lastreport_vmg'      => 0,
+            'lastreport_distance' => 0,
+
+            '24hour_heading'      => '-',
+            '24hour_speed'        => 0,
+            '24hour_vmg'          => 0,
+            '24hour_distance'     => 0,
+
+            'dtf'                 => 0,
+            'dtl'                 => 0,
+        );
+
+        if(null !== $row[4]) {
+            return $ret;
+        }
+        if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
+            $time[0] = 0;
+        }
 
         $ret = array(
             'rank'                => (int) $rank,
@@ -418,7 +461,14 @@ class VgXls
     public static function strtoDMS($str)
     {
         // preg_match("|(\d)°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
-        preg_match("|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s", $str, $matches);
+        if (false === preg_match("|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s", $str, $matches)) {
+            return array(
+                'deg' => 0,
+                'min' => 0,
+                'sec' => 0,
+                'dir' => 0,
+            );
+        }
 
         return array(
             'deg' => $matches[1],
