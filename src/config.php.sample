@@ -29,6 +29,6 @@ $app['http_cache.cache_dir'] = $app['cache.path'] . '/http';
 // Twig cache
 $app['twig.options.cache'] = $app['cache.path'] . '/twig';
 
-$app['assets.locale'] = false;
+$app['assets.local'] = false;
 
 $app['debug'] = false;
