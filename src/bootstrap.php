@@ -68,17 +68,31 @@ $app['imagine'] = $app->share(function ($app) {
     return new $class();
 });
 
+$app['misc'] = $app->share(function($app) {
+    return new Util\Misc();
+});
+
+$app['mongo'] = $app->share(function($app) {
+    return new \MongoClient();
+});
 
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);
 });
 
-$app['srv.vgxls'] = $app->share(function($app) {
-    return new Service\VgXls($app['config']['xlsDir'], $app['config']['jsonDir']);
+$app['repo.report'] = $app->share(function($app) {
+    return new Repository\Report($app['mongo']);
 });
 
-$app['misc'] = $app->share(function($app) {
-    return new Util\Misc();
+$app['srv.vgxls'] = $app->share(function($app) {
+    return new Service\VgXls(
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['mongo'],
+        $app['race']['arrival_lat'],
+        $app['race']['arrival_lon'],
+        $app['race']['arrival']
+    );
 });
 
 // --- Before

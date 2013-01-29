@@ -8,6 +8,14 @@ use Symfony\Component\Console\Output\OutputInterface;
 $console = new Application('VG2021', '0.1');
 
 $console
+    ->register('vg:mongo')
+    ->setDescription('...')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $r = $app['mongo']->regatta->reports;
+    })
+;
+
+$console
     ->register('vg:dl')
     ->setDescription('Downloads the xls files from vendeeglobe.org')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
@@ -22,10 +30,26 @@ $console
 
 $console
     ->register('vg:convert')
-    ->setDescription('Converts the xls files to json')
+    ->setDescription('Exports xls files to mongo')
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $app['srv.vgxls']->xls2json($input->getOption('file'));
+        $app['srv.vgxls']->xls2mongo(
+            $input->getOption('file'),
+            $input->getOption('force')
+        );
+    })
+;
+
+$console
+    ->register('vg:export')
+    ->setDescription('Exports to kml + json')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $app['srv.vgxls']->mongo2json(
+            $input->getOption('force')
+        );
     })
 ;
 

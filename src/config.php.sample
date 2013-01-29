@@ -20,6 +20,12 @@ $app['config'] = array(
     'authIp'          => '127.0.0.1',
 );
 
+$app['race'] = array(
+    'arrival'     => "Les Sables-d'Olonne",
+    'arrival_lat' => '46.4972',
+    'arrival_lon' => '-1.7833',
+);
+
 // Cache
 $app['cache.path'] = __DIR__ . '/../cache';
 
