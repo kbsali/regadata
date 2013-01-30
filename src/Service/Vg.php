@@ -36,10 +36,9 @@ class Vg
 
     public function getFullSailInfo($id)
     {
-        if (false === $arr = $this->parseJson('/sail/'.$id.'.json')) {
+        if (false === $arr = iterator_to_array($this->_report->findBy(array('sail' => $id), array('timestamp' => 1)))) {
             return false;
         }
-
         return array(
             'info'             => end($arr),
             'rank'             => $this->filterBy($arr, 'rank', 1),
@@ -115,12 +114,12 @@ class Vg
     {
         $i = 0;
         $ret = array();
-        foreach ($arr as $ts => $_arr) {
+        foreach ($arr as $_arr) {
             $i++;
             if ($limitFactor === $i) {
                 $i = 0;
                 $ret[] = array(
-                    (int) $ts*1000, // flot
+                    (int) $_arr['timestamp']*1000, // flot
                     (int) $_arr[$idx], // flot
                     // 'x' => (int) $ts*1000, // nvd3
                     // 'y' => (int) $_arr[$idx] // nvd3

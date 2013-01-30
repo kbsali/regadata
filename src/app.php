@@ -138,6 +138,9 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
 
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
+            if(!$info['info']) {
+                continue;
+            }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
 
             $c = 'rgb('.join(',',$app['srv.vgxls']::hexToRgb($app['srv.vg']::sailToColor($info['info']['sail']))).')';

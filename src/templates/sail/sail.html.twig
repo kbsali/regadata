@@ -35,9 +35,9 @@
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                                    {% for sail, skipper in sk %}
+                                    {% for skipper in sk %}
                                     <li>
-                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -103,9 +103,9 @@
                                         <span class="caret"></span>
                                     </a>
                                     <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                                        {% for sail, skipper in sk %}
+                                        {% for skipper in sk %}
                                         <li>
-                                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
                                         {% endfor %}
                                     </ul>
                                 </div>
