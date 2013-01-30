@@ -86,6 +86,9 @@ $app['mongo'] = $app->share(function($app) {
 $app['repo.report'] = $app->share(function($app) {
     return new Repository\Report($app['mongo']);
 });
+$app['repo.sail'] = $app->share(function($app) {
+    return new Repository\Sail($app['mongo']);
+});
 
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg(
@@ -109,23 +112,12 @@ $app['srv.vgxls'] = $app->share(function($app) {
 
 // --- Before
 $app->before(function(Request $request) use ($app) {
-
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
     setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
     if('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
-    /*
-    $app['html'] = $app->share(function($app) {
-        return new Util\HtmlHelper();
-    });
-    */
-
-    $reports     = $app['srv.vg']->listJson('reports');
-    $first       = str_replace('/json', '', end($reports));
-    $firstReport = $app['srv.vg']->parseJson($first);
-    $app['sk']   = $app['srv.vg']->getSailSkipper($firstReport);
-
+    $app['sk']   = iterator_to_array($app['repo.sail']->findBy());
     $app['twig']->addGlobal('sk', $app['sk']);
     $app['twig']->addGlobal('debug', $app['debug']);
     $app['twig']->addGlobal('assets_local', $app['assets.local']);

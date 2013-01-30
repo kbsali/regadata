@@ -53,7 +53,7 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
     ;
-    $reports = $app['repo.report']->getAllReportsBy('timestamp', true);
+    $reports = $app['repo.report']->getAllBy('timestamp', true);
 
     foreach ($reports as $ts) {
         $item = new Suin\RSSWriter\Item();
@@ -76,7 +76,7 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
 })->bind('reports_rss');
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
-    $reports = $app['repo.report']->getAllReportsBy('id', true);
+    $reports = $app['repo.report']->getAllBy('id', true);
 
     if ('latest' === $id) {
         $id = $reports[0];
@@ -125,13 +125,10 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
 })->bind('report');
 
 $app->get('/{_locale}/about', function () use ($app) {
-    $reports     = $app['srv.vg']->listJson('reports');
-    $first       = str_replace('/json', '', end($reports));
-    $firstReport = $app['srv.vg']->parseJson($first);
+    $reports = $app['repo.report']->getAllBy('timestamp', true);
 
     return $app['twig']->render('about.html.twig', array(
-        'rndSail' => array_rand($app['sk']),
-        'reports' => $app['srv.vg']->getReportsById($reports),
+        'reports' => $reports,
     ));
 })->bind('about');
 

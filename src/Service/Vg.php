@@ -50,21 +50,6 @@ class Vg
         );
     }
 
-    public function getSailSkipper($report)
-    {
-        $ret = array();
-        foreach ($report as $sail => $info) {
-            $ret[$sail] = array(
-                'skipper' => $info['skipper'],
-                'boat'    => $info['boat'],
-                'color'   => self::sailToColor($info['sail'])
-            );
-        }
-        asort($ret);
-
-        return $ret;
-    }
-
     public function getReportsById($reports)
     {
         $s = '|/json/reports/(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2}).json|s';

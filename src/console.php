@@ -16,6 +16,25 @@ $console
 ;
 
 $console
+    ->register('vg:sails2mongo')
+    ->setDescription('exports sails CSV to mongo')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $s = $app['mongo']->regatta->sails;
+        $sails = file(__DIR__.'/init/sails_vg2012.csv', FILE_IGNORE_NEW_LINES);
+        $header = array();
+        foreach ($sails as $sail) {
+            if(empty($header)) {
+                $header = explode(',', $sail);
+                continue;
+            }
+            $_sail = explode(',', $sail);
+            $app['repo.sail']->insert(array_combine($header, $_sail));
+        }
+        $output->writeln('ok');
+    })
+;
+
+$console
     ->register('vg:dl')
     ->setDescription('Downloads the xls files from vendeeglobe.org')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {

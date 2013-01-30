@@ -99,12 +99,9 @@ class VgXls
 
     public function mongo2json($force = false)
     {
-        $_arrived = $this->_report->getHasArrived();
-
-        $tss = $this->_report->getAllReportsBy('timestamp');
+        $tss    = $this->_report->getAllBy('timestamp');
         $master = $total = $yesterday = array();
 
-        // $tss = array(1359370800);
         foreach($tss as $ts) {
             $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
 
@@ -113,23 +110,13 @@ class VgXls
             $daily = array();
             foreach(iterator_to_array($reports) as $r) {
                 unset($r['_id']);
-
-                // if(!isset($total[$r['sail']])) {
-                //     $total[$r['sail']] = 0;
-                // }
-                // $total[$r['sail']]     += $r['lastreport_distance'];
-                // $r['total_distance']   = $total[$r['sail']];
-                // $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                // $r['color']            = Vg::sailToColor($r['sail']);
-                // $yesterday[$r['sail']] = $r;
-
                 $daily[$r['sail']]       = $r;
                 $master[$r['sail']][$ts] = $r;
             }
 
             if(true === $force || !file_exists($f)) {
                 echo ' saving data to '.$f.PHP_EOL;
-                file_put_contents($f, json_encode($daily+$_arrived));
+                file_put_contents($f, json_encode($daily));
             }
         }
         $this->export2json($master);

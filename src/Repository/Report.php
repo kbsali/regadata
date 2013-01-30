@@ -38,7 +38,7 @@ class Report
         return $ret;
     }
 
-    public function getAllReportsBy($key, $reverse = false)
+    public function getAllBy($key, $reverse = false)
     {
         $tmp = $this->mongo->regatta
             ->command(array('distinct' => 'reports', 'key' => $key))
