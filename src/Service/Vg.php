@@ -36,7 +36,7 @@ class Vg
 
     public function getFullSailInfo($id)
     {
-        if (false === $arr = iterator_to_array($this->_report->findBy(array('sail' => $id), array('timestamp' => 1)))) {
+        if (false === $arr = $this->_report->findBy(null, array('sail' => $id), array('timestamp' => 1))) {
             return false;
         }
         return array(
@@ -192,36 +192,6 @@ class Vg
             'FRA29'   => '@samanthadavies',
             'FRA72'   => '@TanguyDeLamotte',
             'FRA85'   => '@Vincent_Riou',
-        );
-        if(!isset($arr[$s])) {
-            return $s;
-        }
-        return $arr[$s];
-    }
-
-    public static function sailToColor($s)
-    {
-        $arr = array(
-            "FRA19"   => '9ba5bd', // '061e5a',
-            'FRA44'   => '558a42',
-            'GBR99'   => '06040f',
-            'FRA14'   => '12cf10',
-            'SUI2012' => 'fac200',
-            'FRA62'   => 'bf9c7c',
-            'SUI9'    => '013983',
-            'FRA301'  => '0b2e82',
-            'ESP4'    => 'd01f27',
-            'FRA59'   => '9ea1a2', // '0d1517',
-            'FRA06'   => '3399c1',
-            'FRA001'  => 'f10200',
-            'FRA360'  => 'a71e2e',
-            'FRA35'   => '1e9436',
-            'FRA25'   => 'eb6c39',
-            'GBR3'    => 'a5ad00',
-            'FRA29'   => '65ac36',
-            'FRA72'   => 'cc0107',
-            'FRA85'   => 'fe640a',
-            'POL2'    => 'c86347',
         );
         if(!isset($arr[$s])) {
             return $s;

@@ -110,9 +110,9 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
-    $report1 = $app['repo.report']->findBy(array('timestamp' => $ts));
-    $report2 = $app['repo.report']->findBy(array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
-    $report = iterator_to_array($report2)+iterator_to_array($report1);
+    $report1 = $app['repo.report']->findBy(null, array('timestamp' => $ts));
+    $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
+    $report = $report2+$report1;
 
     return $app['twig']->render('reports/reports.html.twig', array(
         'ts'         => $ts,
@@ -143,7 +143,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
             }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
 
-            $c = 'rgb('.join(',',$app['srv.vgxls']::hexToRgb($app['srv.vg']::sailToColor($info['info']['sail']))).')';
+            $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['sk'][ $info['info']['sail'] ]['color'])).')';
             $infos[] = array(
                 'info'             => $info['info'],
                 'rank'             => json_encode(array('label' => $info['info']['skipper'], 'color' => $c, 'data' => $info['rank'])),

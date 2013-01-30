@@ -6,14 +6,15 @@ use Service\Vg;
 
 class VgXls
 {
-    public $xlsDir, $jsonDir, $_report, $arrLat, $arrLng, $arrival;
+    public $xlsDir, $jsonDir, $_report, $_sk, $arrLat, $arrLng, $arrival;
 
-    public function __construct($xlsDir, $jsonDir, $_report, $arrLat, $arrLon, $arrival)
+    public function __construct($xlsDir, $jsonDir, $_report, $_sk, $arrLat, $arrLon, $arrival)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->jsonDir = $root.$jsonDir;
         $this->_report = $_report;
+        $this->_sk     = $_sk;
         $this->arrLat  = $arrLat;
         $this->arrLon  = $arrLon;
         $this->arrival = $arrival;
@@ -83,7 +84,7 @@ class VgXls
                     $total[$r['sail']]     += $r['lastreport_distance'];
                     $r['total_distance']   = $total[$r['sail']];
                     $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                    $r['color']            = Vg::sailToColor($r['sail']);
+                    $r['color']            = $this->_sk[$r['sail']]['color'];
                     $yesterday[$r['sail']] = $r;
                     try {
                         $this->_report->insert($r, $force);
@@ -105,10 +106,10 @@ class VgXls
         foreach($tss as $ts) {
             $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
 
-            $reports = $this->_report->findBy(array('timestamp' => $ts));
+            $reports = $this->_report->findBy(null, array('timestamp' => $ts));
 
             $daily = array();
-            foreach(iterator_to_array($reports) as $r) {
+            foreach($reports as $r) {
                 unset($r['_id']);
                 $daily[$r['sail']]       = $r;
                 $master[$r['sail']][$ts] = $r;
@@ -263,7 +264,7 @@ class VgXls
         $coordinates = $this->extractSailsCoordinates($arr);
 
         $line = strtr($this->_line, array(
-            '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
+            '%color%'       => self::hexToKml( $this->_sk[$info['sail']]['color'] ),
             '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
@@ -273,7 +274,7 @@ class VgXls
         foreach($coordinates as $ts => $coordinate) {
             $i++;
             $points[] = strtr($this->_point, array(
-                '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
+                '%color%'       => self::hexToKml($this->_sk[$info['sail']]['color']),
                 '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
@@ -282,7 +283,7 @@ class VgXls
                     '%name%'            => '#'.$info['rank'].' '.$info['skipper'],
                     '%boat%'            => $info['boat'],
                     '%date%'            => date('Y-m-d H:i', $ts),
-                    '%color%'           => '#'.Vg::sailToColor($info['sail']),
+                    '%color%'           => '#'.$this->_sk[$info['sail']]['color'],
                     '%1hour_speed%'     => sprintf('%.1f', $info['1hour_speed']),
                     '%24hour_speed%'    => sprintf('%.1f', $info['24hour_speed']),
                     '%1hour_distance%'  => sprintf('%.1f', $info['1hour_distance']),
@@ -560,15 +561,6 @@ class VgXls
         $gg = substr($color, 2, 2);
         $bb = substr($color, 4, 2);
         return strtolower($aa.$bb.$gg.$rr);
-    }
-
-    public static function hexToRgb($color)
-    {
-        $rgb = array();
-        for ($x=0;$x<3;$x++) {
-            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
-        }
-        return $rgb;
     }
 
     public static function kmlToRgb($color)

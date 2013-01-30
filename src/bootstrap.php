@@ -90,6 +90,8 @@ $app['repo.sail'] = $app->share(function($app) {
     return new Repository\Sail($app['mongo']);
 });
 
+$app['sk'] = $app['repo.sail']->findBy('sail');
+
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg(
         $app['config']['xlsDir'],
@@ -104,11 +106,13 @@ $app['srv.vgxls'] = $app->share(function($app) {
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
         $app['repo.report'],
+        $app['sk'],
         $app['race']['arrival_lat'],
         $app['race']['arrival_lon'],
         $app['race']['arrival']
     );
 });
+
 
 // --- Before
 $app->before(function(Request $request) use ($app) {
@@ -117,7 +121,6 @@ $app->before(function(Request $request) use ($app) {
     if('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
-    $app['sk']   = iterator_to_array($app['repo.sail']->findBy());
     $app['twig']->addGlobal('sk', $app['sk']);
     $app['twig']->addGlobal('debug', $app['debug']);
     $app['twig']->addGlobal('assets_local', $app['assets.local']);

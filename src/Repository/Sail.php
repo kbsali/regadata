@@ -4,14 +4,15 @@ namespace Repository;
 
 class Sail
 {
-    private $mongo, $_sail;
+    private $mongo, $_db, $_col;
 
     public function __construct($mongo)
     {
         $this->mongo = $mongo;
 
-        $this->_sail = $this->mongo->regatta->sails;
-        $this->_sail->ensureIndex(array('sail' => 1), array('unique' => true));
+        $this->_db = $this->mongo->regatta;
+        $this->_col = $this->_db->sails;
+        $this->_col->ensureIndex(array('sail' => 1), array('unique' => true));
     }
 
     public function insert(array $r = array(), $force = false)
@@ -20,14 +21,14 @@ class Sail
             return false;
         }
         if($force) {
-            return $this->_sail->update(array('sail' => $r['sail']), $r, array('safe' => true));
+            return $this->_col->update(array('sail' => $r['sail']), $r, array('safe' => true));
         }
-        return $this->_sail->insert($r, array('safe' => true));
+        return $this->_col->insert($r, array('safe' => true));
     }
 
     public function getAllBy($key, $reverse = false)
     {
-        $tmp = $this->mongo->regatta
+        $tmp = $this->_db
             ->command(array('distinct' => 'sails', 'key' => $key))
         ;
         if($reverse) {
@@ -36,11 +37,19 @@ class Sail
         return $tmp['values'];
     }
 
-    public function findBy(array $arr = array())
+    public function findBy($indexBy = null, array $arr = array(), array $orderby = array('skipper' => 1))
     {
-        return $this->_sail
+        $tmp = $this->_col
             ->find($arr)
-            ->sort(array('skipper' => 1))
+            ->sort($orderby)
         ;
+        if(null === $indexBy) {
+            return iterator_to_array($tmp);
+        }
+        $ret = array();
+        foreach (iterator_to_array($tmp) as $v) {
+            $ret[$v[$indexBy]] = $v;
+        }
+        return $ret;
     }
 }

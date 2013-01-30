@@ -19,6 +19,14 @@ class Misc
                 system($cmd);
             }
         }
+    }
 
+    public static function hexToRgb($color)
+    {
+        $rgb = array();
+        for ($x=0;$x<3;$x++) {
+            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
+        }
+        return $rgb;
     }
 }
