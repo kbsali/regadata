@@ -157,45 +157,4 @@ class Vg
 
         return json_encode($ret);
     }
-
-    public static function extractMaxByKey($report, $key)
-    {
-        $max = null;
-        foreach ($report as $r) {
-            if(null === $max || $r[$key] > $max[$key]) {
-                $max = $r;
-            }
-        }
-        return $max;
-    }
-
-    public function sailToTwitter($s)
-    {
-        $arr = array(
-            // 'SUI9'
-            // 'POL2'
-            // 'FRA35'
-            // 'FRA25'
-            "FRA19"   => '@VoileBanquePop',
-            'FRA44'   => '@Team_Plastique',
-            'GBR99'   => '@AlexThomson99',
-            'FRA14'   => '@AKENAVerandas60',
-            'SUI2012' => '@Poujoulat_Stamm',
-            'FRA62'   => '@BertranddeBroc',
-            'FRA301'  => '@francoisgabart', // '@Macif60',
-            'ESP4'    => '@AccionaSailing',
-            'FRA59'   => '@LeCam_SynerCiel',
-            'FRA06'   => '@Dick_JeanPierre',
-            'FRA001'  => '@JeremieBeyou',
-            'FRA360'  => '@GroupeBel60',
-            'GBR3'    => '@Mike_Golding',
-            'FRA29'   => '@samanthadavies',
-            'FRA72'   => '@TanguyDeLamotte',
-            'FRA85'   => '@Vincent_Riou',
-        );
-        if(!isset($arr[$s])) {
-            return $s;
-        }
-        return $arr[$s];
-    }
 }

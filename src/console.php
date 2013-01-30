@@ -27,6 +27,7 @@ $console
                 $header = explode(',', $sail);
                 continue;
             }
+            $_sail = array();
             $_sail = explode(',', $sail);
             $app['repo.sail']->insert(array_combine($header, $_sail));
         }
@@ -113,14 +114,12 @@ $console
     ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
-        $reports = $app['srv.vg']->listJson('reports');
-        $id      = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
-        $report  = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
-        $max     = $app['srv.vg']->extractMaxByKey($report, '24hour_distance');
-        $tweet   = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
+        $report = $app['repo.report']->getLast();
+        $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
+        $tweet  = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
 
         $params = array(
-            '%skipper%' => $app['srv.vg']->sailToTwitter($max['sail']),
+            '%skipper%' => $app['misc']->getTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
 

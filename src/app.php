@@ -143,7 +143,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
             }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
 
-            $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['sk'][ $info['info']['sail'] ]['color'])).')';
+            $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))).')';
             $infos[] = array(
                 'info'             => $info['info'],
                 'rank'             => json_encode(array('label' => $info['info']['skipper'], 'color' => $c, 'data' => $info['rank'])),

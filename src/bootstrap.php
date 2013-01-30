@@ -75,10 +75,6 @@ $app['imagine'] = $app->share(function ($app) {
     return new $class();
 });
 
-$app['misc'] = $app->share(function($app) {
-    return new Util\Misc();
-});
-
 $app['mongo'] = $app->share(function($app) {
     return new \MongoClient();
 });
@@ -91,6 +87,12 @@ $app['repo.sail'] = $app->share(function($app) {
 });
 
 $app['sk'] = $app['repo.sail']->findBy('sail');
+
+$app['misc'] = $app->share(function($app) {
+    return new Util\Misc(
+        $app['sk']
+    );
+});
 
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg(
@@ -106,7 +108,7 @@ $app['srv.vgxls'] = $app->share(function($app) {
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
         $app['repo.report'],
-        $app['sk'],
+        $app['misc'],
         $app['race']['arrival_lat'],
         $app['race']['arrival_lon'],
         $app['race']['arrival']

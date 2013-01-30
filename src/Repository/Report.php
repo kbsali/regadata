@@ -77,4 +77,32 @@ class Report
         }
         return $ret;
     }
+
+    public function getLastTs()
+    {
+        $report = $this->_col
+            ->find()
+            ->sort(array('timestamp' => -1))
+            ->limit(1)
+        ;
+        $tmp =current(iterator_to_array($report));
+        return $tmp['timestamp'];
+    }
+
+    public function getLast()
+    {
+        return $this->findBy(null, array('timestamp' => $this->getLastTs()));
+    }
+
+
+    public function extractMaxByKey($report, $key)
+    {
+        $max = null;
+        foreach ($report as $r) {
+            if(null === $max || $r[$key] > $max[$key]) {
+                $max = $r;
+            }
+        }
+        return $max;
+    }
 }
