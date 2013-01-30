@@ -1,13 +1,13 @@
 {% extends 'layout.html.twig' %}
 {% set active = 'reports' %}
-{% set title = 'General ranking %date%'|trans({'%date%':r.timestamp|date}) %}
-{% set extra_meta = 'General ranking %date%'|trans({'%date%':r.timestamp|date}) %}
+{% set title = 'General ranking %date%'|trans({'%date%': ts|date}) %}
+{% set extra_meta = 'General ranking %date%'|trans({'%date%': ts|date}) %}
 
 {% block container_content %}
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
             <table class="table table-condensed table-bordered table-hover table-striped" id="report">
-                <caption>{{ 'Ranking : %date%'|trans({'%date%':r.timestamp|date}) }}</caption>
+                <caption>{{ 'Ranking : %date%'|trans({'%date%': ts|date}) }}</caption>
                 <thead>
                     <tr class="{{ full ? '' : ' hidden-phone hidden-tablet' }}">
                         <th scope="colgroup" colspan="2">&nbsp;</th>

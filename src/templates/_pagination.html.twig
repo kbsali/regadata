@@ -1,10 +1,10 @@
             <div class="pagination pagination-centered">
                 <ul>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '#' : '/'~app.request.locale~p.first }}">&lt;&lt;</a>
+                        <a href="{{ p.prev is null ? '#' : url('report', {id: p.first}) }}">&lt;&lt;</a>
                     </li>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '/#' : '/'~app.request.locale~p.prev }}">&lt;</a>
+                        <a href="{{ p.prev is null ? '/#' : path('report', {id: p.prev}) }}">&lt;</a>
                     </li>
 
                     <li class="disabled hidden-phone">
@@ -12,10 +12,10 @@
                     </li>
 
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.next }}">&gt;</a>
+                        <a href="{{ p.next is null ? '#' : path('report', {id: p.next}) }}">&gt;</a>
                     </li>
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : '/'~app.request.locale~p.last }}">&gt;&gt;</a>
+                        <a href="{{ p.next is null ? '#' : path('report', {id: 'latest'}) }}">&gt;&gt;</a>
                     </li>
                 </ul>
             </div>

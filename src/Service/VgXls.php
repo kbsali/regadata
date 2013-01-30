@@ -6,14 +6,14 @@ use Service\Vg;
 
 class VgXls
 {
-    public $xlsDir, $jsonDir, $mongo, $arrLat, $arrLng, $arrival;
+    public $xlsDir, $jsonDir, $_report, $arrLat, $arrLng, $arrival;
 
-    public function __construct($xlsDir, $jsonDir, $mongo, $arrLat, $arrLon, $arrival)
+    public function __construct($xlsDir, $jsonDir, $_report, $arrLat, $arrLon, $arrival)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->jsonDir = $root.$jsonDir;
-        $this->mongo   = $mongo;
+        $this->_report = $_report;
         $this->arrLat  = $arrLat;
         $this->arrLon  = $arrLon;
         $this->arrival = $arrival;
@@ -62,28 +62,32 @@ class VgXls
     {
         require(__DIR__.'/../Util/XLSXReader.php');
 
-        $_r = $this->mongo->regatta->reports;
-        $_r->ensureIndex(array('sail' => 1, 'timestamp' => 1), array('unique' => true));
-
         $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
         sort($xlsxs);
         $i = 0;
+        $total = $yesterday = array();
         foreach ($xlsxs as $xlsx) {
+            echo $xlsx.PHP_EOL;
             $i++;
             try {
-                $xlsx = new \XLSXReader($xlsx);
-                $data = $xlsx->getSheetData('fr');
-                $ts   = $this->_getDate($data);
+                $_xlsx = new \XLSXReader($xlsx);
+                $data  = $_xlsx->getSheetData('fr');
+                $ts    = $this->_getDate($data);
                 foreach ($data as $row) {
-                    if (false === $r = $this->_cleanRow($row, $ts)) {
+                    if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
                         continue;
                     }
+                    if(!isset($total[$r['sail']])) {
+                        $total[$r['sail']] = 0;
+                    }
+                    $total[$r['sail']]     += $r['lastreport_distance'];
+                    $r['total_distance']   = $total[$r['sail']];
+                    $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                    $r['color']            = Vg::sailToColor($r['sail']);
+                    $yesterday[$r['sail']] = $r;
                     try {
-                        if($force) {
-                            $_r->update(array('timestamp' => $r['timestamp'], 'sail' => $r['sail']), $r, array('safe' => true));
-                        } else {
-                            $_r->insert($r, array('safe' => true));
-                        }
+                    // ld($r);
+                        $this->_report->insert($r, $force);
                     } catch (\MongoCursorException $e) {
                         echo $e->getMessage().PHP_EOL;
                     }
@@ -96,34 +100,29 @@ class VgXls
 
     public function mongo2json($force = false)
     {
-        $arrived = $this->mongo->regatta->reports->find(array('has_arrived' => true));
-        foreach($arrived as $a) {
-            unset($a['_id']);
-            $_arrived[$a['sail']] = $a;
-        }
+        $_arrived = $this->_report->getHasArrived();
 
-        $tss = $this->mongo->regatta->command(array('distinct' => 'reports', 'key' => 'timestamp'));
+        $tss = $this->_report->getAllReportsBy('timestamp');
         $master = $total = $yesterday = array();
-        // $tss['values'] = array(1359370800);
-        foreach($tss['values'] as $ts) {
+
+        // $tss = array(1359370800);
+        foreach($tss as $ts) {
             $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
 
-            $reports = $this->mongo->regatta->reports->find(array('timestamp' => $ts))->sort(array('rank' => 1));
+            $reports = $this->_report->findBy('timestamp', $ts);
 
             $daily = array();
             foreach(iterator_to_array($reports) as $r) {
                 unset($r['_id']);
 
-                if(!isset($total[$r['sail']])) {
-                    $total[$r['sail']] = 0;
-                }
-                $total[$r['sail']]+= $r['lastreport_distance'];
-
-                $r['total_distance']     = $total[$r['sail']];
-                $r['dtl_diff']           = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                $r['color']              = Vg::sailToColor($r['sail']);
-
-                $yesterday[$r['sail']]   = $r;
+                // if(!isset($total[$r['sail']])) {
+                //     $total[$r['sail']] = 0;
+                // }
+                // $total[$r['sail']]     += $r['lastreport_distance'];
+                // $r['total_distance']   = $total[$r['sail']];
+                // $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                // $r['color']            = Vg::sailToColor($r['sail']);
+                // $yesterday[$r['sail']] = $r;
 
                 $daily[$r['sail']]       = $r;
                 $master[$r['sail']][$ts] = $r;
@@ -319,7 +318,7 @@ class VgXls
         );
     }
 
-    private function _cleanRow($row, $ts)
+    private function _cleanRow($row, $ts, $file)
     {
         $rank = trim(trim($row[1]), ' ');
         if ('RET' == $rank) {
@@ -406,9 +405,11 @@ class VgXls
             'sail'                => trim($sail),
             'skipper'             => str_replace('  ', ' ', trim($sailor)),
             'boat'                => trim($boat),
+            'source'              => basename($file),
 
             'time'                => 0,
             'date'                => date('Y-m-d', $ts),
+            'id'                  => date('Ymd-Hi', $ts),
             'timestamp'           => $ts,
 
             'lat_dms'             => 0,
@@ -455,6 +456,7 @@ class VgXls
             $time[0] = 0;
         }
         $ret['time'] = $time[0];
+        // $ret['id']   = date('Ymd', $ts).'-'.$time[0];
 
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);

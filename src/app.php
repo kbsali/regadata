@@ -64,42 +64,53 @@ $app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_jso
 $app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
-    $reports = $app['srv.vg']->listJson('reports');
+    $reports = $app['repo.report']->getAllReportsBy('id', true);
+
     if ('latest' === $id) {
-        $id = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
+        $id = $reports[0];
     }
-    $idx = array_search('/json/reports/'.$id.'.json', $app['srv.vg']->listJson('reports'));
+
+    // --- /PAGINATION
+    $idx = array_search($id, $reports);
 
     $prev = null;
     if (isset($reports[$idx + 1])) {
-        $file = $reports[$idx + 1];
-        $prev = str_replace(array('/json', '.json'), '', $file);
+        $prev = $reports[$idx + 1];
     }
     $next = null;
     if (isset($reports[$idx - 1])) {
-        $file = $reports[$idx - 1];
-        $next = str_replace(array('/json', '.json'), '', $file);
+        $next = $reports[$idx - 1];
     }
-    $last  = str_replace(array('/json', '.json'), '', $reports[0]);
-    $first = str_replace(array('/json', '.json'), '', end($reports));
+    $last  = reset($reports);
+    $first = end($reports);
+    $pagination = array(
+        'first'   => $first,
+        'prev'    => $prev,
+        'next'    => $next,
+        'last'    => $last,
+        'current' => abs(count($reports) - $idx),
+        'total'   => count($reports),
+    );
+    // --- \PAGINATION
 
-    $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
+    $report2 = $app['repo.report']->findBy('id', $id);
+    $report1 = $app['repo.report']->findBy('has_arrived', true);
+// ldd(iterator_to_array($report2));
+
+    $report = iterator_to_array($report1)+iterator_to_array($report2);
+    $r1 = iterator_to_array($report1);
+    $r2 = iterator_to_array($report2);
+    // ldd($r2);
+    $r = current(iterator_to_array($report2));
+    $ts = $r['timestamp'];
 
     return $app['twig']->render('reports/reports.html.twig', array(
-        'r'          => current($report),
+        'ts'         => $ts,
         'report'     => $report,
-        'source'     => '/json/reports/'.$id.'.json',
+        'source'     => $app['url_generator']->generate('reports_json', array('id' => $id)),
         'start_date' => strtotime($app['config']['start_date']),
         'full'       => null !== $request->get('full'),
-
-        'pagination' => array(
-            'first'   => $first,
-            'prev'    => $prev,
-            'next'    => $next,
-            'last'    => $last,
-            'current' => abs(count($reports) - $idx),
-            'total'   => count($reports),
-        )
+        'pagination' => $pagination,
     ));
 })->bind('report');
 

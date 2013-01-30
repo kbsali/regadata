@@ -4,14 +4,15 @@ namespace Service;
 
 class Vg
 {
-    public $xlsDir, $docRoot, $jsonDir;
+    public $xlsDir, $docRoot, $jsonDir, $_report;
 
-    public function __construct($xlsDir, $docRoot, $jsonDir)
+    public function __construct($xlsDir, $docRoot, $jsonDir, $_report)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->docRoot = $root.$docRoot;
         $this->jsonDir = $root.$jsonDir;
+        $this->_report = $_report;
     }
 
     public function getSailCoordinates($id)
