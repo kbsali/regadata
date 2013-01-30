@@ -49,10 +49,10 @@ class Report
         return $tmp['values'];
     }
 
-    public function findBy($key, $value)
+    public function findBy(array $arr = array())
     {
         return $this->_report
-            ->find(array($key => $value))
+            ->find($arr)
             ->sort(array('rank' => 1))
         ;
     }

@@ -53,15 +53,15 @@
                     {% for r in report %}
                         {% set class1 = 'label-info' %}
                         {% set class2 = 'icon-circle-arrow-right' %}
-                        {% if r['dtl_diff'] is defined and r['dtl_diff'] < 0 %}
+                        {% if r['dtl_diff'] < 0 %}
                             {% set class1 = 'label-success' %}
                             {% set class2 = 'icon-circle-arrow-up' %}
-                        {% elseif r['dtl_diff'] is defined and r['dtl_diff'] > 0 %}
+                        {% elseif r['dtl_diff'] > 0 %}
                             {% set class1 = 'label-important' %}
                             {% set class2 = 'icon-circle-arrow-down' %}
                         {% endif %}
                     <tr>
-                        <td class="r"><span class="badge">{{ r.rank }} <i class="icon-circle" style="color: #{{ r['dtl_diff'] is defined ? r.color : '' }}"></i></span></td>
+                        <td class="r"><span class="badge">{{ r.rank }} <i class="icon-circle" style="color: #{{ r.color }}"></i></span></td>
                         <td>
                             <span class="geo">
                                 <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
@@ -88,11 +88,11 @@
                         <td class="r 24hvmg">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
                         <td class="r 24hdistance">{{ '%.1f' | format(r['24hour_distance']) }}</td>
 
-                        <td class="r total_distance borderleft{{ full ? '' : ' hidden-phone hidden-tablet' }}">{{ r['total_distance'] is defined ? '%.1f' | format(r['total_distance']) : 0 }}</td>
-                        <td class="r oas{{ full ? '' : ' hidden-phone hidden-tablet' }}">{{ r['total_distance'] is defined ? '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) : 0 }}</td>
+                        <td class="r total_distance borderleft{{ full ? '' : ' hidden-phone hidden-tablet' }}">{{ '%.1f' | format(r['total_distance']) }}</td>
+                        <td class="r oas{{ full ? '' : ' hidden-phone hidden-tablet' }}">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
 
                         <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
-                        <td class="r dtl_diff"><span class="label {{ class1 }}">{{ r['total_distance'] is defined ? '%.1f' | format(r['dtl_diff']|abs) : 0 }} <i class="icon-white {{ class2 }}"></i></span></td>
+                        <td class="r dtl_diff"><span class="label {{ class1 }}">{{ '%.1f' | format(r['dtl_diff']|abs) }} <i class="icon-white {{ class2 }}"></i></span></td>
                         <td class="r dtp{{ full ? '' : ' hidden-phone' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
                         {% set dtp = r['dtl'] %}

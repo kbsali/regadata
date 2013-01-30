@@ -86,7 +86,6 @@ class VgXls
                     $r['color']            = Vg::sailToColor($r['sail']);
                     $yesterday[$r['sail']] = $r;
                     try {
-                    // ld($r);
                         $this->_report->insert($r, $force);
                     } catch (\MongoCursorException $e) {
                         echo $e->getMessage().PHP_EOL;
@@ -109,7 +108,7 @@ class VgXls
         foreach($tss as $ts) {
             $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
 
-            $reports = $this->_report->findBy('timestamp', $ts);
+            $reports = $this->_report->findBy(array('timestamp' => $ts));
 
             $daily = array();
             foreach(iterator_to_array($reports) as $r) {

@@ -69,6 +69,11 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     if ('latest' === $id) {
         $id = $reports[0];
     }
+    if (false === preg_match("|(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})|", $id, $time)) {
+        return false;
+    }
+    $ts = strtotime($time[1].'-'.$time[2].'-'.$time[3].' '.$time[4].':'.$time[5]);
+
 
     // --- /PAGINATION
     $idx = array_search($id, $reports);
@@ -93,16 +98,9 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
-    $report2 = $app['repo.report']->findBy('id', $id);
-    $report1 = $app['repo.report']->findBy('has_arrived', true);
-// ldd(iterator_to_array($report2));
-
-    $report = iterator_to_array($report1)+iterator_to_array($report2);
-    $r1 = iterator_to_array($report1);
-    $r2 = iterator_to_array($report2);
-    // ldd($r2);
-    $r = current(iterator_to_array($report2));
-    $ts = $r['timestamp'];
+    $report1 = $app['repo.report']->findBy(array('timestamp' => $ts));
+    $report2 = $app['repo.report']->findBy(array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
+    $report = iterator_to_array($report2)+iterator_to_array($report1);
 
     return $app['twig']->render('reports/reports.html.twig', array(
         'ts'         => $ts,
