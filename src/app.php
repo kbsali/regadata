@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app = require __DIR__.'/bootstrap.php';
 
-// REDIRECT OLD URLS (indexed by search engines)
+// ---- /REDIRECT OLD URLS (indexed by search engines)
 $app->get('/reports/{id}', function ($id) use ($app) {
     $u = $app['url_generator']->generate('report', array('id' => $id));
     return $app->redirect($u, 301);
@@ -22,6 +22,23 @@ $app->get('/{_locale}/compare', function (Request $request) use ($app) {
     $u = $app['url_generator']->generate('sail', array('ids' => $request->get('sail1').'-'.$request->get('sail2')));
     return $app->redirect($u, 301);
 });
+// ---- \REDIRECT OLD URLS (indexed by search engines)
+
+$app->get('/{_locale}/map', function () use ($app) {
+    return $app['twig']->render('map/map.html.twig', array());
+})->bind('map');
+
+$app->get('/{_locale}/doc/json', function () use ($app) {
+    return $app['twig']->render('doc/json.html.twig', array());
+})->bind('doc_json');
+
+$app->get('/doc/json-format', function () use ($app) {
+    return $app['twig']->render('doc/json-format.html.twig', array());
+})->bind('doc_format');
+
+$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
+$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
+$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     $feed = new Suin\RSSWriter\Feed();
@@ -36,20 +53,19 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
     ;
-    $reports = $app['srv.vg']->getReportsById(
-        $app['srv.vg']->listJson('reports')
-    );
-    foreach ($reports as $report => $ts) {
+    $reports = $app['repo.report']->getAllReportsBy('timestamp', true);
+
+    foreach ($reports as $ts) {
         $item = new Suin\RSSWriter\Item();
         $item
             ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
             // ->description("<div>Blog body</div>")
 
             // ->url($app->url('report', array('id' => $report)))
-            ->url($app['url_generator']->generate('report', array('id' => $report), true))
+            ->url($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true))
 
             // ->guid($app->url('report', array('id' => $report)), true)
-            ->guid($app['url_generator']->generate('report', array('id' => $report), true), true)
+            ->guid($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true), true)
 
             ->pubDate($ts)
             ->appendTo($channel)
@@ -58,10 +74,6 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
 
     return new Response($feed, 200, array('Content-Type' => 'application/rss+xml'));
 })->bind('reports_rss');
-
-$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
-$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
-$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
     $reports = $app['repo.report']->getAllReportsBy('id', true);
@@ -111,18 +123,6 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         'pagination' => $pagination,
     ));
 })->bind('report');
-
-$app->get('/{_locale}/map', function () use ($app) {
-    return $app['twig']->render('map/map.html.twig', array());
-})->bind('map');
-
-$app->get('/{_locale}/doc/json', function () use ($app) {
-    return $app['twig']->render('doc/json.html.twig', array());
-})->bind('doc_json');
-
-$app->get('/doc/json-format', function () use ($app) {
-    return $app['twig']->render('doc/json-format.html.twig', array());
-})->bind('doc_format');
 
 $app->get('/{_locale}/about', function () use ($app) {
     $reports     = $app['srv.vg']->listJson('reports');
