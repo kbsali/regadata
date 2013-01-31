@@ -18,8 +18,8 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
                             <ul class="dropdown-menu">
-                            {% for sail, skipper in sk %}
-                                <li{% if sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
+                            {% for skipper in sk %}
+                                <li{% if skipper.sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
                             {% endfor %}
                             </ul>
                         </li>

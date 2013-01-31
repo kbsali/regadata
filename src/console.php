@@ -8,6 +8,34 @@ use Symfony\Component\Console\Output\OutputInterface;
 $console = new Application('VG2021', '0.1');
 
 $console
+    ->register('vg:mongo')
+    ->setDescription('...')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $r = $app['mongo']->regatta->reports;
+    })
+;
+
+$console
+    ->register('vg:sails2mongo')
+    ->setDescription('exports sails CSV to mongo')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $s = $app['mongo']->regatta->sails;
+        $sails = file(__DIR__.'/init/sails_vg2012.csv', FILE_IGNORE_NEW_LINES);
+        $header = array();
+        foreach ($sails as $sail) {
+            if(empty($header)) {
+                $header = explode(',', $sail);
+                continue;
+            }
+            $_sail = array();
+            $_sail = explode(',', $sail);
+            $app['repo.sail']->insert(array_combine($header, $_sail));
+        }
+        $output->writeln('ok');
+    })
+;
+
+$console
     ->register('vg:dl')
     ->setDescription('Downloads the xls files from vendeeglobe.org')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
@@ -22,10 +50,26 @@ $console
 
 $console
     ->register('vg:convert')
-    ->setDescription('Converts the xls files to json')
+    ->setDescription('Exports xls files to mongo')
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $app['srv.vgxls']->xls2json($input->getOption('file'));
+        $app['srv.vgxls']->xls2mongo(
+            $input->getOption('file'),
+            $input->getOption('force')
+        );
+    })
+;
+
+$console
+    ->register('vg:export')
+    ->setDescription('Exports to kml + json')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $app['srv.vgxls']->mongo2json(
+            $input->getOption('force')
+        );
     })
 ;
 
@@ -70,14 +114,12 @@ $console
     ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
-        $reports = $app['srv.vg']->listJson('reports');
-        $id      = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
-        $report  = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
-        $max     = $app['srv.vg']->extractMaxByKey($report, '24hour_distance');
-        $tweet   = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
+        $report = $app['repo.report']->getLast();
+        $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
+        $tweet  = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
 
         $params = array(
-            '%skipper%' => $app['srv.vg']->sailToTwitter($max['sail']),
+            '%skipper%' => $app['misc']->getTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
 

@@ -6,13 +6,18 @@ use Service\Vg;
 
 class VgXls
 {
-    public $xlsDir, $jsonDir;
+    public $xlsDir, $jsonDir, $_report, $_misc, $arrLat, $arrLng, $arrival;
 
-    public function __construct($xlsDir, $jsonDir)
+    public function __construct($xlsDir, $jsonDir, $_report, $_misc, $arrLat, $arrLon, $arrival)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->jsonDir = $root.$jsonDir;
+        $this->_report = $_report;
+        $this->_misc   = $_misc;
+        $this->arrLat  = $arrLat;
+        $this->arrLon  = $arrLon;
+        $this->arrival = $arrival;
     }
 
     public function listMissingXlsx()
@@ -48,59 +53,73 @@ class VgXls
         return strtr($this->_folder, array(
             '%name%'    => 'Departure / Arrival',
             '%content%' => strtr($this->_departure, array(
-                '%name%'        => "Les Sables-d'Olonne",
-                '%coordinates%' => '-1.7833,46.4972'
+                '%name%'        => $this->arrival,
+                '%coordinates%' => $this->arrLon.','.$this->arrLat,
             ))
         ));
     }
 
-    public function xls2json($file = null)
+    public function xls2mongo($file = null, $force = false)
     {
         require(__DIR__.'/../Util/XLSXReader.php');
-
-        $master = $total = $yesterday = $first = array();
 
         $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
         sort($xlsxs);
         $i = 0;
+        $total = $yesterday = array();
         foreach ($xlsxs as $xlsx) {
-            // if($i === 10) {
-            //     break;
-            // }
+            echo $xlsx.PHP_EOL;
             $i++;
             try {
-                $xlsx = new \XLSXReader($xlsx);
+                $_xlsx = new \XLSXReader($xlsx);
+                $data  = $_xlsx->getSheetData('fr');
+                $ts    = $this->_getDate($data);
+                foreach ($data as $row) {
+                    if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
+                        continue;
+                    }
+                    if(!isset($total[$r['sail']])) {
+                        $total[$r['sail']] = 0;
+                    }
+                    $total[$r['sail']]     += $r['lastreport_distance'];
+                    $r['total_distance']   = $total[$r['sail']];
+                    $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                    $r['color']            = $this->_misc->getColor($r['sail']);
+                    $yesterday[$r['sail']] = $r;
+                    try {
+                        $this->_report->insert($r, $force);
+                    } catch (\MongoCursorException $e) {
+                        echo $e->getMessage().PHP_EOL;
+                    }
+                }
             } catch (\Exception $e) {
                 continue;
             }
-            $data  = $xlsx->getSheetData('fr');
-            $ts    = $this->_getDate($data);
+        }
+    }
+
+    public function mongo2json($force = false)
+    {
+        $tss    = $this->_report->getAllBy('timestamp');
+        $master = $total = $yesterday = array();
+
+        foreach($tss as $ts) {
+            $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
+
+            $reports = $this->_report->findBy(null, array('timestamp' => $ts));
+
             $daily = array();
-            foreach ($data as $row) {
-                if (false === $r = $this->_cleanRow($row, $ts)) {
-                    continue;
-                }
-                if(!isset($total[$r['sail']])) {
-                    $total[$r['sail']] = 0;
-                }
-                $total[$r['sail']]+= $r['lastreport_distance'];
-                $r['total_distance']     = $total[$r['sail']];
-                $r['dtl_diff']           = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                $r['color']              = Vg::sailToColor($r['sail']);
+            foreach($reports as $r) {
+                unset($r['_id']);
                 $daily[$r['sail']]       = $r;
-                $yesterday[$r['sail']]   = $r;
                 $master[$r['sail']][$ts] = $r;
             }
-            echo ' saving data to '.$this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json'.PHP_EOL;
-            file_put_contents($this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json', json_encode($daily));
-        }
-        foreach ($daily as $r) {
-            if(1 == $r['rank']) {
-                $first['lat_dec'] = $r['lat_dec'];
-                $first['lon_dec'] = $r['lon_dec'];
+
+            if(true === $force || !file_exists($f)) {
+                echo ' saving data to '.$f.PHP_EOL;
+                file_put_contents($f, json_encode($daily));
             }
         }
-
         $this->export2json($master);
         $this->export2kml($master);
     }
@@ -117,6 +136,9 @@ class VgXls
 
     public function export2kml(array $arr = array())
     {
+        if(empty($arr)) {
+            return;
+        }
         $kmlFull = $lineFull = $pointsFull = $lastPosFull = '';
         foreach ($arr as $sail => $partial) {
             $end = end($partial);
@@ -242,7 +264,7 @@ class VgXls
         $coordinates = $this->extractSailsCoordinates($arr);
 
         $line = strtr($this->_line, array(
-            '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
+            '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
             '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
@@ -252,7 +274,7 @@ class VgXls
         foreach($coordinates as $ts => $coordinate) {
             $i++;
             $points[] = strtr($this->_point, array(
-                '%color%'       => self::hexToKml(Vg::sailToColor($info['sail'])),
+                '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
                 '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
@@ -261,7 +283,7 @@ class VgXls
                     '%name%'            => '#'.$info['rank'].' '.$info['skipper'],
                     '%boat%'            => $info['boat'],
                     '%date%'            => date('Y-m-d H:i', $ts),
-                    '%color%'           => '#'.Vg::sailToColor($info['sail']),
+                    '%color%'           => '#'.$this->_misc->getColor($info['sail']),
                     '%1hour_speed%'     => sprintf('%.1f', $info['1hour_speed']),
                     '%24hour_speed%'    => sprintf('%.1f', $info['24hour_speed']),
                     '%1hour_distance%'  => sprintf('%.1f', $info['1hour_distance']),
@@ -283,17 +305,7 @@ class VgXls
         );
     }
 
-    private function _getDate($data)
-    {
-        $date = $data[2][1];
-        // Classement du 21/11/2012 à 04:00:00 UTC
-        $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) UTC';
-        preg_match('|'.$s.'|s', $date, $match);
-
-        return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
-    }
-
-    private function _cleanRow($row, $ts)
+    private function _cleanRow($row, $ts, $file)
     {
         $rank = trim(trim($row[1]), ' ');
         if ('RET' == $rank) {
@@ -380,27 +392,29 @@ class VgXls
             'sail'                => trim($sail),
             'skipper'             => str_replace('  ', ' ', trim($sailor)),
             'boat'                => trim($boat),
+            'source'              => basename($file),
 
             'time'                => 0,
             'date'                => date('Y-m-d', $ts),
+            'id'                  => date('Ymd-Hi', $ts),
             'timestamp'           => $ts,
 
-            'lat_dms'             => '-',
-            'lon_dms'             => '-',
-            'lat_dec'             => '-',
-            'lon_dec'             => '-',
+            'lat_dms'             => 0,
+            'lon_dms'             => 0,
+            'lat_dec'             => 0,
+            'lon_dec'             => 0,
 
-            '1hour_heading'       => '-',
+            '1hour_heading'       => 0,
             '1hour_speed'         => 0,
             '1hour_vmg'           => 0,
             '1hour_distance'      => 0,
 
-            'lastreport_heading'  => '-',
+            'lastreport_heading'  => 0,
             'lastreport_speed'    => 0,
             'lastreport_vmg'      => 0,
             'lastreport_distance' => 0,
 
-            '24hour_heading'      => '-',
+            '24hour_heading'      => 0,
             '24hour_speed'        => 0,
             '24hour_vmg'          => 0,
             '24hour_distance'     => 0,
@@ -410,48 +424,69 @@ class VgXls
         );
 
         if(null !== $row[4]) {
+            $_ts = $this->_getArrivalDate($row[4]);
+
+            $ret['timestamp'] = $_ts;
+            $ret['time'] = date('H:i', $_ts);
+            $ret['date'] = date('Y-m-d', $_ts);
+            $ret['lat_dms'] = self::DECtoDMS($this->arrLat);
+            $ret['lon_dms'] = self::DECtoDMS($this->arrLon);
+            $ret['lat_dec'] = $this->arrLat;
+            $ret['lon_dec'] = $this->arrLon;
+
+            $ret['has_arrived'] = true;
+
             return $ret;
         }
+
         if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
             $time[0] = 0;
         }
+        $ret['time'] = $time[0];
+        // $ret['id']   = date('Ymd', $ts).'-'.$time[0];
 
-        $ret = array(
-            'rank'                => (int) $rank,
-            'country'             => trim($coun),
-            'sail'                => trim($sail),
-            'skipper'             => str_replace('  ', ' ', trim($sailor)),
-            'boat'                => trim($boat),
+        $ret['lat_dms'] = trim($row[6]);
+        $ret['lon_dms'] = trim($row[7]);
+        $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[6])));
+        $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[7])));
 
-            'time'                => $time[0],
-            'date'                => date('Y-m-d', $ts),
-            'timestamp'           => $ts,
+        $ret['1hour_heading']  = (int) trim($row[8], '°');
+        $ret['1hour_speed']    = (float) trim($row[9], ' kts');
+        $ret['1hour_vmg']      = (float) trim($row[10], ' kts');
+        $ret['1hour_distance'] = (float) trim($row[11], ' nm');
 
-            'lat_dms'             => trim($row[6]),
-            'lon_dms'             => trim($row[7]),
-            'lat_dec'             => self::DMStoDEC(self::strtoDMS(trim($row[6]))),
-            'lon_dec'             => self::DMStoDEC(self::strtoDMS(trim($row[7]))),
+        $ret['lastreport_heading']  = (int) trim($row[12], '°');
+        $ret['lastreport_speed']    = (float) trim($row[13], ' kts');
+        $ret['lastreport_vmg']      = (float) trim($row[14], ' kts');
+        $ret['lastreport_distance'] = (float) trim($row[15], ' nm');
 
-            '1hour_heading'       => (int) trim($row[8], '°'),
-            '1hour_speed'         => (float) trim($row[9], ' kts'),
-            '1hour_vmg'           => (float) trim($row[10], ' kts'),
-            '1hour_distance'      => (float) trim($row[11], ' nm'),
+        $ret['24hour_heading']  = (int) trim($row[16], '°');
+        $ret['24hour_speed']    = (float) trim($row[17], ' kts');
+        $ret['24hour_vmg']      = (float) trim($row[18], ' kts');
+        $ret['24hour_distance'] = (float) trim($row[19], ' nm');
 
-            'lastreport_heading'  => (int) trim($row[12], '°'),
-            'lastreport_speed'    => (float) trim($row[13], ' kts'),
-            'lastreport_vmg'      => (float) trim($row[14], ' kts'),
-            'lastreport_distance' => (float) trim($row[15], ' nm'),
-
-            '24hour_heading'      => (int) trim($row[16], '°'),
-            '24hour_speed'        => (float) trim($row[17], ' kts'),
-            '24hour_vmg'          => (float) trim($row[18], ' kts'),
-            '24hour_distance'     => (float) trim($row[19], ' nm'),
-
-            'dtf'                 => (float) trim($row[20], ' nm'),
-            'dtl'                 => (float) trim($row[21], ' nm'),
-        );
+        $ret['dtf'] = (float) trim($row[20], ' nm');
+        $ret['dtl'] = (float) trim($row[21], ' nm');
 
         return $ret;
+    }
+
+    private function _getArrivalDate($date)
+    {
+        $s = ".*? : (.*?)/(.*?)/(.*?) (.*?) UTC .*?";
+        preg_match('|'.$s.'|s', $date, $match);
+
+        return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
+    }
+
+    private function _getDate($data)
+    {
+        $date = $data[2][1];
+        // Classement du 21/11/2012 à 04:00:00 UTC
+        $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) UTC';
+        preg_match('|'.$s.'|s', $date, $match);
+
+        return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
     }
 
     /**
@@ -487,13 +522,28 @@ class VgXls
     public static function DMStoDEC(array $arr = array())
     {
         $ret = $arr['deg'] + ( ( ($arr['min']*60) + $arr['sec'] ) / 3600 );
-        if ('S' === $arr['dir'] || 'W' === $arr['dir']) {
+        if (isset($arr['dir']) && ('S' === $arr['dir'] || 'W' === $arr['dir'])) {
             return -$ret;
         }
 
         return $ret;
     }
 
+    public static function DECtoDMS($dec) {
+        $vars   = explode('.',$dec);
+        $deg    = $vars[0];
+        $tempma = '0.'.$vars[1];
+        $tempma = $tempma * 3600;
+        $min    = floor($tempma / 60);
+        $sec    = $tempma - ($min*60);
+
+        return $deg.'°'.$min.'.'.round($sec);
+        return array(
+            'deg' => $deg,
+            'min' => $min,
+            'sec' => $sec,
+        );
+    }
 
     public function extractSailsCoordinates(array $arr = array())
     {
@@ -504,32 +554,6 @@ class VgXls
 
         return $ret;
     }
-
-    public static function hexToKml($color, $aa = 'ff')
-    {
-        $rr = substr($color, 0, 2);
-        $gg = substr($color, 2, 2);
-        $bb = substr($color, 4, 2);
-        return strtolower($aa.$bb.$gg.$rr);
-    }
-
-    public static function hexToRgb($color)
-    {
-        $rgb = array();
-        for ($x=0;$x<3;$x++) {
-            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
-        }
-        return $rgb;
-    }
-
-    public static function kmlToRgb($color)
-    {
-        $rr = substr($color, 6, 2);
-        $gg = substr($color, 4, 2);
-        $bb = substr($color, 2, 2);
-        return strtolower($rr.$gg.$bb);
-    }
-
 
     public $_kml = '<?xml version="1.0" encoding="utf-8" ?>
 <kml xmlns="http://www.opengis.net/kml/2.2"

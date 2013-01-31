@@ -13,6 +13,13 @@ use Silex\Provider\TwigServiceProvider;
 
 use Kud\Silex\Provider\TmhOAuthServiceProvider;
 
+function ldd($a) {
+    var_export($a);die;
+}
+function ld($a) {
+    var_export($a);
+}
+
 class MyApp extends Silex\Application
 {
     // use Silex\Application\TwigTrait;
@@ -68,38 +75,54 @@ $app['imagine'] = $app->share(function ($app) {
     return new $class();
 });
 
+$app['mongo'] = $app->share(function($app) {
+    return new \MongoClient();
+});
+
+$app['repo.report'] = $app->share(function($app) {
+    return new Repository\Report($app['mongo']);
+});
+$app['repo.sail'] = $app->share(function($app) {
+    return new Repository\Sail($app['mongo']);
+});
+
+$app['sk'] = $app['repo.sail']->findBy('sail');
+
+$app['misc'] = $app->share(function($app) {
+    return new Util\Misc(
+        $app['sk']
+    );
+});
 
 $app['srv.vg'] = $app->share(function($app) {
-    return new Service\Vg($app['config']['xlsDir'], $app['config']['docRoot'], $app['config']['jsonDir']);
+    return new Service\Vg(
+        $app['config']['xlsDir'],
+        $app['config']['docRoot'],
+        $app['config']['jsonDir'],
+        $app['repo.report']
+    );
 });
 
 $app['srv.vgxls'] = $app->share(function($app) {
-    return new Service\VgXls($app['config']['xlsDir'], $app['config']['jsonDir']);
+    return new Service\VgXls(
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race']['arrival_lat'],
+        $app['race']['arrival_lon'],
+        $app['race']['arrival']
+    );
 });
 
-$app['misc'] = $app->share(function($app) {
-    return new Util\Misc();
-});
 
 // --- Before
 $app->before(function(Request $request) use ($app) {
-
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
     setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
     if('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
-    /*
-    $app['html'] = $app->share(function($app) {
-        return new Util\HtmlHelper();
-    });
-    */
-
-    $reports     = $app['srv.vg']->listJson('reports');
-    $first       = str_replace('/json', '', end($reports));
-    $firstReport = $app['srv.vg']->parseJson($first);
-    $app['sk']   = $app['srv.vg']->getSailSkipper($firstReport);
-
     $app['twig']->addGlobal('sk', $app['sk']);
     $app['twig']->addGlobal('debug', $app['debug']);
     $app['twig']->addGlobal('assets_local', $app['assets.local']);

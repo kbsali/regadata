@@ -5,7 +5,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app = require __DIR__.'/bootstrap.php';
 
-// REDIRECT OLD URLS (indexed by search engines)
+// ---- /REDIRECT OLD URLS (indexed by search engines)
 $app->get('/reports/{id}', function ($id) use ($app) {
     $u = $app['url_generator']->generate('report', array('id' => $id));
     return $app->redirect($u, 301);
@@ -22,6 +22,23 @@ $app->get('/{_locale}/compare', function (Request $request) use ($app) {
     $u = $app['url_generator']->generate('sail', array('ids' => $request->get('sail1').'-'.$request->get('sail2')));
     return $app->redirect($u, 301);
 });
+// ---- \REDIRECT OLD URLS (indexed by search engines)
+
+$app->get('/{_locale}/map', function () use ($app) {
+    return $app['twig']->render('map/map.html.twig', array());
+})->bind('map');
+
+$app->get('/{_locale}/doc/json', function () use ($app) {
+    return $app['twig']->render('doc/json.html.twig', array());
+})->bind('doc_json');
+
+$app->get('/doc/json-format', function () use ($app) {
+    return $app['twig']->render('doc/json-format.html.twig', array());
+})->bind('doc_format');
+
+$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
+$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
+$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     $feed = new Suin\RSSWriter\Feed();
@@ -36,20 +53,19 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
     ;
-    $reports = $app['srv.vg']->getReportsById(
-        $app['srv.vg']->listJson('reports')
-    );
-    foreach ($reports as $report => $ts) {
+    $reports = $app['repo.report']->getAllBy('timestamp', true);
+
+    foreach ($reports as $ts) {
         $item = new Suin\RSSWriter\Item();
         $item
             ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
             // ->description("<div>Blog body</div>")
 
             // ->url($app->url('report', array('id' => $report)))
-            ->url($app['url_generator']->generate('report', array('id' => $report), true))
+            ->url($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true))
 
             // ->guid($app->url('report', array('id' => $report)), true)
-            ->guid($app['url_generator']->generate('report', array('id' => $report), true), true)
+            ->guid($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true), true)
 
             ->pubDate($ts)
             ->appendTo($channel)
@@ -59,70 +75,60 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     return new Response($feed, 200, array('Content-Type' => 'application/rss+xml'));
 })->bind('reports_rss');
 
-$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
-$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
-$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
-
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
-    $reports = $app['srv.vg']->listJson('reports');
+    $reports = $app['repo.report']->getAllBy('id', true);
+
     if ('latest' === $id) {
-        $id = str_replace(array('/json/reports/', '.json'), '', $reports[0]);
+        $id = $reports[0];
     }
-    $idx = array_search('/json/reports/'.$id.'.json', $app['srv.vg']->listJson('reports'));
+    if (false === preg_match("|(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})|", $id, $time)) {
+        return false;
+    }
+    $ts = strtotime($time[1].'-'.$time[2].'-'.$time[3].' '.$time[4].':'.$time[5]);
+
+
+    // --- /PAGINATION
+    $idx = array_search($id, $reports);
 
     $prev = null;
     if (isset($reports[$idx + 1])) {
-        $file = $reports[$idx + 1];
-        $prev = str_replace(array('/json', '.json'), '', $file);
+        $prev = $reports[$idx + 1];
     }
     $next = null;
     if (isset($reports[$idx - 1])) {
-        $file = $reports[$idx - 1];
-        $next = str_replace(array('/json', '.json'), '', $file);
+        $next = $reports[$idx - 1];
     }
-    $last  = str_replace(array('/json', '.json'), '', $reports[0]);
-    $first = str_replace(array('/json', '.json'), '', end($reports));
+    $last  = reset($reports);
+    $first = end($reports);
+    $pagination = array(
+        'first'   => $first,
+        'prev'    => $prev,
+        'next'    => $next,
+        'last'    => $last,
+        'current' => abs(count($reports) - $idx),
+        'total'   => count($reports),
+    );
+    // --- \PAGINATION
 
-    $report = $app['srv.vg']->parseJson('/reports/'.$id.'.json');
+    $report1 = $app['repo.report']->findBy(null, array('timestamp' => $ts));
+    $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
+    $report = $report2+$report1;
 
     return $app['twig']->render('reports/reports.html.twig', array(
-        'r'          => current($report),
+        'ts'         => $ts,
         'report'     => $report,
-        'source'     => '/json/reports/'.$id.'.json',
+        'source'     => $app['url_generator']->generate('reports_json', array('id' => $id)),
         'start_date' => strtotime($app['config']['start_date']),
         'full'       => null !== $request->get('full'),
-
-        'pagination' => array(
-            'first'   => $first,
-            'prev'    => $prev,
-            'next'    => $next,
-            'last'    => $last,
-            'current' => abs(count($reports) - $idx),
-            'total'   => count($reports),
-        )
+        'pagination' => $pagination,
     ));
 })->bind('report');
 
-$app->get('/{_locale}/map', function () use ($app) {
-    return $app['twig']->render('map/map.html.twig', array());
-})->bind('map');
-
-$app->get('/{_locale}/doc/json', function () use ($app) {
-    return $app['twig']->render('doc/json.html.twig', array());
-})->bind('doc_json');
-
-$app->get('/doc/json-format', function () use ($app) {
-    return $app['twig']->render('doc/json-format.html.twig', array());
-})->bind('doc_format');
-
 $app->get('/{_locale}/about', function () use ($app) {
-    $reports     = $app['srv.vg']->listJson('reports');
-    $first       = str_replace('/json', '', end($reports));
-    $firstReport = $app['srv.vg']->parseJson($first);
+    $reports = $app['repo.report']->getAllBy('timestamp', true);
 
     return $app['twig']->render('about.html.twig', array(
-        'rndSail' => array_rand($app['sk']),
-        'reports' => $app['srv.vg']->getReportsById($reports),
+        'reports' => $reports,
     ));
 })->bind('about');
 
@@ -132,9 +138,12 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
 
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
+            if(!$info['info']) {
+                continue;
+            }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
 
-            $c = 'rgb('.join(',',$app['srv.vgxls']::hexToRgb($app['srv.vg']::sailToColor($info['info']['sail']))).')';
+            $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))).')';
             $infos[] = array(
                 'info'             => $info['info'],
                 'rank'             => json_encode(array('label' => $info['info']['skipper'], 'color' => $c, 'data' => $info['rank'])),
@@ -157,16 +166,13 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
     $sitemap->setPath(__DIR__.'/../web/xml/');
 
-    $reports = $app['srv.vg']->getReportsById(
-        $app['srv.vg']->listJson('reports')
-    );
-    $sails = $app['sk'];
+    $reports = $app['repo.report']->getAllBy('id', true);
 
     // Routes NOT requiring _locale param
     $arrNoLocle = array(
-        'reports_json' => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 0.5, 'freq' => 'daily'),
-        'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.5, 'freq' => 'hourly'),
-        'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.8, 'freq' => 'hourly'),
+        'reports_json' => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 0.5, 'freq' => 'daily'),
+        'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.5, 'freq' => 'hourly'),
+        'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.8, 'freq' => 'hourly'),
         'doc_format'   => array('idx' => array(), 'prio' => 0.5, 'freq' => 'monthly'),
         'homepage'     => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
@@ -186,11 +192,11 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     // Routes REQUIRING _locale param
     $arrLocle = array(
         'reports_rss' => array('idx' => array(), 'prio' => 0.7, 'freq' => 'hourly'),
-        'report'      => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 1, 'freq' => 'hourly'),
+        'report'      => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 1, 'freq' => 'hourly'),
         'map'         => array('idx' => array(), 'prio' => 0.8, 'freq' => 'daily'),
         'doc_json'    => array('idx' => array(), 'prio' => 0.2, 'freq' => 'monthly'),
         'about'       => array('idx' => array(), 'prio' => 0.6, 'freq' => 'hourly'),
-        'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($sails)), 'prio' => 1, 'freq' => 'hourly'),
+        'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($app['sk'])), 'prio' => 1, 'freq' => 'hourly'),
         '_homepage'   => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
     foreach($arrLocle as $route => $params) {

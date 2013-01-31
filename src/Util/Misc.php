@@ -4,6 +4,35 @@ namespace Util;
 
 class Misc
 {
+    private $skippers;
+
+    public function __construct(array $skippers = array())
+    {
+        $this->skippers = $skippers;
+    }
+
+    public function getTwitter($skipper)
+    {
+        if(!isset($this->skippers[$skipper])) {
+            return false;
+        }
+        if(!isset($this->skippers[$skipper]['twitter'])) {
+            return $this->skippers[$skipper]['skipper'];
+        }
+        return '@'.$this->skippers[$skipper]['twitter'];
+    }
+
+    public function getColor($skipper)
+    {
+        if(!isset($this->skippers[$skipper])) {
+            return false;
+        }
+        if(!isset($this->skippers[$skipper]['color'])) {
+            return 'fff';
+        }
+        return $this->skippers[$skipper]['color'];
+    }
+
     public static function sitemapPing($url, $debug = false)
     {
         $pings = array(
@@ -19,6 +48,30 @@ class Misc
                 system($cmd);
             }
         }
+    }
 
+    public static function hexToRgb($color)
+    {
+        $rgb = array();
+        for ($x=0;$x<3;$x++) {
+            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
+        }
+        return $rgb;
+    }
+
+    public function hexToKml($color, $aa = 'ff')
+    {
+        $rr = substr($color, 0, 2);
+        $gg = substr($color, 2, 2);
+        $bb = substr($color, 4, 2);
+        return strtolower($aa.$bb.$gg.$rr);
+    }
+
+    public static function kmlToRgb($color)
+    {
+        $rr = substr($color, 6, 2);
+        $gg = substr($color, 4, 2);
+        $bb = substr($color, 2, 2);
+        return strtolower($rr.$gg.$bb);
     }
 }

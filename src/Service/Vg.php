@@ -4,14 +4,15 @@ namespace Service;
 
 class Vg
 {
-    public $xlsDir, $docRoot, $jsonDir;
+    public $xlsDir, $docRoot, $jsonDir, $_report;
 
-    public function __construct($xlsDir, $docRoot, $jsonDir)
+    public function __construct($xlsDir, $docRoot, $jsonDir, $_report)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->docRoot = $root.$docRoot;
         $this->jsonDir = $root.$jsonDir;
+        $this->_report = $_report;
     }
 
     public function getSailCoordinates($id)
@@ -35,10 +36,9 @@ class Vg
 
     public function getFullSailInfo($id)
     {
-        if (false === $arr = $this->parseJson('/sail/'.$id.'.json')) {
+        if (false === $arr = $this->_report->findBy(null, array('sail' => $id), array('timestamp' => 1))) {
             return false;
         }
-
         return array(
             'info'             => end($arr),
             'rank'             => $this->filterBy($arr, 'rank', 1),
@@ -47,21 +47,6 @@ class Vg
             't24hour_speed'    => $this->filterBy($arr, '24hour_speed', 1),
             'tdtl_diff'        => $this->filterBy($arr, 'dtl_diff', 1),
         );
-    }
-
-    public function getSailSkipper($report)
-    {
-        $ret = array();
-        foreach ($report as $sail => $info) {
-            $ret[$sail] = array(
-                'skipper' => $info['skipper'],
-                'boat'    => $info['boat'],
-                'color'   => self::sailToColor($info['sail'])
-            );
-        }
-        asort($ret);
-
-        return $ret;
     }
 
     public function getReportsById($reports)
@@ -129,12 +114,12 @@ class Vg
     {
         $i = 0;
         $ret = array();
-        foreach ($arr as $ts => $_arr) {
+        foreach ($arr as $_arr) {
             $i++;
             if ($limitFactor === $i) {
                 $i = 0;
                 $ret[] = array(
-                    (int) $ts*1000, // flot
+                    (int) $_arr['timestamp']*1000, // flot
                     (int) $_arr[$idx], // flot
                     // 'x' => (int) $ts*1000, // nvd3
                     // 'y' => (int) $_arr[$idx] // nvd3
@@ -171,76 +156,5 @@ class Vg
         }
 
         return json_encode($ret);
-    }
-
-    public static function extractMaxByKey($report, $key)
-    {
-        $max = null;
-        foreach ($report as $r) {
-            if(null === $max || $r[$key] > $max[$key]) {
-                $max = $r;
-            }
-        }
-        return $max;
-    }
-
-    public function sailToTwitter($s)
-    {
-        $arr = array(
-            // 'SUI9'
-            // 'POL2'
-            // 'FRA35'
-            // 'FRA25'
-            "FRA19"   => '@VoileBanquePop',
-            'FRA44'   => '@Team_Plastique',
-            'GBR99'   => '@AlexThomson99',
-            'FRA14'   => '@AKENAVerandas60',
-            'SUI2012' => '@Poujoulat_Stamm',
-            'FRA62'   => '@BertranddeBroc',
-            'FRA301'  => '@francoisgabart', // '@Macif60',
-            'ESP4'    => '@AccionaSailing',
-            'FRA59'   => '@LeCam_SynerCiel',
-            'FRA06'   => '@Dick_JeanPierre',
-            'FRA001'  => '@JeremieBeyou',
-            'FRA360'  => '@GroupeBel60',
-            'GBR3'    => '@Mike_Golding',
-            'FRA29'   => '@samanthadavies',
-            'FRA72'   => '@TanguyDeLamotte',
-            'FRA85'   => '@Vincent_Riou',
-        );
-        if(!isset($arr[$s])) {
-            return $s;
-        }
-        return $arr[$s];
-    }
-
-    public static function sailToColor($s)
-    {
-        $arr = array(
-            "FRA19"   => '9ba5bd', // '061e5a',
-            'FRA44'   => '558a42',
-            'GBR99'   => '06040f',
-            'FRA14'   => '12cf10',
-            'SUI2012' => 'fac200',
-            'FRA62'   => 'bf9c7c',
-            'SUI9'    => '013983',
-            'FRA301'  => '0b2e82',
-            'ESP4'    => 'd01f27',
-            'FRA59'   => '9ea1a2', // '0d1517',
-            'FRA06'   => '3399c1',
-            'FRA001'  => 'f10200',
-            'FRA360'  => 'a71e2e',
-            'FRA35'   => '1e9436',
-            'FRA25'   => 'eb6c39',
-            'GBR3'    => 'a5ad00',
-            'FRA29'   => '65ac36',
-            'FRA72'   => 'cc0107',
-            'FRA85'   => 'fe640a',
-            'POL2'    => 'c86347',
-        );
-        if(!isset($arr[$s])) {
-            return $s;
-        }
-        return $arr[$s];
     }
 }
