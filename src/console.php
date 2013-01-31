@@ -8,14 +8,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 $console = new Application('VG2021', '0.1');
 
 $console
-    ->register('vg:mongo')
-    ->setDescription('...')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $r = $app['mongo']->regatta->reports;
-    })
-;
-
-$console
     ->register('vg:sails2mongo')
     ->setDescription('exports sails CSV to mongo')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
