@@ -166,16 +166,13 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
     $sitemap->setPath(__DIR__.'/../web/xml/');
 
-    $reports = $app['srv.vg']->getReportsById(
-        $app['srv.vg']->listJson('reports')
-    );
-    $sails = $app['sk'];
+    $reports = $app['repo.report']->getAllBy('id', true);
 
     // Routes NOT requiring _locale param
     $arrNoLocle = array(
-        'reports_json' => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 0.5, 'freq' => 'daily'),
-        'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.5, 'freq' => 'hourly'),
-        'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($sails)), 'prio' => 0.8, 'freq' => 'hourly'),
+        'reports_json' => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 0.5, 'freq' => 'daily'),
+        'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.5, 'freq' => 'hourly'),
+        'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.8, 'freq' => 'hourly'),
         'doc_format'   => array('idx' => array(), 'prio' => 0.5, 'freq' => 'monthly'),
         'homepage'     => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
@@ -195,11 +192,11 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     // Routes REQUIRING _locale param
     $arrLocle = array(
         'reports_rss' => array('idx' => array(), 'prio' => 0.7, 'freq' => 'hourly'),
-        'report'      => array('idx' => array('k' => 'id', 'v' => array_keys($reports)), 'prio' => 1, 'freq' => 'hourly'),
+        'report'      => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 1, 'freq' => 'hourly'),
         'map'         => array('idx' => array(), 'prio' => 0.8, 'freq' => 'daily'),
         'doc_json'    => array('idx' => array(), 'prio' => 0.2, 'freq' => 'monthly'),
         'about'       => array('idx' => array(), 'prio' => 0.6, 'freq' => 'hourly'),
-        'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($sails)), 'prio' => 1, 'freq' => 'hourly'),
+        'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($app['sk'])), 'prio' => 1, 'freq' => 'hourly'),
         '_homepage'   => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
     foreach($arrLocle as $route => $params) {
