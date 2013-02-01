@@ -44,7 +44,9 @@
                         {% endif %}
                             </span>
                         </h3>
+                        {% if '' != info.info.twitter %}
                         <a class="btn btn-mini" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
+                        {% endif %}
                     </td>
                     <td colspan="2">
                         <div class="progress">
