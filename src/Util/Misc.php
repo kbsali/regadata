@@ -11,7 +11,7 @@ class Misc
         $this->skippers = $skippers;
     }
 
-    public function getTwitter($skipper)
+    public function getTwitter($skipper, $noAt = false)
     {
         if(!isset($this->skippers[$skipper])) {
             return false;
@@ -19,7 +19,7 @@ class Misc
         if(!isset($this->skippers[$skipper]['twitter'])) {
             return $this->skippers[$skipper]['skipper'];
         }
-        return '@'.$this->skippers[$skipper]['twitter'];
+        return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
     }
 
     public function getColor($skipper)

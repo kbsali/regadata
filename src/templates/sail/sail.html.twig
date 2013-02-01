@@ -25,7 +25,7 @@
                                 <span class="latitude"><span class="value-title" title="{{ info.info.lat_dec }}"></span></span>
                                 <span class="longitude"><span class="value-title" title="{{ info.info.lon_dec }}"></span></span>
                         {% if loop.index0 == 0 %}
-                            <i class="icon-sign-blank" style="color: #{{ info.info.color }}"></i> #{{ info.info.rank }} {{ info.info.skipper }}
+                            #{{ info.info.rank }} <i class="icon-sign-blank" style="color: #{{ info.info.color }}"></i> {{ info.info.skipper }}
                         {% else %}
                             {# two sails compared #}
                             #{{ info.info.rank }}
@@ -44,6 +44,7 @@
                         {% endif %}
                             </span>
                         </h3>
+                        <a class="btn btn-mini" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
                     </td>
                     <td colspan="2">
                         <div class="progress">
@@ -64,7 +65,7 @@
                     <th>{{ 'Heading'|trans }}</th>
                     <td>{{ info.info['1hour_heading'] }}&deg;</td>
                     <th>{{ 'Coordinates'|trans }}</th>
-                    <td>{{ info.info.lat_dms }} - {{ info.info.lon_dms }}</td>
+                    <td>{{ info.info.lat_dms }} / {{ info.info.lon_dms }}</td>
                 </tr>
                 <tr>
                     <th>{{ 'Distance to finish'|trans }}</th>

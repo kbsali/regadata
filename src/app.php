@@ -142,6 +142,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
                 continue;
             }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
+            $info['info']['twitter'] = $app['misc']->getTwitter($info['info']['sail'], true);
 
             $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))).')';
             $infos[] = array(
