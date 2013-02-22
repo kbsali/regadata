@@ -13,7 +13,6 @@
 {% endif %}
 
 {% block container_content %}
-
     <div class="row-fluid">
         {% for info in infos %}
         <div class="span6 sail">
@@ -155,64 +154,66 @@
         </div>
     </div>
     #}
+{% endblock %}
 
-    <script type="text/javascript">
-    $(function() {
-        var data, $rank = $("#rank"), $dtl = $("#dtl"), $24hour_distance = $("#24hour_distance"), $24hour_speed = $("#24hour_speed"), $dtl_diff = $("dtl_diff");
-        var options = {
-            series: {
-                lines: {
-                    steps: false
-                }
-            },
-            xaxis: {
-                mode: 'time',
-                timezone: 'browser'
-            },
-            yaxis: {
-                min: 1,
-            },
-            legend: {
-                backgroundOpacity: 0,
-                noColumns: 2
+{% block extra_js %}
+<script type="text/javascript">
+$(function() {
+    var data, $rank = $("#rank"), $dtl = $("#dtl"), $24hour_distance = $("#24hour_distance"), $24hour_speed = $("#24hour_speed"), $dtl_diff = $("dtl_diff");
+    var options = {
+        series: {
+            lines: {
+                steps: false
             }
-        };
+        },
+        xaxis: {
+            mode: 'time',
+            timezone: 'browser'
+        },
+        yaxis: {
+            min: 1,
+        },
+        legend: {
+            backgroundOpacity: 0,
+            noColumns: 2
+        }
+    };
 
-        data = [];
-        {% for info in infos %}
-        data.push({{ info.dtl|raw }});
-        {% endfor %}
-        $.plot($dtl, data, options);
+    data = [];
+    {% for info in infos %}
+    data.push({{ info.dtl|raw }});
+    {% endfor %}
+    $.plot($dtl, data, options);
 
-        data = [];
-        {% for info in infos %}
-        data.push({{ info.t24hour_distance|raw }});
-        {% endfor %}
-        $.plot($24hour_distance, data, options);
+    data = [];
+    {% for info in infos %}
+    data.push({{ info.t24hour_distance|raw }});
+    {% endfor %}
+    $.plot($24hour_distance, data, options);
 
-        data = [];
-        {% for info in infos %}
-        data.push({{ info.t24hour_speed|raw }});
-        {% endfor %}
-        $.plot($24hour_speed, data, options);
-        {#
-        data = [];
-        {% for info in infos %}
-        data.push({{ info.tdtl_diff|raw }});
-        {% endfor %}
-        $.plot($dtl_diff, data, options);
-        #}
+    data = [];
+    {% for info in infos %}
+    data.push({{ info.t24hour_speed|raw }});
+    {% endfor %}
+    $.plot($24hour_speed, data, options);
+    {#
+    data = [];
+    {% for info in infos %}
+    data.push({{ info.tdtl_diff|raw }});
+    {% endfor %}
+    $.plot($dtl_diff, data, options);
+    #}
 
-        options.yaxis.transform = function (v) { return -v; };
-        options.yaxis.tickSize = 2;
-        options.yaxis.ticks = 1;
-        options.yaxis.max = 20;
-        options.series.lines.steps = true;
-        data = [];
-        {% for info in infos %}
-        data.push({{ info.rank|raw }});
-        {% endfor %}
-        $.plot($rank, data, options);
-    });
-    </script>
+    options.yaxis.transform = function (v) { return -v; };
+    options.yaxis.tickSize = 2;
+    options.yaxis.ticks = 1;
+    options.yaxis.max = 20;
+    options.series.lines.steps = true;
+    data = [];
+    {% for info in infos %}
+    data.push({{ info.rank|raw }});
+    {% endfor %}
+    $.plot($rank, data, options);
+});
+</script>
 {% endblock %}

@@ -1,7 +1,6 @@
 {% set bodyId = bodyId|default('normal') %}
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
-
 <!doctype html>
 <html class="no-js" lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/WebPage">
 <head>
@@ -19,7 +18,9 @@
     <meta property="og:type" content="website">
     <meta property="og:url" content="http://vg2012.saliou.name{{ app.request.getRequestURI() }}">
     <meta property="og:description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
+    <meta property="og:image" content="http://vg2012.saliou.name/img/logo.png">
     <meta itemprop="image" content="http://vg2012.saliou.name/img/logo.png">
+    {% block extra_meta_tags %}{% endblock %}
     <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
@@ -47,10 +48,6 @@
     <link rel="stylesheet" href="/css/style.css?2">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
-    <script type="text/javascript">window.jQuery || document.write('<script src="/js/jquery.min.js">\x3C/script>')</script>
-    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-    <script type="text/javascript">window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 </head>
 <body id="{{ bodyId }}">
     {% set active = active|default(null) %}
@@ -67,6 +64,11 @@
             </p>
         </footer>
     </div>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript">window.jQuery || document.write('<script src="/js/jquery.min.js">\x3C/script>')</script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script type="text/javascript">window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 
     {% if assets_local == true %}
         <script src="/js/bootstrap.min.js"></script>
