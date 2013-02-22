@@ -15,6 +15,48 @@ class Report
         $this->_col->ensureIndex(array('sail' => 1, 'timestamp' => 1), array('unique' => true));
     }
 
+    public function schema()
+    {
+        $ret = array(
+            'rank'                => 0,
+            'country'             => null,
+            'sail'                => null,
+            'skipper'             => null,
+            'boat'                => null,
+            'source'              => null,
+
+            'id'                  => null,
+            'time'                => 0,
+            'date'                => null,
+            'timestamp'           => 0,
+
+            'lat_dms'             => 0,
+            'lon_dms'             => 0,
+            'lat_dec'             => 0,
+            'lon_dec'             => 0,
+
+            '1hour_heading'       => 0,
+            '1hour_speed'         => 0,
+            '1hour_vmg'           => 0,
+            '1hour_distance'      => 0,
+
+            'lastreport_heading'  => 0,
+            'lastreport_speed'    => 0,
+            'lastreport_vmg'      => 0,
+            'lastreport_distance' => 0,
+
+            '24hour_heading'      => 0,
+            '24hour_speed'        => 0,
+            '24hour_vmg'          => 0,
+            '24hour_distance'     => 0,
+
+            'dtf'                 => 0,
+            'dtl'                 => 0,
+        );
+
+        return $ret;
+    }
+
     public function insert(array $r = array(), $force = false)
     {
         if(empty($r)) {

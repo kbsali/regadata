@@ -386,42 +386,17 @@ class VgXls
         list($coun, $sail)   = explode(PHP_EOL, trim($row[2]));
         list($sailor, $boat) = explode(PHP_EOL, trim($row[3]));
 
-        $ret = array(
-            'rank'                => (int) $rank,
-            'country'             => trim($coun),
-            'sail'                => trim($sail),
-            'skipper'             => str_replace('  ', ' ', trim($sailor)),
-            'boat'                => trim($boat),
-            'source'              => basename($file),
+        $ret = $this->_report->schema();
+        $ret['rank']      = (int) $rank;
+        $ret['country']   = trim($coun);
+        $ret['sail']      = trim($sail);
+        $ret['skipper']   = str_replace('  ', ' ', trim($sailor));
+        $ret['boat']      = trim($boat);
+        $ret['source']    = basename($file);
 
-            'time'                => 0,
-            'date'                => date('Y-m-d', $ts),
-            'id'                  => date('Ymd-Hi', $ts),
-            'timestamp'           => $ts,
-
-            'lat_dms'             => 0,
-            'lon_dms'             => 0,
-            'lat_dec'             => 0,
-            'lon_dec'             => 0,
-
-            '1hour_heading'       => 0,
-            '1hour_speed'         => 0,
-            '1hour_vmg'           => 0,
-            '1hour_distance'      => 0,
-
-            'lastreport_heading'  => 0,
-            'lastreport_speed'    => 0,
-            'lastreport_vmg'      => 0,
-            'lastreport_distance' => 0,
-
-            '24hour_heading'      => 0,
-            '24hour_speed'        => 0,
-            '24hour_vmg'          => 0,
-            '24hour_distance'     => 0,
-
-            'dtf'                 => 0,
-            'dtl'                 => 0,
-        );
+        $ret['id']        = date('Ymd-Hi', $ts);
+        $ret['date']      = date('Y-m-d', $ts);
+        $ret['timestamp'] = $ts;
 
         if(null !== $row[4]) {
             $_ts = $this->_getArrivalDate($row[4]);
