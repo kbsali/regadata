@@ -1,0 +1,3 @@
+Sitemap: http://vg2012.saliou.name/xml/sitemap-index.xml
+User-agent: *
+Disallow:
