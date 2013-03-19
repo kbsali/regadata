@@ -118,7 +118,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         'ts'         => $ts,
         'report'     => $report,
         'source'     => $app['url_generator']->generate('reports_json', array('id' => $id)),
-        'start_date' => strtotime($app['config']['start_date']),
+        'start_date' => strtotime($app['race']['start_date']),
         'full'       => null !== $request->get('full'),
         'pagination' => $pagination,
     ));
@@ -141,7 +141,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
             if(!$info['info']) {
                 continue;
             }
-            $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
+            $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['race']['start_date']);
             $info['info']['twitter'] = $app['misc']->getTwitter($info['info']['sail'], true);
 
             $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))).')';

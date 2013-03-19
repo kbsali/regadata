@@ -4,14 +4,83 @@ use Symfony\Component\Console\Application;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
 
 $console = new Application('VG2021', '0.1');
 
+// ----------------------- GEO -----------------------
+// ---------------------------------------------------
+$console
+    ->register('geo:dl')
+    ->setDescription('Downloads archives from geovoile')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+
+        $app['srv.geovoile']->download();
+    })
+;
+
+$console
+    ->register('geo:import')
+    ->setDescription('Downloads archives from geovoile')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+
+        $app['srv.geovoile']->parse();
+    })
+;
+// ---------------------------------------------------
+// ---------------------------------------------------
+
+// ----------------------- TBM -----------------------
+// ---------------------------------------------------
+$console
+    ->register('tbm:dl')
+    ->setDescription('Downloads the xls files from transat-bretagnemartinique.com')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('tbm2013');
+
+        foreach ($app['srv.tbmxls']->listMissingXlsx() as $f) {
+            $output->writeln('<info>Downloading '.$f.'</info>');
+            file_put_contents($app['srv.tbmxls']->xlsDir.'/'.$f, file_get_contents('http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement='.$f));
+        }
+        $output->writeln('<info>Done</info>');
+    })
+;
+
+$console
+    ->register('tbm:convert')
+    ->setDescription('Exports xls files to mongo')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('tbm2013');
+
+        $app['srv.tbmxls']->xls2mongo(
+            $input->getOption('file'),
+            $input->getOption('force')
+        );
+    })
+;
+// ---------------------------------------------------
+// ---------------------------------------------------
+
+// ---------------------------------------------------
+// ----------------------- VG  -----------------------
 $console
     ->register('vg:sails2mongo')
     ->setDescription('exports sails CSV to mongo')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-        $s = $app['mongo']->regatta->sails;
+
+        $app->setRace('vg2012');
+
+        // $s = $app['mongo']->regatta->sails;
         $sails = file(__DIR__.'/init/sails_vg2012.csv', FILE_IGNORE_NEW_LINES);
         $header = array();
         foreach ($sails as $sail) {
@@ -32,6 +101,8 @@ $console
     ->setDescription('Downloads the xls files from vendeeglobe.org')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
+        $app->setRace('vg2012');
+
         foreach ($app['srv.vgxls']->listMissingXlsx() as $f) {
             $output->writeln('<info>Downloading '.$f.'</info>');
             file_put_contents($app['srv.vgxls']->xlsDir.'/'.$f, file_get_contents('http://tracking2012.vendeeglobe.org/download/'.$f));
@@ -46,6 +117,9 @@ $console
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
     ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('vg2012');
+
         $app['srv.vgxls']->xls2mongo(
             $input->getOption('file'),
             $input->getOption('force')
@@ -59,6 +133,9 @@ $console
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
     ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('vg2012');
+
         $app['srv.vgxls']->mongo2json(
             $input->getOption('force')
         );
@@ -69,6 +146,8 @@ $console
     ->register('vg:ping_sitemap')
     ->setDescription('Generates sitemaps + Ping sitemap to different search engines!')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('vg2012');
 
         $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['config']['host'].'/gensitemap"';
         $output->writeln('<info>'.$cmd.'</info>');
@@ -105,6 +184,8 @@ $console
     ->register('vg:tweet')
     ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace('vg2012');
 
         $report = $app['repo.report']->getLast();
         $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');

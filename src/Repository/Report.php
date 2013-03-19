@@ -4,20 +4,36 @@ namespace Repository;
 
 class Report
 {
-    private $mongo, $_db, $_col;
+    private $mongo, $_db, $_col, $raceId;
 
-    public function __construct($mongo)
+   public function __construct($mongo, $race = null)
     {
         $this->mongo = $mongo;
-
         $this->_db = $this->mongo->regatta;
-        $this->_col = $this->_db->reports;
-        $this->_col->ensureIndex(array('sail' => 1, 'timestamp' => 1), array('unique' => true));
+        $this->_initDb($race);
+    }
+
+    public function setRace($race)
+    {
+        $this->_initDb($race);
+    }
+
+    private function _initDb($collectionName = null)
+    {
+        if(null === $collectionName) {
+            return false;
+        }
+        $this->raceId = $collectionName;
+        $this->col = $collectionName.'_reports';
+        $this->_col = $this->_db->selectCollection($collectionName.'_reports');
+        $this->_col->ensureIndex(array('race_id' => 1, 'sail' => 1, 'timestamp' => 1), array('unique' => true));
     }
 
     public function schema()
     {
         $ret = array(
+            'race_id'             => $this->raceId,
+
             'rank'                => 0,
             'country'             => null,
             'sail'                => null,
@@ -93,10 +109,7 @@ class Report
     public function getAllBy($key, $reverse = false)
     {
         $tmp = $this->_db
-            ->command(array(
-                'distinct' => 'reports',
-                'key'      => $key
-            ))
+            ->command(array('distinct' => $this->col, 'key' => $key))
         ;
         if($reverse) {
             rsort($tmp['values']);

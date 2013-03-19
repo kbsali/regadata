@@ -4,14 +4,28 @@ namespace Repository;
 
 class Sail
 {
-    private $mongo, $_db, $_col;
+    private $mongo, $_db, $_col, $raceId;
 
-    public function __construct($mongo)
+    public function __construct($mongo, $race = null)
     {
         $this->mongo = $mongo;
-
         $this->_db = $this->mongo->regatta;
-        $this->_col = $this->_db->sails;
+        $this->_initDb($race);
+    }
+
+    public function setRace($race)
+    {
+        $this->_initDb($race);
+    }
+
+    private function _initDb($collectionName = null)
+    {
+        if(null === $collectionName) {
+            return false;
+        }
+        $this->raceId = $collectionName;
+        $this->col = $collectionName.'_sails';
+        $this->_col = $this->_db->selectCollection($collectionName.'_sails');
         $this->_col->ensureIndex(array('sail' => 1), array('unique' => true));
     }
 
@@ -29,7 +43,7 @@ class Sail
     public function getAllBy($key, $reverse = false)
     {
         $tmp = $this->_db
-            ->command(array('distinct' => 'sails', 'key' => $key))
+            ->command(array('distinct' => $this->col, 'key' => $key))
         ;
         if($reverse) {
             rsort($tmp['values']);
