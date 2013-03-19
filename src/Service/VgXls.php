@@ -6,18 +6,16 @@ use Service\Vg;
 
 class VgXls
 {
-    public $xlsDir, $jsonDir, $_report, $_misc, $arrLat, $arrLng, $arrival;
+    public $xlsDir, $jsonDir, $_report, $_misc, $race;
 
-    public function __construct($xlsDir, $jsonDir, $_report, $_misc, $arrLat, $arrLon, $arrival)
+    public function __construct($xlsDir, $jsonDir, $_report, $_misc)
     {
         $root = __DIR__.'/../..';
         $this->xlsDir  = $root.$xlsDir;
         $this->jsonDir = $root.$jsonDir;
         $this->_report = $_report;
         $this->_misc   = $_misc;
-        $this->arrLat  = $arrLat;
-        $this->arrLon  = $arrLon;
-        $this->arrival = $arrival;
+        $this->races   = $races;
     }
 
     public function listMissingXlsx()
@@ -53,8 +51,8 @@ class VgXls
         return strtr($this->_folder, array(
             '%name%'    => 'Departure / Arrival',
             '%content%' => strtr($this->_departure, array(
-                '%name%'        => $this->arrival,
-                '%coordinates%' => $this->arrLon.','.$this->arrLat,
+                '%name%'        => $this->race['arrival'],
+                '%coordinates%' => $this->race['arrLon'].','.$this->race['arrLat'],
             ))
         ));
     }
@@ -87,6 +85,7 @@ class VgXls
                     $r['color']            = $this->_misc->getColor($r['sail']);
                     $yesterday[$r['sail']] = $r;
                     try {
+                        // print_R($this->_report->insert($r, $force));
                         $this->_report->insert($r, $force);
                     } catch (\MongoCursorException $e) {
                         echo $e->getMessage().PHP_EOL;
@@ -404,10 +403,10 @@ class VgXls
             $ret['timestamp'] = $_ts;
             $ret['time'] = date('H:i', $_ts);
             $ret['date'] = date('Y-m-d', $_ts);
-            $ret['lat_dms'] = self::DECtoDMS($this->arrLat);
-            $ret['lon_dms'] = self::DECtoDMS($this->arrLon);
-            $ret['lat_dec'] = $this->arrLat;
-            $ret['lon_dec'] = $this->arrLon;
+            $ret['lat_dms'] = self::DECtoDMS($this->race['arrLat']);
+            $ret['lon_dms'] = self::DECtoDMS($this->race['arrLon']);
+            $ret['lat_dec'] = $this->race['arrLat'];
+            $ret['lon_dec'] = $this->race['arrLon'];
 
             $ret['has_arrived'] = true;
 
@@ -418,7 +417,6 @@ class VgXls
             $time[0] = 0;
         }
         $ret['time'] = $time[0];
-        // $ret['id']   = date('Ymd', $ts).'-'.$time[0];
 
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);
