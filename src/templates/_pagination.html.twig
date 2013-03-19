@@ -1,7 +1,14 @@
+{% if p.prev is not null %}
+    {% set meta_page_prev = '<link rel="prev" href="' ~ url('report', {id: p.prev}) ~ '">' %}
+{% endif %}
+
+{% if p.next is not null %}
+    {% set meta_page_next = '<link rel="next" href="' ~ url('report', {id: p.next}) ~ '">' %}
+{% endif %}
             <div class="pagination pagination-centered">
                 <ul>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '#' : url('report', {id: p.first}) }}">&lt;&lt;</a>
+                        <a href="{{ p.prev is null ? '#' : path('report', {id: p.first}) }}">&lt;&lt;</a>
                     </li>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
                         <a href="{{ p.prev is null ? '/#' : path('report', {id: p.prev}) }}">&lt;</a>
