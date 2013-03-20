@@ -50,6 +50,16 @@ class MyApp extends Silex\Application
                 $this['sk']
             );
         });
+
+        $this['translator'] = $this->share($this->extend('translator', function($translator, $this) {
+            $translator->addLoader('yaml', new YamlFileLoader());
+            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_en.yml', 'en');
+            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_fr.yml', 'fr');
+
+            return $translator;
+        }));
+        $this['translator.domains'] = array();
+
     }
     // use Silex\Application\TwigTrait;
     // use Silex\Application\SecurityTrait;
@@ -73,14 +83,6 @@ $app['tmhoauth.config'] = array(
 // --- Providers
 $app->register(new HttpCacheServiceProvider());
 $app->register(new TranslationServiceProvider());
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-    $translator->addLoader('yaml', new YamlFileLoader());
-    $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
-    $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
-
-    return $translator;
-}));
-$app['translator.domains'] = array();
 
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => __DIR__.'/templates',
