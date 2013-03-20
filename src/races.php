@@ -1,7 +1,8 @@
 <?php
 $app['races'] = array(
     'vg2012' => array(
-        'id'     => 'vg2012',
+        'id'            => 'vg2012',
+        'host'          => 'vg2012.saliou.name',
         'departure'     => "Les Sables-d'Olonne",
         'departure_lat' => '46.4972',
         'departure_lon' => '-1.7833',
@@ -11,9 +12,30 @@ $app['races'] = array(
         'start_date'    => 'saturday 10 november 2012 15:02',
         'parser'        => 'vg',
         'type'          => 'race',
+        'tweetUrlFr'    => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'    => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+    ),
+    'tbm2013' => array(
+        'id'            => 'tbm2013',
+        // 'host'          => 'tbm2013.regadata.org',
+        'host'          => 'tbm2013.saliou.lan',
+        'departure'     => 'Brest',
+        'departure_lat' => '48.390604',
+        'departure_lon' => '-4.486901',
+        'arrival'       => 'Fort-de-France',
+        'arrival_lat'   => '14.603518',
+        'arrival_lon'   => '-61.066818',
+        'start_date'    => 'sunday 17 march 2013 13:00',
+        'url_update'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.update.hwz',
+        'url_static'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz',
+        'parser'        => 'geovoile',
+        'type'          => 'race',
+        'tweetUrlFr'    => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'    => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
     ),
     'guochuansailing-2012' => array(
-        'id'     => 'guochuansailing-2012',
+        'id'            => 'guochuansailing-2012',
+        'host'          => 'guochuansailing-2012.regadata.org',
         'departure'     => 'Sanghai',
         'departure_lat' => '46',
         'departure_lon' => '-1',
@@ -22,13 +44,13 @@ $app['races'] = array(
         'arrival_lon'   => '-1',
         'start_date'    => 'saturday 10 november 2012 15:02',
         'url_update'    => 'http://guochuansailing.geovoile.com/roundtheworld/2012/shared/data/race/update.hwz',
-        'url_update'    => 'http://guochuansailing.geovoile.com/roundtheworld/2012/shared/data/race/update.hwz',
         'url_static'    => 'http://guochuansailing.geovoile.com/roundtheworld/2012/shared/data/race/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
     ),
     'soldini-2012' => array(
-        'id'     => 'soldini-2012',
+        'id'            => 'soldini-2012',
+        'host'          => 'soldini-2012.regadata.org',
         'departure'     => 'New York',
         'departure_lat' => '46',
         'departure_lon' => '-1',
@@ -40,19 +62,5 @@ $app['races'] = array(
         'url_static'    => 'http://soldini.geovoile.com/newyorksanfrancisco/2012/private/data/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
-    ),
-    'tbm2013' => array(
-        'id'     => 'tbm2013',
-        'departure'     => 'Brest',
-        'departure_lat' => '48.390604',
-        'departure_lon' => '-4.486901',
-        'arrival'       => 'Fort-de-France',
-        'arrival_lat'   => '14.603518',
-        'arrival_lon'   => '-61.066818',
-        'start_date'    => 'sunday 17 march 2013 13:00',
-        'url_update'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.update.hwz',
-        'url_static'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz?v=43414423',
-        'parser'        => 'geovoile',
-        'type'          => 'race',
     ),
 );

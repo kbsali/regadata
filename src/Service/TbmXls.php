@@ -168,8 +168,9 @@ class TbmXls
             file_put_contents(
                 $this->jsonDir.'/sail/'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         strtr($this->_folder, array(
                             '%name%'    => 'Trace',
                             '%content%' => $kmlPartial['line']
@@ -195,8 +196,9 @@ class TbmXls
             file_put_contents(
                 $this->jsonDir.'/sail/trace_'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         $kmlPartial['last_pos'].
                         $kmlPartial['line'].
                         $this->kmlDeparture()
@@ -207,8 +209,9 @@ class TbmXls
             file_put_contents(
                 $this->jsonDir.'/sail/points_'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         join(PHP_EOL, $kmlPartial['points']).
                         $this->kmlDeparture()
                 ))
@@ -225,8 +228,9 @@ class TbmXls
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     strtr($this->_folder, array(
                         '%name%'    => 'Trace',
                         '%content%' => $lineFull
@@ -251,8 +255,9 @@ class TbmXls
         echo ' saving FULL data to '.$this->jsonDir.'/trace_FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/trace_FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     strtr($this->_folder, array(
                         '%name%'    => 'Trace',
                         '%content%' => $lineFull
@@ -268,8 +273,9 @@ class TbmXls
         echo ' saving FULL data to '.$this->jsonDir.'/points_FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/points_FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     $pointsFull.
                     $this->kmlDeparture()
             ))
@@ -284,7 +290,7 @@ class TbmXls
 
         $line = strtr($this->_line, array(
             '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
-            '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
+            '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : '.$this->race['host'],
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
 
@@ -294,12 +300,13 @@ class TbmXls
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
-                '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%icon%'        => $j === $i ? $this->race['host'].'/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 '%name%'        => $j === $i ? '#'.$info['rank'].' '.$info['skipper'] : '',
                 '%description%' => strtr($this->_table, array(
                     '%name%'            => '#'.$info['rank'].' '.$info['skipper'],
+                    '%source_link%'     => $this->race['host'],
                     '%boat%'            => $info['boat'],
                     '%date%'            => date('Y-m-d H:i', $ts),
                     '%color%'           => '#'.$this->_misc->getColor($info['sail']),
@@ -524,7 +531,7 @@ class TbmXls
 <kml xmlns="http://www.opengis.net/kml/2.2"
      xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-    <atom:link href="http://vg2012.saliou.name" />
+    <atom:link href="http://%atom_link%" />
     %content%
 </Document>
 </kml>';
@@ -624,5 +631,5 @@ class TbmXls
         <td colspan="2" align="right">%dtl%</td>
     </tr>
 </table>
-<p>Source : http://vg2012.saliou.name</p>';
+<p>Source : http://%source_link%</p>';
 }

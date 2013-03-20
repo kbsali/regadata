@@ -93,7 +93,7 @@
 'Random boat':                      'Bateau au hasard'
 'JSON Doc':                         'JSON Doc'
 
-'#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%' : '#vg2012 Dernier classement disponible, skipper le plus rapide sur les dernières 24h %skipper% (%miles% nm) %url%'
+'#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#%hashtag% Dernier classement disponible, skipper le plus rapide sur les dernières 24h %skipper% (%miles% nm) %url%'
 
 'Ranking of the boat': 'Position au classement'
 'Country':          'Pays'
@@ -131,3 +131,5 @@
 
 'VG2012 rankings':  'Classements VG2012'
 'All the rankings of the Vendée Globe 2012': 'Tous les classement du Vendée Globe 2012'
+
+'RSS feed for VG2012 rankings': 'Flux RSS pour les classement du VG2012'

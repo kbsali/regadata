@@ -93,7 +93,7 @@
 'Random boat':                      'Random boat'
 'JSON Doc':                         'JSON Doc'
 
-'#vg2012 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#tbm2013 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'
+'#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'
 
 'Ranking of the boat': 'Ranking of the boat'
 'Country':          'Country'
@@ -131,3 +131,5 @@
 
 'VG2012 rankings':  'TBM2013 rankings'
 'All the rankings of the Vendée Globe 2012': 'All the rankings of the Transat Bretagne Martinique 2013'
+
+'RSS feed for VG2012 rankings': 'RSS feed for TBM2013 rankings'

@@ -36,7 +36,7 @@
     {{ meta_page_prev }}
     {{ meta_page_next }}
     {% block meta_pagination %}{% endblock %}
-    <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
+    <link rel="alternate" type="application/rss+xml" title="{{ 'RSS feed for VG2012 rankings'|trans }}" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
         <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">

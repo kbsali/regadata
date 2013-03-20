@@ -164,8 +164,9 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     if(!in_array($request->getClientIp(), array('127.0.0.1', $app['config']['authIp']))) {
         return new Response('Not allowed', 401);
     }
-    $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
+    $sitemap = new SitemapPHP\Sitemap($app['config']['schema'].$app['race']['host']);
     $sitemap->setPath(__DIR__.'/../web/xml/');
+    $sitemap->setFilename($app['race']['id']);
 
     $reports = $app['repo.report']->getAllBy('id', true);
 
@@ -215,7 +216,7 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         }
     }
 
-    $sitemap->createSitemapIndex($app['config']['schema'].$app['config']['host'].$app['config']['smDir'], 'Today');
+    $sitemap->createSitemapIndex($app['config']['schema'].$app['race']['host'].$app['config']['smDir'], 'Today');
     return 'OK';
 
 })->bind('sitemap');

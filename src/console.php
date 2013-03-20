@@ -144,22 +144,24 @@ $console
 
 $console
     ->register('vg:ping_sitemap')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->addOption('debug', null, InputOption::VALUE_NONE, 'If set, it will NOT send the tweets')
     ->setDescription('Generates sitemaps + Ping sitemap to different search engines!')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
-        $app->setRace('vg2012');
+        $app->setRace($input->getArgument('race'));
 
-        $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['config']['host'].'/gensitemap"';
+        $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['race']['host'].'/gensitemap"';
         $output->writeln('<info>'.$cmd.'</info>');
         system($cmd);
 
-        $xmls = glob(__DIR__.'/../web/xml/*');
+        $xmls = glob(__DIR__.'/../web/xml/'.$app['race']['id'].'*');
         foreach ($xmls as $xml) {
-            if (basename($xml) === $app['config']['smFileName']) {
+            if (basename($xml) === $app['race']['id'].$app['config']['smFileName']) {
                 continue;
             }
-            $url = $app['config']['schema'].$app['config']['host'].$app['config']['smDir'].'/'.basename($xml);
-            $app['misc']::sitemapPing($url);
+            $url = $app['config']['schema'].$app['race']['host'].$app['config']['smDir'].'/'.basename($xml);
+            $app['misc']::sitemapPing($url, $input->getOption('debug'));
         }
     })
 ;
@@ -182,60 +184,45 @@ $console
 
 $console
     ->register('vg:tweet')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->addOption('debug', null, InputOption::VALUE_NONE, 'If set, it will NOT send the tweets')
     ->setDescription('Gets the latest report and tweet about it')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
-        $app->setRace('vg2012');
+        $app->setRace($input->getArgument('race'));
 
         $report = $app['repo.report']->getLast();
         $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
-        $tweet  = '#vg2012 Latest ranking available, fastest skipper in the last 24h %skipper% (%miles% nm) %url%';
+        $tweet  = '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%';
 
         $params = array(
+            '%hashtag%' => $app['race']['id'],
             '%skipper%' => $app['misc']->getTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
 
         // in french
-        // $params['%url%'] = 'http://vg2012.saliou.name/fr/reports/latest';
-        $params['%url%'] = 'goo.gl/B8yKv';
+        $params['%url%'] = $app['race']['tweetUrlFr'];
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        if(strlen($_tweet) > 140) {
-            /*
-            http://tinyurl.com/vg2012fr
-            http://goo.gl/AQyJL
-            goo.gl/B8yKv (includes UTM_SOURCE ...)
-             */
-            $params['%url%'] = 'http://goo.gl/AQyJL';
-            $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if(strlen($_tweet) <= 140) {
-            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-              'status' => $_tweet
-            ));
+        if (!$input->getOption('debug')) {
+            if(strlen($_tweet) <= 140) {
+                $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+                  'status' => $_tweet
+                ));
+            }
         }
 
         // in english
-        // $params['%url%'] = 'http://vg2012.saliou.name/en/reports/latest';
-        $params['%url%'] = 'goo.gl/3VJyD';
-        $_tweet = $app['translator']->trans($tweet, $params);
-        if(strlen($_tweet) > 140) {
-            /*
-            http://tinyurl.com/vg2012en
-            http://myurl.in/vg2012en
-            http://yep.it/vg2012en
-            http://goo.gl/YwGgM
-            goo.gl/3VJyD (includes UTM_SOURCE ...)
-             */
-            $params['%url%'] = 'http://goo.gl/YwGgM';
-            $_tweet = $app['translator']->trans($tweet, $params);
-        }
+        $params['%url%'] = $app['race']['tweetUrlEn'];
+        $_tweet = $app['translator']->trans($tweet, $params, 'en');
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if(strlen($_tweet) <= 140) {
-            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-              'status' => $_tweet
-            ));
+        if (!$input->getOption('debug')) {
+            if(strlen($_tweet) <= 140) {
+                $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+                  'status' => $_tweet
+                ));
+            }
         }
     })
 ;
