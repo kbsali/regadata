@@ -2,6 +2,7 @@
 $app['races'] = array(
     'vg2012' => array(
         'id'            => 'vg2012',
+        'hashtag'       => 'VG2012',
         'host'          => 'vg2012.saliou.name',
         'departure'     => "Les Sables-d'Olonne",
         'departure_lat' => '46.4972',
@@ -17,6 +18,7 @@ $app['races'] = array(
     ),
     'tbm2013' => array(
         'id'            => 'tbm2013',
+        'hashtag'       => 'TransatBM',
         // 'host'          => 'tbm2013.regadata.org',
         'host'          => 'tbm2013.saliou.lan',
         'departure'     => 'Brest',

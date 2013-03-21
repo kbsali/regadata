@@ -196,7 +196,7 @@ $console
         $tweet  = '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%';
 
         $params = array(
-            '%hashtag%' => $app['race']['id'],
+            '%hashtag%' => $app['race']['hashtag'],
             '%skipper%' => $app['misc']->getTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
