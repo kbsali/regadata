@@ -113,6 +113,7 @@
                 </li>
             </ul>
 
+            {% if race.showReportFooter == true %}
             <p class="tooltips">
                 {{ 'Source'|trans }} : <a target="_blank" href="{{ source }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ source }}</a>
                 | <a target="_blank" href="/vg2012.kmz"><i class="icon-download"></i> {{ '/vg2012.kmz'|trans }}</a>
@@ -121,4 +122,5 @@
                 <br>
                 * {{ 'Bold numbers are the greatest values of the report'|trans }}
             </p>
+            {% endif %}
 {% endblock %}

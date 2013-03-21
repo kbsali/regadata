@@ -174,6 +174,7 @@ $app->before(function(Request $request) use ($app) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
     $app['twig']->addGlobal('sk', $app['sk']);
+    $app['twig']->addGlobal('race', $app['race']);
     $app['twig']->addGlobal('debug', $app['debug']);
     $app['twig']->addGlobal('assets_local', $app['assets.local']);
 });

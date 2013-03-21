@@ -15,6 +15,13 @@ $app['races'] = array(
         'type'          => 'race',
         'tweetUrlFr'    => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'    => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+
+        'showReportFooter' => true,
+        'menu' => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => true,
+        ),
     ),
     'tbm2013' => array(
         'id'            => 'tbm2013',
@@ -34,6 +41,13 @@ $app['races'] = array(
         'type'          => 'race',
         'tweetUrlFr'    => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'    => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+
+        'showReportFooter' => false,
+        'menu' => array(
+            'map'           => false,
+            'documentation' => true,
+            'about'         => false,
+        ),
     ),
     'guochuansailing-2012' => array(
         'id'            => 'guochuansailing-2012',

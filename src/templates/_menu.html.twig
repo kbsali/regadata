@@ -23,9 +23,15 @@
                             {% endfor %}
                             </ul>
                         </li>
+                        {% if true == race.menu.map %}
                         <li{% if 'map' == active %} class="active"{% endif %}><a href="{{ path('map') }}">{{ 'Map'|trans }}</a></li>
+                        {% endif %}
+                        {% if true == race.menu.documentation %}
                         <li{% if 'doc' == active %} class="active"{% endif %}><a href="{{ path('doc_json') }}">{{ 'Documentation'|trans }}</a></li>
+                        {% endif %}
+                        {% if true == race.menu.about %}
                         <li{% if 'about' == active %} class="active"{% endif %}><a href="{{ path('about') }}">{{ 'About'|trans }}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
