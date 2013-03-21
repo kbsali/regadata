@@ -13,28 +13,65 @@ use Silex\Provider\TwigServiceProvider;
 
 use Kud\Silex\Provider\TmhOAuthServiceProvider;
 
+
 function ldd($a) {
-    var_export($a);die;
+    var_export($a);die(PHP_EOL.'---------------------'.PHP_EOL);
 }
 function ld($a) {
-    var_export($a);
+    var_export($a);echo PHP_EOL.'---------------------'.PHP_EOL;
 }
 
 class MyApp extends Silex\Application
 {
+    public static function extractSubDomain($request) {
+        $tmp = explode('.', $request->getHost());
+        if (3 !== count($tmp)) {
+            return false;
+        }
+        return $tmp[0];
+    }
+
+    public function setRace($raceId = null) {
+        if(null === $raceId) {
+            $raceId = getenv('RACE') ?: 'vg2012';
+        }
+
+        if(!isset($this['races'][$raceId])) {
+            throw new \Exception('Race not defined');
+            // die('Race no defined');
+        }
+        $this['repo.report']->setRace($raceId);
+        $this['repo.sail']->setRace($raceId);
+        $this['race'] = $this['races'][$raceId];
+
+        $this['sk'] = $this['repo.sail']->findBy('sail');
+        $this['misc'] = $this->share(function($this) {
+            return new Util\Misc(
+                $this['sk']
+            );
+        });
+
+        $this['translator'] = $this->share($this->extend('translator', function($translator, $this) {
+            $translator->addLoader('yaml', new YamlFileLoader());
+            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_en.yml', 'en');
+            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_fr.yml', 'fr');
+
+            return $translator;
+        }));
+        $this['translator.domains'] = array();
+
+    }
     // use Silex\Application\TwigTrait;
     // use Silex\Application\SecurityTrait;
     // use Silex\Application\FormTrait;
     // use Silex\Application\SwiftmailerTrait;
     // use Silex\Application\MonologTrait;
-
     // use Silex\Application\UrlGeneratorTrait;
     // use Silex\Application\TranslationTrait;
 }
-
 $app = new MyApp();
-
 require __DIR__.'/config.php';
+require __DIR__.'/races.php';
 
 $app['tmhoauth.config'] = array(
     'consumer_key'    => $app['config']['consumer_key'],
@@ -46,14 +83,6 @@ $app['tmhoauth.config'] = array(
 // --- Providers
 $app->register(new HttpCacheServiceProvider());
 $app->register(new TranslationServiceProvider());
-$app['translator'] = $app->share($app->extend('translator', function($translator, $app) {
-    $translator->addLoader('yaml', new YamlFileLoader());
-    $translator->addResource('yaml', __DIR__.'/locales/en.yml', 'en');
-    $translator->addResource('yaml', __DIR__.'/locales/fr.yml', 'fr');
-
-    return $translator;
-}));
-$app['translator.domains'] = array();
 
 $app->register(new TwigServiceProvider(), array(
     'twig.path'    => __DIR__.'/templates',
@@ -86,13 +115,7 @@ $app['repo.sail'] = $app->share(function($app) {
     return new Repository\Sail($app['mongo']);
 });
 
-$app['sk'] = $app['repo.sail']->findBy('sail');
-
-$app['misc'] = $app->share(function($app) {
-    return new Util\Misc(
-        $app['sk']
-    );
-});
+$app['misc'] = new stdclass();
 
 $app['srv.vg'] = $app->share(function($app) {
     return new Service\Vg(
@@ -109,15 +132,42 @@ $app['srv.vgxls'] = $app->share(function($app) {
         $app['config']['jsonDir'],
         $app['repo.report'],
         $app['misc'],
-        $app['race']['arrival_lat'],
-        $app['race']['arrival_lon'],
-        $app['race']['arrival']
+        $app['races'],
+        'vg2012'
+    );
+});
+$app['srv.tbmxls'] = $app->share(function($app) {
+    return new Service\TbmXls(
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race'],
+        $app['repo.sail']
     );
 });
 
+$app['gvparser'] = $app->share(function($app) {
+    return new Service\GeovoileParser(
+        $app['repo.report']
+    );
+});
 
+$app['srv.geovoile'] = $app->share(function($app) {
+    return new Service\Geovoile(
+        $app['config']['xmlDir'],
+        $app['config']['jsonDir'],
+        $app['gvparser'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race']
+    );
+});
 // --- Before
 $app->before(function(Request $request) use ($app) {
+
+    $app->setRace();
+
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
     setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
     if('fr' === $request->getLocale()) {

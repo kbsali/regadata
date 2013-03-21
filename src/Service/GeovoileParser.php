@@ -4,16 +4,20 @@ namespace Service;
 
 class GeovoileParser {
 
-    private $x;
+    private $x, $_report;
 
-    public function __construct()
+    public function __construct($report)
     {
-
+        $this->_report = $report;
     }
 
     public function setXml($f)
     {
-        $this->x = simplexml_load_file($f);
+        $tmp = glob($f);
+        if(1 !== count($f)) {
+            throw new \Exception($f.' not found');
+        }
+        $this->x = simplexml_load_file($tmp[0]);
     }
 
     /*
@@ -27,66 +31,72 @@ class GeovoileParser {
     {
         $ret = array();
         foreach ($this->x->reports->report as $k => $report) {
-
-            $boatId = (int)$report->v->attributes()->i;
-            if(1 !== $boatId) {
-                continue;
-            }
             $reportId = (int)$report->attributes()->id;
             $date     = (string)$report->attributes()->date; // 2013/02/06 13:18:00Z
             $dt       = \DateTime::createFromFormat('Y/m/d H:i:sZ', $date, new \DateTimeZone('UTC'));
             $dt->setTimeZone(new \DateTimeZone('Europe/Paris'));
 
-            $tmp = array(
-                'boatId'    => $boatId,
-                'date'      => $dt->format('Y-m-d'),
-                'time'      => $dt->format('H:i'),
-                'dt'        => $dt->format('Y-m-d H:i:s'),
-                'timestamp' => $dt->getTimestamp(),
-                'status'    => (string)$report->v->attributes()->st,
-                'speed'     => (int)$report->v->attributes()->s / 10,
-                'dtf'       => (int)$report->v->attributes()->d / 10,
-                'dtl_diff'  => (int)$report->v->attributes()->l / 10,
-                'heading'   => (int)$report->v->attributes()->c,
-                'offset'    => (int)$report->v->attributes()->o,
-            );
-            $ret[ $dt->getTimestamp() ] = $tmp;
+            foreach ($report->v as $k => $boat) {
+                $boatId = (int)$boat->attributes()->i;
+                // if(1 !== $boatId) {
+                //     continue;
+                // }
+
+                $tmp = array(
+                    'boatId'    => $boatId,
+                    'date'      => $dt->format('Y-m-d'),
+                    'time'      => $dt->format('H:i'),
+                    'dt'        => $dt->format('Y-m-d H:i:s'),
+                    'timestamp' => $dt->getTimestamp(),
+                    'status'    => (string)$boat->attributes()->st,
+                    'speed'     => (int)$boat->attributes()->s / 10,
+                    'dtf'       => (int)$boat->attributes()->d / 10,
+                    'dtl_diff'  => (int)$boat->attributes()->l / 10,
+                    'heading'   => (int)$boat->attributes()->c,
+                    'offset'    => (int)$boat->attributes()->o,
+                );
+                if($boatId==17)
+                echo __METHOD__.' '.$tmp['boatId'].'-'.$tmp['timestamp'].'-'.$tmp['dt'].PHP_EOL;
+                $ret[$boatId][ $dt->getTimestamp() ] = $tmp;
+             }
          }
          return $ret;
     }
 
     public function getTracks()
     {
-        $tracks = $this->x->tracks->track;
-        $boatId   = (int)$tracks->attributes()->id;
-        if(1 !== $boatId) {
-            return;
-        }
-        $_tracks = explode(';', $tracks);
-        $lat = $lon = $ts = 0;
-
         $ret = array();
-        foreach($_tracks as $track) {
-            $tmp = explode(',', $track);
-            $lat += (int)$tmp[0] / 100000;
-            $lon += (int)$tmp[1] / 100000;
-            $ts  += (int)$tmp[2];
+        foreach ($this->x->tracks->track as $track) {
+            $boatId = (int)$track->attributes()->id;
+            // if(1 !== $boatId) {
+            //     return false;
+            // }
+            $_points = explode(';', $track);
+            $lat = $lon = $ts = 0;
+            foreach($_points as $_point) {
+                $tmp = explode(',', $_point);
+                $lat += (int)$tmp[0] / 100000;
+                $lon += (int)$tmp[1] / 100000;
+                $ts  += (int)$tmp[2];
 
-            $dt = new \DateTime();
-            $dt->setTimestamp($ts);
+                $dt = new \DateTime();
+                $dt->setTimestamp($ts);
 
-            $tmp = array(
-                'boatId'    => $boatId,
-                'date'      => $dt->format('Y-m-d'),
-                'time'      => $dt->format('H:i'),
-                'dt'        => $dt->format('Y-m-d H:i:s'),
-                'timestamp' => $dt->getTimestamp(),
-                'lat_dec'   => $lat,
-                'lon_dec'   => $lon,
-                'lat_dms'   => self::DECtoDMS($lat),
-                'lon_dms'   => self::DECtoDMS($lon),
-            );
-            $ret[ $dt->getTimestamp() ] = $tmp;
+                $tmp = array(
+                    'boatId'    => $boatId,
+                    'date'      => $dt->format('Y-m-d'),
+                    'time'      => $dt->format('H:i'),
+                    'dt'        => $dt->format('Y-m-d H:i:s'),
+                    'timestamp' => $dt->getTimestamp(),
+                    'lat_dec'   => $lat,
+                    'lon_dec'   => $lon,
+                    'lat_dms'   => self::DECtoDMS($lat),
+                    'lon_dms'   => self::DECtoDMS($lon),
+                );
+                echo __METHOD__.' '.$tmp['boatId'].'-'.$tmp['timestamp'].'-'.$tmp['dt'].PHP_EOL;
+                $ret[$boatId][ $dt->getTimestamp() ] = $tmp;
+            }
+            return $ret;
         }
         return $ret;
     }
@@ -94,8 +104,15 @@ class GeovoileParser {
     public function merge($a, $b)
     {
         $ret = array();
-        foreach($a as $k => $v) {
-            $ret[$k] = $v+$b[$k];
+        $report = $this->_report->schema();
+        foreach ($a as $boatId => $_reports) {
+            foreach ($_reports as $ts => $_report) {
+                if(!isset($b[$boatId][$ts])) {
+                    continue;
+                }
+                $tmp = $_report+$b[$boatId][$ts];
+                $ret[$boatId][$ts] = $tmp;
+            }
         }
         return $ret;
     }

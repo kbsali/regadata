@@ -1,6 +1,8 @@
 {% set bodyId = bodyId|default('normal') %}
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
+{% set meta_page_prev = meta_page_prev|default(null) %}
+{% set meta_page_next = meta_page_next|default(null) %}
 <!doctype html>
 <html class="no-js" lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/WebPage" prefix="og: http://ogp.me/ns#">
 <head>
@@ -31,8 +33,10 @@
     <meta name="twitter:creator" content="@kbsali">
     <meta name="twitter:site" content="@VG2012RaceData">
 
-    {% block extra_meta_tags %}{% endblock %}
-    <link rel="alternate" type="application/rss+xml" title="RSS feed for VG2012 rankings" href="{{ url('reports_rss') }}">
+    {{ meta_page_prev }}
+    {{ meta_page_next }}
+    {% block meta_pagination %}{% endblock %}
+    <link rel="alternate" type="application/rss+xml" title="{{ 'RSS feed for VG2012 rankings'|trans }}" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
         <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">

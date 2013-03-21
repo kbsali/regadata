@@ -4,25 +4,34 @@ namespace Service;
 
 use Service\Vg;
 
-class VgXls
+class TbmXls
 {
-    public $xlsDir, $jsonDir, $_report, $_misc, $race;
+    public $xlsDir, $jsonDir, $_report, $_misc, $race, $ts;
 
-    public function __construct($xlsDir, $jsonDir, $_report, $_misc)
+    public function __construct($xlsDir, $jsonDir, $_report, $_misc, $race, $_sails)
     {
-        $root = __DIR__.'/../..';
-        $this->xlsDir  = $root.$xlsDir;
-        $this->jsonDir = $root.$jsonDir;
+        $root          = __DIR__.'/../..';
         $this->_report = $_report;
+        $this->_sails  = $_sails;
         $this->_misc   = $_misc;
-        $this->races   = $races;
+        $this->race    = $race;
+
+        $this->xlsDir  = $root.$xlsDir.'/'.$this->race['id'];
+        if(!is_dir($this->xlsDir)) {
+            mkdir($this->xlsDir);
+        }
+        $this->jsonDir  = $root.$jsonDir.'/'.$this->race['id'];
+        if(!is_dir($this->jsonDir)) {
+            mkdir($this->jsonDir);
+        }
     }
 
     public function listMissingXlsx()
     {
-        $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
-        $s = '<a href="http://tracking2012.vendeeglobe.org/download/(.*?)" title="Cliquer pour télécharger" target="_blank">';
+        $html = file_get_contents('http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p02_all_class.php');
+        $s = '<a href="../s10_classement/s10p04_get_xls.php\?no_classement=(.*?)" target="_blank">';
         preg_match_all('|'.$s.'|s', $html, $matches);
+
         $ret = array();
         foreach ($matches[1] as $xlsx) {
             if (!file_exists($this->xlsDir.'/'.$xlsx)) {
@@ -31,16 +40,18 @@ class VgXls
         }
         return $ret;
     }
+
     public function downloadXlsx()
     {
-        $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
-        $s = '<a href="http://tracking2012.vendeeglobe.org/download/(.*?)" title="Cliquer pour télécharger" target="_blank">';
+        $html = file_get_contents('http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p02_all_class.php');
+        $s = '<a href="../s10_classement/s10p04_get_xls.php?no_classement=(.*?)" target="_blank">';
         preg_match_all('|'.$s.'|s', $html, $matches);
         foreach ($matches[1] as $xlsx) {
             echo 'checking '.$xlsx;
             if (!file_exists($this->xlsDir.'/'.$xlsx)) {
-                echo ' - downloading from http://tracking2012.vendeeglobe.org/download/'.$xlsx;
-                file_put_contents($this->xlsDir.'/'.$xlsx, file_get_contents('http://tracking2012.vendeeglobe.org/download/'.$xlsx));
+                $url = 'http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement='.$xlsx;
+                echo ' - downloading from '.$url;
+                file_put_contents($this->xlsDir.'/'.$xlsx, file_get_contents($url));
             }
             echo PHP_EOL;
         }
@@ -59,7 +70,10 @@ class VgXls
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../Util/XLSXReader.php');
+        require(__DIR__.'/../Util/Spreadsheet_Excel_Reader.php');
+        require(__DIR__.'/../Util/SpreadsheetReader_XLS.php');
+
+        $this->boats = $this->_sails->findBy('boat2');
 
         $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
         sort($xlsxs);
@@ -69,13 +83,17 @@ class VgXls
             echo $xlsx.PHP_EOL;
             $i++;
             try {
-                $_xlsx = new \XLSXReader($xlsx);
-                $data  = $_xlsx->getSheetData('fr');
-                $ts    = $this->_getDate($data);
+                $data = new \SpreadsheetReader_XLS($xlsx);
                 foreach ($data as $row) {
-                    if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
+                    $this->_getDate($row);
+                    if(null === $this->ts) {
                         continue;
                     }
+                    if (false === $r = $this->_cleanRow($row, $this->ts, $xlsx)) {
+                        continue;
+                    }
+                    // ld($r);continue;
+
                     if(!isset($total[$r['sail']])) {
                         $total[$r['sail']] = 0;
                     }
@@ -88,10 +106,12 @@ class VgXls
                         // print_R($this->_report->insert($r, $force));
                         $this->_report->insert($r, $force);
                     } catch (\MongoCursorException $e) {
-                        echo $e->getMessage().PHP_EOL;
+                        // echo $e->getMessage().PHP_EOL;
                     }
                 }
             } catch (\Exception $e) {
+                throw new \Exception('WHAT? '.$e->getMessage());
+
                 continue;
             }
         }
@@ -148,8 +168,9 @@ class VgXls
             file_put_contents(
                 $this->jsonDir.'/sail/'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         strtr($this->_folder, array(
                             '%name%'    => 'Trace',
                             '%content%' => $kmlPartial['line']
@@ -175,8 +196,9 @@ class VgXls
             file_put_contents(
                 $this->jsonDir.'/sail/trace_'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         $kmlPartial['last_pos'].
                         $kmlPartial['line'].
                         $this->kmlDeparture()
@@ -187,8 +209,9 @@ class VgXls
             file_put_contents(
                 $this->jsonDir.'/sail/points_'.$sail.'.kml',
                 strtr($this->_kml, array(
-                    '%name%'    => $kmlPartial['name'],
-                    '%content%' =>
+                    '%name%'      => $kmlPartial['name'],
+                    '%atom_link%' => $this->race['host'],
+                    '%content%'   =>
                         join(PHP_EOL, $kmlPartial['points']).
                         $this->kmlDeparture()
                 ))
@@ -205,8 +228,9 @@ class VgXls
         echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     strtr($this->_folder, array(
                         '%name%'    => 'Trace',
                         '%content%' => $lineFull
@@ -231,8 +255,9 @@ class VgXls
         echo ' saving FULL data to '.$this->jsonDir.'/trace_FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/trace_FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     strtr($this->_folder, array(
                         '%name%'    => 'Trace',
                         '%content%' => $lineFull
@@ -248,8 +273,9 @@ class VgXls
         echo ' saving FULL data to '.$this->jsonDir.'/points_FULL.kml'.PHP_EOL;
         file_put_contents($this->jsonDir.'/points_FULL.kml',
             strtr($this->_kml, array(
-                '%name%'    => $kmlPartial['name'],
-                '%content%' =>
+                '%name%'      => $kmlPartial['name'],
+                '%atom_link%' => $this->race['host'],
+                '%content%'   =>
                     $pointsFull.
                     $this->kmlDeparture()
             ))
@@ -264,7 +290,7 @@ class VgXls
 
         $line = strtr($this->_line, array(
             '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
-            '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : http://vg2012.saliou.name',
+            '%name%'        => '#'.$info['rank'].' '.$info['skipper'].' ['.$info['boat'].'] - Source : '.$this->race['host'],
             '%coordinates%' => join(PHP_EOL, $coordinates),
         ));
 
@@ -274,12 +300,13 @@ class VgXls
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
-                '%icon%'        => $j === $i ? 'http://vg2012.saliou.name/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%icon%'        => $j === $i ? $this->race['host'].'/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 '%name%'        => $j === $i ? '#'.$info['rank'].' '.$info['skipper'] : '',
                 '%description%' => strtr($this->_table, array(
                     '%name%'            => '#'.$info['rank'].' '.$info['skipper'],
+                    '%source_link%'     => $this->race['host'],
                     '%boat%'            => $info['boat'],
                     '%date%'            => date('Y-m-d H:i', $ts),
                     '%color%'           => '#'.$this->_misc->getColor($info['sail']),
@@ -306,7 +333,7 @@ class VgXls
 
     private function _cleanRow($row, $ts, $file)
     {
-        $rank = trim(trim($row[1]), ' ');
+        $rank = trim(trim($row[0]), ' ');
         if ('RET' == $rank) {
             return false;
             /*
@@ -329,89 +356,61 @@ class VgXls
             }
         }
         /* --- IN ---
-        [0]  =>
-        [1]  =>  14
-        [2]  =>  IT
-        FRA44
-        [3]  =>  Alessandro Di Benedetto
-        Team Plastique
-        [4]  =>
-        OR [4] =>  Date d'arrivée  ( Date of arrival ) : 27/01/2013 14:18:40 UTC -  Temps de course  ( Race time ) : 78j 02h 16min 40s
-
-        [5]  =>  03:00
-
-        [6]  => 18°25.83'N
-        [7]  => 26°53.06'W
-        [8]  => 213°
-        [9]  => 10.9 kts
-        [10] => 8.6 kts
-        [11] => 10.9 nm
-        [12] => 196°
-        [13] => 10.9 kts
-        [14] => 10.3 kts
-        [15] => 98.5 nm
-        [16] => 200°
-        [17] => 10.8 kts
-        [18] => 10.1 kts
-        [19] => 260.3 nm
-        [20] => 22045.5 nm
-        [21] => 949.2 nm
-        [22] =>
+        [0] =>  1
+        [1] => GROUPE QUEGUINER - LEUCEMIE ESPOIR
+        [2] => Yann Elies
+        [3] => 3453.44
+        [4] =>
+        [5] => 17/03/2013 15:45:00
+        [6] => 48 17.23' N
+        [7] => 4 41.21' W
+        [8] => 4.8
+        [9] => 4.5
+        [10] => 270
+        [11] =>
+        [12] =>
+        [13] =>
+        [14] =>
+        [15] =>
          */
-        /* --- OUT ---
-        [rank]                => 1
-        [country]             => FR
-        [sail]                => FRA19
-        [sailor]              => Armel Le Cléac'h
-        [boat]                => Banque Populaire
-        [time]                => 03:00
-        [lat]                 => 00°51.12'N
-        [lon]                 => 28°19.67'W
-        [1hour_heading]       => 183
-        [1hour_speed]         => 11.1
-        [1hour_vmg]           => 6.2
-        [1hour_distance]      => 11.1
-        [lastreport_heading]  => 184
-        [lastreport_speed]    => 10.6
-        [lastreport_vmg]      => 5.8
-        [lastreport_distance] => 95.5
-        [24hour_heading]      => 190
-        [24hour_speed]        => 9.6
-        [24hour_vmg]          => 4.6
-        [24hour_distance]     => 230.9
-        [dtf]                 => 21096.3
-        [dtl]                 => 0
-        */
-        list($coun, $sail)   = explode(PHP_EOL, trim($row[2]));
-        list($sailor, $boat) = explode(PHP_EOL, trim($row[3]));
-
         $ret = $this->_report->schema();
         $ret['rank']      = (int) $rank;
-        $ret['country']   = trim($coun);
-        $ret['sail']      = trim($sail);
-        $ret['skipper']   = str_replace('  ', ' ', trim($sailor));
-        $ret['boat']      = trim($boat);
+        $ret['country']   = trim('fr');
+        $ret['skipper']   = utf8_decode(trim($row[2]));
+        // ld($row);
+        // ld($ret);
+        // ldd($this->boats);
+        // // $ret['sail']      = $this->boats[ $ret['skipper'] ];
+        $boat      = trim($row[1]);
+        // $ret['boat']      = trim($row[1]);
+        $ret['sail']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
+        $ret['skipper']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['skipper'];
+        $ret['boat']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['boat'];
+        // $ret['boat']      = !isset($this->boats[ $ret['boat'] ]) ? null : $this->boats[ $ret['boat'] ]['sail'];
         $ret['source']    = basename($file);
 
         $ret['id']        = date('Ymd-Hi', $ts);
         $ret['date']      = date('Y-m-d', $ts);
         $ret['timestamp'] = $ts;
 
-        if(null !== $row[4]) {
-            $_ts = $this->_getArrivalDate($row[4]);
+        // ----------------------------
+        // HANDLE ARRIVAL (WHAT IS THE FORMAT???)
+        // if('' !== trim($row[4])) {
+        //     $_ts = $this->_getArrivalDate($row[4]);
 
-            $ret['timestamp'] = $_ts;
-            $ret['time'] = date('H:i', $_ts);
-            $ret['date'] = date('Y-m-d', $_ts);
-            $ret['lat_dms'] = self::DECtoDMS($this->race['arrLat']);
-            $ret['lon_dms'] = self::DECtoDMS($this->race['arrLon']);
-            $ret['lat_dec'] = $this->race['arrLat'];
-            $ret['lon_dec'] = $this->race['arrLon'];
+        //     $ret['timestamp'] = $_ts;
+        //     $ret['time'] = date('H:i', $_ts);
+        //     $ret['date'] = date('Y-m-d', $_ts);
+        //     $ret['lat_dms'] = self::DECtoDMS($this->race['arrival_lat']);
+        //     $ret['lon_dms'] = self::DECtoDMS($this->race['arrival_lon']);
+        //     $ret['lat_dec'] = $this->race['arrival_lat'];
+        //     $ret['lon_dec'] = $this->race['arrival_lat'];
 
-            $ret['has_arrived'] = true;
+        //     $ret['has_arrived'] = true;
 
-            return $ret;
-        }
+        //     return $ret;
+        // }
+        // ----------------------------
 
         if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
             $time[0] = 0;
@@ -423,23 +422,21 @@ class VgXls
         $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[6])));
         $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[7])));
 
-        $ret['1hour_heading']  = (int) trim($row[8], '°');
-        $ret['1hour_speed']    = (float) trim($row[9], ' kts');
-        $ret['1hour_vmg']      = (float) trim($row[10], ' kts');
-        $ret['1hour_distance'] = (float) trim($row[11], ' nm');
+        $ret['1hour_speed']    = (float) trim($row[8]);
+        $ret['1hour_vmg']      = (float) trim($row[9]);
+        $ret['1hour_heading']  = (int) trim($row[10]);
+        // $ret['1hour_distance'] = (float) trim($row[11]);
 
-        $ret['lastreport_heading']  = (int) trim($row[12], '°');
-        $ret['lastreport_speed']    = (float) trim($row[13], ' kts');
-        $ret['lastreport_vmg']      = (float) trim($row[14], ' kts');
-        $ret['lastreport_distance'] = (float) trim($row[15], ' nm');
+        $ret['lastreport_vmg']      = (float) trim($row[11]);
+        $ret['lastreport_heading']  = (int) trim($row[12]);
+        // $ret['lastreport_speed']    = (float) trim($row[11]);
+        // $ret['lastreport_distance'] = (float) trim($row[15]);
 
-        $ret['24hour_heading']  = (int) trim($row[16], '°');
-        $ret['24hour_speed']    = (float) trim($row[17], ' kts');
-        $ret['24hour_vmg']      = (float) trim($row[18], ' kts');
-        $ret['24hour_distance'] = (float) trim($row[19], ' nm');
+        $ret['24hour_vmg']  = (int) trim($row[13]);
+        $ret['24hour_distance'] = (float) trim($row[14]);
 
-        $ret['dtf'] = (float) trim($row[20], ' nm');
-        $ret['dtl'] = (float) trim($row[21], ' nm');
+        $ret['dtf'] = (float) trim($row[3]);
+        $ret['dtl'] = (float) trim($row[4]);
 
         return $ret;
     }
@@ -454,22 +451,24 @@ class VgXls
 
     private function _getDate($data)
     {
-        $date = $data[2][1];
-        // Classement du 21/11/2012 à 04:00:00 UTC
-        $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) UTC';
-        preg_match('|'.$s.'|s', $date, $match);
+        if(false === strpos($data[0], 'Date retenue pour')) {
+            return false;
+        }
+        // Figaro - Date retenue pour le calcul du classement intermiaire estim: 17/03/13 15:45 Fr
+        $s = ': (.*?)/(.*?)/(.*?) (.*?) Fr';
+        preg_match('|'.$s.'|s', $data[0], $match);
 
-        return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
+        $this->ts = strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
     }
 
     /**
-     * @param  string $str 26°53.06'W
+     * @param  string $str 48 17.23' N
      * @return array
      */
     public static function strtoDMS($str)
     {
         // preg_match("|(\d)°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
-        if (false === preg_match("|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s", $str, $matches)) {
+        if (false === preg_match("|(.*?) (.*?)\.(.*?)' ([A-Z]{1})$|s", $str, $matches)) {
             return array(
                 'deg' => 0,
                 'min' => 0,
@@ -532,7 +531,7 @@ class VgXls
 <kml xmlns="http://www.opengis.net/kml/2.2"
      xmlns:atom="http://www.w3.org/2005/Atom">
 <Document>
-    <atom:link href="http://vg2012.saliou.name" />
+    <atom:link href="http://%atom_link%" />
     %content%
 </Document>
 </kml>';
@@ -632,5 +631,5 @@ class VgXls
         <td colspan="2" align="right">%dtl%</td>
     </tr>
 </table>
-<p>Source : http://vg2012.saliou.name</p>';
+<p>Source : http://%source_link%</p>';
 }

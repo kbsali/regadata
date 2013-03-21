@@ -1,4 +1,4 @@
-'#VG2012 - OpenData': '#VG2012 - OpenData'
+'#VG2012 - OpenData': '#TBM2013 - OpenData'
 'Home':             'Home'
 'About':            'About'
 'Boats':            'Boats'
@@ -76,9 +76,9 @@
 
 'Tweet':                    'Tweet'
 'Follow @VG2012RaceData':   'Follow @VG2012RaceData'
-'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way': 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'
-'Vendée Globe 2012 #vg2012 Jérémie Beyou Arnaud Boissières Louis Burton Samantha Davies Bertrand de Broc Tanguy De Lamotte Kito de Pavant Alessandro Di Benedetto Jean-Pierre Dick François Gabart Mike Golding Marc Guillemot Zbigniew Gutkowski Jean Le Cam Armel Le Cléac´h Vincent Riou Javier Sansó Bernard Stamm Alex Thomson Dominique Wavre': 'Vendée Globe 2012 #vg2012 Jérémie Beyou Arnaud Boissières Louis Burton Samantha Davies Bertrand de Broc Tanguy De Lamotte Kito de Pavant Alessandro Di Benedetto Jean-Pierre Dick François Gabart Mike Golding Marc Guillemot Zbigniew Gutkowski Jean Le Cam Armel Le Cléac´h Vincent Riou Javier Sansó Bernard Stamm Alex Thomson Dominique Wavre'
-'Rankings and graphs of the Vendée Globe 2012': 'Rankings and graphs of the Vendée Globe 2012'
+'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way': 'Get the rankings of the Transat Bretagne Martinique 2013 and follow the progress of the sailors in an accessible way'
+'Vendée Globe 2012 #vg2012 Jérémie Beyou Arnaud Boissières Louis Burton Samantha Davies Bertrand de Broc Tanguy De Lamotte Kito de Pavant Alessandro Di Benedetto Jean-Pierre Dick François Gabart Mike Golding Marc Guillemot Zbigniew Gutkowski Jean Le Cam Armel Le Cléac´h Vincent Riou Javier Sansó Bernard Stamm Alex Thomson Dominique Wavre': 'Transat Bretagne Martinique 2013 #tbm2013 Adrien Hardy Erwan Tabarly Corentin Horeau Anthony Marchand Gildas Morvan Yoann Richomme Thierry Chabagny Yann Elies Kristin Songe Moller Damien Guillou Simon Troel Arnaud Godart Philippe Frédéric Duthil Fabien Delahaye Eric Baray'
+'Rankings and graphs of the Vendée Globe 2012': 'Rankings and graphs of the Transat Bretagne Martinique 2013'
 
 
 'Full':                             'Full'
@@ -89,11 +89,11 @@
 'See the report':                   'See the report'
 'Per ranking':                      'Per ranking'
 'All published rankings':           'All published rankings'
-"Let's open the data : VG 2012 Open Data!": "Let's open the data : VG 2012 Open Data!"
+"Let's open the data : VG 2012 Open Data!": "Let's open the data : TBM 2013 Open Data!"
 'Random boat':                      'Random boat'
 'JSON Doc':                         'JSON Doc'
 
-'#vg2012 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#vg2012 latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'
+'#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'
 
 'Ranking of the boat': 'Ranking of the boat'
 'Country':          'Country'
@@ -129,5 +129,7 @@
 'Full view':        'Full view'
 'Mobile view':      'Mobile view'
 
-'VG2012 rankings':  'VG2012 rankings'
-'All the rankings of the Vendée Globe 2012': 'All the rankings of the Vendée Globe 2012'
+'VG2012 rankings':  'TBM2013 rankings'
+'All the rankings of the Vendée Globe 2012': 'All the rankings of the Transat Bretagne Martinique 2013'
+
+'RSS feed for VG2012 rankings': 'RSS feed for TBM2013 rankings'

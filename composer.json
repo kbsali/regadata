@@ -1,24 +1,37 @@
 {
+    "name": "kbsali/regadata",
+    "description": "Presents regatta data in an accessible way",
+    "license": "proprietary",
+    "keywords": ["open data", "json", "regatta", "ranking"],
+    "homepage": "http://vg2012.saliou.name",
+    "authors": [
+        {
+            "name": "Kevin Saliou",
+            "email": "kevin@saliou.name",
+            "homepage": "http://saliou.name",
+            "role": "Developer"
+        }
+    ],
     "minimum-stability" : "stable",
+
     "require"           : {
-        "silex/silex"        : "1.*@dev",
+        "silex/silex"                        : "1.0.*",
 
-        "twig/twig"          : "1.*",
+        "symfony/config"                     : "~2.2",
+        "symfony/yaml"                       : "~2.2",
 
-        "symfony/config"     : "2.1.*",
-        "symfony/yaml"       : "2.1.*",
+        "symfony/translation"                : "~2.2",
+        "symfony/twig-bridge"                : "~2.2",
 
-        "symfony/translation": "2.1.*",
-        "symfony/twig-bridge": "2.1.*",
+        "symfony/console"                    : "~2.2",
 
-        "symfony/console"    : "2.1.*",
 
         "themattharris/tmhoauth"             : "dev-master",
         "kud/tmhoauth-silex-service-provider": "dev-master",
 
-        "imagine/Imagine": "dev-develop",
-        "suin/php-rss-writer": ">=1.0",
-        "evert/sitemap-php": "dev-master"
+        "imagine/Imagine"                    : "dev-develop",
+        "suin/php-rss-writer"                : ">=1.0",
+        "evert/sitemap-php"                  : "dev-master"
     },
     "autoload"          : {
         "psr-0": {

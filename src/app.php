@@ -118,7 +118,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         'ts'         => $ts,
         'report'     => $report,
         'source'     => $app['url_generator']->generate('reports_json', array('id' => $id)),
-        'start_date' => strtotime($app['config']['start_date']),
+        'start_date' => strtotime($app['race']['start_date']),
         'full'       => null !== $request->get('full'),
         'pagination' => $pagination,
     ));
@@ -141,7 +141,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
             if(!$info['info']) {
                 continue;
             }
-            $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['config']['start_date']);
+            $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['race']['start_date']);
             $info['info']['twitter'] = $app['misc']->getTwitter($info['info']['sail'], true);
 
             $c = 'rgb('.join(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))).')';
@@ -164,8 +164,9 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     if(!in_array($request->getClientIp(), array('127.0.0.1', $app['config']['authIp']))) {
         return new Response('Not allowed', 401);
     }
-    $sitemap = new SitemapPHP\Sitemap('http://vg2012.saliou.name');
+    $sitemap = new SitemapPHP\Sitemap($app['config']['schema'].$app['race']['host']);
     $sitemap->setPath(__DIR__.'/../web/xml/');
+    $sitemap->setFilename($app['race']['id']);
 
     $reports = $app['repo.report']->getAllBy('id', true);
 
@@ -215,7 +216,7 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         }
     }
 
-    $sitemap->createSitemapIndex($app['config']['schema'].$app['config']['host'].$app['config']['smDir'], 'Today');
+    $sitemap->createSitemapIndex($app['config']['schema'].$app['race']['host'].$app['config']['smDir'], 'Today');
     return 'OK';
 
 })->bind('sitemap');

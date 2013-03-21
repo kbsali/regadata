@@ -16,7 +16,7 @@ class Misc
         if(!isset($this->skippers[$skipper])) {
             return false;
         }
-        if(!isset($this->skippers[$skipper]['twitter'])) {
+        if(!isset($this->skippers[$skipper]['twitter']) || empty($this->skippers[$skipper]['twitter'])) {
             return $this->skippers[$skipper]['skipper'];
         }
         return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
