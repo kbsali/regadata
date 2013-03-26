@@ -33,6 +33,23 @@ $console
         $app['srv.geovoile']->parse();
     })
 ;
+
+$console
+    ->register('regadata:export')
+    ->setDescription('Exports to kml + json')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+
+        $app['srv.vgxls']->mongo2json(
+            $input->getOption('force')
+        );
+    })
+;
+
 // ---------------------------------------------------
 // ---------------------------------------------------
 
@@ -122,21 +139,6 @@ $console
 
         $app['srv.vgxls']->xls2mongo(
             $input->getOption('file'),
-            $input->getOption('force')
-        );
-    })
-;
-
-$console
-    ->register('vg:export')
-    ->setDescription('Exports to kml + json')
-    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
-    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-
-        $app->setRace('vg2012');
-
-        $app['srv.vgxls']->mongo2json(
             $input->getOption('force')
         );
     })

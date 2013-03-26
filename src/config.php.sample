@@ -4,6 +4,7 @@ $app['config'] = array(
     'smDir'           => '/xml',
     'xmlDir'          => '/_xml',
     'jsonDir'         => '/web/json',
+    'kmlDir'          => '/web/kml',
     'docRoot'         => '/web',
 
     'consumer_key'    => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_KEY',

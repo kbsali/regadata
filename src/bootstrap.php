@@ -105,7 +105,7 @@ $app['imagine'] = $app->share(function ($app) {
 });
 
 $app['mongo'] = $app->share(function($app) {
-    return new \MongoClient();
+   return new \MongoClient('mongodb://127.0.0.1:27017');
 });
 
 $app['repo.report'] = $app->share(function($app) {
@@ -130,16 +130,18 @@ $app['srv.vgxls'] = $app->share(function($app) {
     return new Service\VgXls(
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
+        $app['config']['kmlDir'],
         $app['repo.report'],
         $app['misc'],
-        $app['races'],
-        'vg2012'
+        $app['race'],
+        $app['repo.sail']
     );
 });
 $app['srv.tbmxls'] = $app->share(function($app) {
     return new Service\TbmXls(
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
+        $app['config']['kmlDir'],
         $app['repo.report'],
         $app['misc'],
         $app['race'],
