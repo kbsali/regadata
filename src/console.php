@@ -35,6 +35,44 @@ $console
 ;
 
 $console
+    ->register('regadata:dl')
+    ->setDescription('Downloads the xls files from transat-bretagnemartinique.com')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+
+        foreach ($app[ $app['race']['xls_service'] ]->listMissingXlsx() as $f) {
+            $output->writeln('<info>Downloading '.$f.'</info>');
+            file_put_contents(
+                $app['srv.tbmxls']->xlsDir.'/'.$f,
+                file_get_contents(
+                    strtr($app['url_xls'], array('%file%' => $f))
+                )
+            );
+        }
+        $output->writeln('<info>Done</info>');
+    })
+;
+
+$console
+    ->register('regadata:convert')
+    ->setDescription('Exports xls files to mongo')
+    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
+    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+
+        $app[ $app['race']['xls_service'] ]->xls2mongo(
+            $input->getOption('file'),
+            $input->getOption('force')
+        );
+    })
+;
+
+$console
     ->register('regadata:export')
     ->setDescription('Exports to kml + json')
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
@@ -44,50 +82,35 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        $app['srv.vgxls']->mongo2json(
+        $app[ $app['race']['xls_service'] ]->mongo2json(
             $input->getOption('force')
         );
     })
 ;
 
-// ---------------------------------------------------
-// ---------------------------------------------------
-
-// ----------------------- TBM -----------------------
-// ---------------------------------------------------
 $console
-    ->register('tbm:dl')
-    ->setDescription('Downloads the xls files from transat-bretagnemartinique.com')
+    ->register('regadata:ping_sitemap')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->addOption('debug', null, InputOption::VALUE_NONE, 'If set, it will NOT send the tweets')
+    ->setDescription('Generates sitemaps + Ping sitemap to different search engines!')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
-        $app->setRace('tbm2013');
+        $app->setRace($input->getArgument('race'));
 
-        foreach ($app['srv.tbmxls']->listMissingXlsx() as $f) {
-            $output->writeln('<info>Downloading '.$f.'</info>');
-            file_put_contents($app['srv.tbmxls']->xlsDir.'/'.$f, file_get_contents('http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement='.$f));
+        $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['race']['host'].'/gensitemap"';
+        $output->writeln('<info>'.$cmd.'</info>');
+        system($cmd);
+
+        $xmls = glob(__DIR__.'/../web/xml/'.$app['race']['id'].'*');
+        foreach ($xmls as $xml) {
+            if (basename($xml) === $app['race']['id'].$app['config']['smFileName']) {
+                continue;
+            }
+            $url = $app['config']['schema'].$app['race']['host'].$app['config']['smDir'].'/'.basename($xml);
+            $app['misc']::sitemapPing($url, $input->getOption('debug'));
         }
-        $output->writeln('<info>Done</info>');
     })
 ;
-
-$console
-    ->register('tbm:convert')
-    ->setDescription('Exports xls files to mongo')
-    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
-    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-
-        $app->setRace('tbm2013');
-
-        $app['srv.tbmxls']->xls2mongo(
-            $input->getOption('file'),
-            $input->getOption('force')
-        );
-    })
-;
-// ---------------------------------------------------
-// ---------------------------------------------------
-
 // ---------------------------------------------------
 // ----------------------- VG  -----------------------
 $console
@@ -110,61 +133,6 @@ $console
             $app['repo.sail']->insert(array_combine($header, $_sail));
         }
         $output->writeln('ok');
-    })
-;
-
-$console
-    ->register('vg:dl')
-    ->setDescription('Downloads the xls files from vendeeglobe.org')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-
-        $app->setRace('vg2012');
-
-        foreach ($app['srv.vgxls']->listMissingXlsx() as $f) {
-            $output->writeln('<info>Downloading '.$f.'</info>');
-            file_put_contents($app['srv.vgxls']->xlsDir.'/'.$f, file_get_contents('http://tracking2012.vendeeglobe.org/download/'.$f));
-        }
-        $output->writeln('<info>Done</info>');
-    })
-;
-
-$console
-    ->register('vg:convert')
-    ->setDescription('Exports xls files to mongo')
-    ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')
-    ->addOption('force', null, InputOption::VALUE_NONE, 'Force conversion (in case document already exists)')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-
-        $app->setRace('vg2012');
-
-        $app['srv.vgxls']->xls2mongo(
-            $input->getOption('file'),
-            $input->getOption('force')
-        );
-    })
-;
-
-$console
-    ->register('vg:ping_sitemap')
-    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
-    ->addOption('debug', null, InputOption::VALUE_NONE, 'If set, it will NOT send the tweets')
-    ->setDescription('Generates sitemaps + Ping sitemap to different search engines!')
-    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
-
-        $app->setRace($input->getArgument('race'));
-
-        $cmd = 'wget -q -O /dev/null "'.$app['config']['schema'].$app['race']['host'].'/gensitemap"';
-        $output->writeln('<info>'.$cmd.'</info>');
-        system($cmd);
-
-        $xmls = glob(__DIR__.'/../web/xml/'.$app['race']['id'].'*');
-        foreach ($xmls as $xml) {
-            if (basename($xml) === $app['race']['id'].$app['config']['smFileName']) {
-                continue;
-            }
-            $url = $app['config']['schema'].$app['race']['host'].$app['config']['smDir'].'/'.basename($xml);
-            $app['misc']::sitemapPing($url, $input->getOption('debug'));
-        }
     })
 ;
 

@@ -12,12 +12,14 @@ $app['races'] = array(
         'arrival_lat'   => '46.4972',
         'arrival_lon'   => '-1.7833',
         'start_date'    => 'saturday 10 november 2012 15:02',
+        'url_xls'       => 'http://tracking2012.vendeeglobe.org/download/%file%',
         'parser'        => 'vg',
         'type'          => 'race',
         'tweetUrlFr'    => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'    => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
 
         'showReportFooter' => true,
+        'xls_service'   => 'srv.vgxls',
         'menu' => array(
             'map'           => true,
             'documentation' => true,
@@ -38,10 +40,12 @@ $app['races'] = array(
         'start_date'    => 'sunday 17 march 2013 13:00',
         'url_update'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.update.hwz',
         'url_static'    => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz',
+        'url_xls'       => 'http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
         'parser'        => 'geovoile',
         'type'          => 'race',
         'tweetUrlFr'    => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'    => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'xls_service'   => 'srv.tbmxls',
 
         'showReportFooter' => false,
         'menu' => array(
