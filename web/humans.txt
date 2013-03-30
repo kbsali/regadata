@@ -3,11 +3,11 @@
     Contact: kevin [at] saliou.name
     Contact: http://www.linkedin.com/in/kevinsaliou
     Twitter: @kbsali
-    From:Barcelona, Catalonia, Spain
+    From: Barcelona, Catalonia, Spain
 
 /* SITE */
-    Last update:2013/03/06
+    Last update: 2013/03/30
     Language: English / Français
-    Doctype:HTML5
+    Doctype: HTML5
     IDE: Sublime Text
-    Built with: PHP, Silex, Mongodb, HTML5, CSS3, jQuery, Twitter Bootstrap, Git
+    Built with: PHP, Silex, Mongodb, HTML5, CSS3, jQuery, jQuery Flot, Twitter Bootstrap, Git

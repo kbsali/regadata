@@ -18,16 +18,16 @@
     <meta name="author" content="Kevin Saliou">
     <link rel="author" href="https://plus.google.com/111159323197167868157">
     {#
-    <link rel="author" href="http://vg2012.saliou.name/humans.txt">
+    <link rel="author" href="http://{{ race.host }}/humans.txt">
     #}
-    <link rel="index" href="http://vg2012.saliou.name/">
-    <meta itemprop="image" content="http://vg2012.saliou.name/img/logo.png">
+    <link rel="index" href="http://{{ race.host }}/">
+    <meta itemprop="image" content="http://{{ race.host }}/img/logo.png">
 
     <meta property="og:title" content="{{ title }} | {{ '#VG2012 - OpenData'|trans }}">
     <meta property="og:type" content="website">
-    <meta property="og:url" content="http://vg2012.saliou.name{{ app.request.getRequestURI() }}">
+    <meta property="og:url" content="http://{{ race.host }}{{ app.request.getRequestURI() }}">
     <meta property="og:description" content="{{ extra_meta }} - {{ 'Get the rankings of the Vendée Globe 2012 and follow the progress of the sailors in an accessible way'|trans }}">
-    <meta property="og:image" content="http://vg2012.saliou.name/img/logo.png">
+    <meta property="og:image" content="http://{{ race.host }}/img/logo.png">
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:creator" content="@kbsali">

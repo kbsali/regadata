@@ -36,9 +36,17 @@ $app->get('/doc/json-format', function () use ($app) {
     return $app['twig']->render('doc/json-format.html.twig', array());
 })->bind('doc_format');
 
-$app->get('/json/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
+
+$app->get('/{race}.kmz', function () use ($app) {})->bind(('race_kmz'));
+$app->get('/kml/{race}/FULL.kmz', function () use ($app) {})->bind(('FULL_kmz'));
+$app->get('/kml/{race}/trace_FULL.kmz', function () use ($app) {})->bind(('trace_FULL_kmz'));
+$app->get('/kml/{race}/points_FULL.kmz', function () use ($app) {})->bind(('points_FULL_kmz'));
+$app->get('/json/{race}/FULL.json', function () use ($app) {})->bind(('FULL_json'));
+
+$app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
 $app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
 $app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
+
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     $feed = new Suin\RSSWriter\Feed();
@@ -117,7 +125,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     return $app['twig']->render('reports/reports.html.twig', array(
         'ts'         => $ts,
         'report'     => $report,
-        'source'     => $app['url_generator']->generate('reports_json', array('id' => $id)),
+        'report_id'  => $id,
         'start_date' => strtotime($app['race']['start_date']),
         'full'       => null !== $request->get('full'),
         'pagination' => $pagination,
