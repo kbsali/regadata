@@ -111,9 +111,9 @@ abstract class XlsManager
             $kmlPartial = $this->arr2kml($partial);
 
             // line + points
-            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/'.$sail.'.kml'.PHP_EOL;
+            echo ' saving '.$sail.' pos to '.$this->kmlDir.'/sail/'.$sail.'.kml'.PHP_EOL;
             file_put_contents(
-                $this->jsonDir.'/sail/'.$sail.'.kml',
+                $this->kmlDir.'/sail/'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'      => $kmlPartial['name'],
                     '%atom_link%' => $this->race['host'],
@@ -140,9 +140,9 @@ abstract class XlsManager
                 ))
             );
             // line only
-            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/trace_'.$sail.'.kml'.PHP_EOL;
+            echo ' saving '.$sail.' pos to '.$this->kmlDir.'/sail/trace_'.$sail.'.kml'.PHP_EOL;
             file_put_contents(
-                $this->jsonDir.'/sail/trace_'.$sail.'.kml',
+                $this->kmlDir.'/sail/trace_'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'      => $kmlPartial['name'],
                     '%atom_link%' => $this->race['host'],
@@ -154,9 +154,9 @@ abstract class XlsManager
                 ))
             );
             // points only
-            echo ' saving '.$sail.' pos to '.$this->jsonDir.'/sail/points_'.$sail.'.kml'.PHP_EOL;
+            echo ' saving '.$sail.' pos to '.$this->kmlDir.'/sail/points_'.$sail.'.kml'.PHP_EOL;
             file_put_contents(
-                $this->jsonDir.'/sail/points_'.$sail.'.kml',
+                $this->kmlDir.'/sail/points_'.$sail.'.kml',
                 strtr($this->_kml, array(
                     '%name%'      => $kmlPartial['name'],
                     '%atom_link%' => $this->race['host'],
@@ -175,8 +175,8 @@ abstract class XlsManager
         }
 
         // kml (all in one file - line + points)
-        echo ' saving FULL data to '.$this->jsonDir.'/FULL.kml'.PHP_EOL;
-        file_put_contents($this->jsonDir.'/FULL.kml',
+        echo ' saving FULL data to '.$this->kmlDir.'/FULL.kml'.PHP_EOL;
+        file_put_contents($this->kmlDir.'/FULL.kml',
             strtr($this->_kml, array(
                 '%name%'      => $kmlPartial['name'],
                 '%atom_link%' => $this->race['host'],
@@ -203,8 +203,8 @@ abstract class XlsManager
             ))
         );
         // kml (all in one file - line only)
-        echo ' saving FULL data to '.$this->jsonDir.'/trace_FULL.kml'.PHP_EOL;
-        file_put_contents($this->jsonDir.'/trace_FULL.kml',
+        echo ' saving FULL data to '.$this->kmlDir.'/trace_FULL.kml'.PHP_EOL;
+        file_put_contents($this->kmlDir.'/trace_FULL.kml',
             strtr($this->_kml, array(
                 '%name%'      => $kmlPartial['name'],
                 '%atom_link%' => $this->race['host'],
@@ -222,8 +222,8 @@ abstract class XlsManager
             ))
         );
         // kml (all in one file - points only)
-        echo ' saving FULL data to '.$this->jsonDir.'/points_FULL.kml'.PHP_EOL;
-        file_put_contents($this->jsonDir.'/points_FULL.kml',
+        echo ' saving FULL data to '.$this->kmlDir.'/points_FULL.kml'.PHP_EOL;
+        file_put_contents($this->kmlDir.'/points_FULL.kml',
             strtr($this->_kml, array(
                 '%name%'      => $kmlPartial['name'],
                 '%atom_link%' => $this->race['host'],

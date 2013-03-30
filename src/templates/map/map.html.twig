@@ -7,7 +7,6 @@
 <script src="http://maps.google.com/maps/api/js?sensor=false&amp;key=AIzaSyBoPyWhjCprSo0UyiaZqPFbZnkTVXQeZUc" type="text/javascript"></script>
 {% endblock %}
 
-
 {% block container_content %}
-<div id="map"></div>
+<div id="map" rel="{{ url('trace_FULL_kmz', {race: race.id}) }}"></div>
 {% endblock %}
