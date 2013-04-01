@@ -170,6 +170,11 @@ $app->before(function(Request $request) use ($app) {
 
     $app->setRace();
 
+    if(!in_array($request->getLocale(), array('en', 'fr'))) {
+        $u = $app['url_generator']->generate('_homepage', array('_locale' => 'en'));
+        return $app->redirect($u);
+    }
+
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
     setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
     if('fr' === $request->getLocale()) {
