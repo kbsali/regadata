@@ -252,7 +252,7 @@ abstract class XlsManager
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
-                '%icon%'        => $j === $i ? $this->race['host'].'/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
+                '%icon%'        => $j === $i ? 'http://'.$this->race['host'].'/icons/boat_'.$info['1hour_heading'].'.png' : 'http://maps.google.com/mapfiles/kml/shapes/placemark_circle.png',
                 '%heading%'     => $info['1hour_heading'],
                 '%coordinates%' => $coordinate,
                 '%name%'        => $j === $i ? '#'.$info['rank'].' '.$info['skipper'] : '',
