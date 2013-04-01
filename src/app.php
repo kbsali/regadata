@@ -6,20 +6,12 @@ use Symfony\Component\HttpFoundation\Response;
 $app = require __DIR__.'/bootstrap.php';
 
 // ---- /REDIRECT OLD URLS (indexed by search engines)
-$app->get('/reports/{id}', function ($id) use ($app) {
-    $u = $app['url_generator']->generate('report', array('id' => $id));
+$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {
+    $u = $app['url_generator']->generate('sail_kmz', array('id' => $id));
     return $app->redirect($u, 301);
 });
-$app->get('/sail/{id}', function ($id) use ($app) {
-    $u = $app['url_generator']->generate('sail', array('ids' => $id));
-    return $app->redirect($u, 301);
-});
-$app->get('/{_locale}/json/sail/{id}.json', function ($id) use ($app) {
-    $u = $app['url_generator']->generate('sail_json', array('id' => $id));
-    return $app->redirect($u, 301);
-});
-$app->get('/{_locale}/compare', function (Request $request) use ($app) {
-    $u = $app['url_generator']->generate('sail', array('ids' => $request->get('sail1').'-'.$request->get('sail2')));
+$app->get('/json/{id}.kmz', function ($id) use ($app) {
+    $u = $app['url_generator']->generate('base_kmz', array('id' => $id, 'race' => $app['race']['id']));
     return $app->redirect($u, 301);
 });
 // ---- \REDIRECT OLD URLS (indexed by search engines)
@@ -38,14 +30,12 @@ $app->get('/doc/json-format', function () use ($app) {
 
 
 $app->get('/{race}.kmz', function () use ($app) {})->bind(('race_kmz'));
-$app->get('/kml/{race}/FULL.kmz', function () use ($app) {})->bind(('FULL_kmz'));
-$app->get('/kml/{race}/trace_FULL.kmz', function () use ($app) {})->bind(('trace_FULL_kmz'));
-$app->get('/kml/{race}/points_FULL.kmz', function () use ($app) {})->bind(('points_FULL_kmz'));
-$app->get('/json/{race}/FULL.json', function () use ($app) {})->bind(('FULL_json'));
+$app->get('/kml/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
+$app->get('/kml/{race}/{id}.kmz', function () use ($app) {})->bind(('base_kmz'));
 
-$app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
 $app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
-$app->get('/json/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
+$app->get('/json/{race}/FULL.json', function () use ($app) {})->bind(('FULL_json'));
+$app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
 
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {

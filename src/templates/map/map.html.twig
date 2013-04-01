@@ -8,5 +8,5 @@
 {% endblock %}
 
 {% block container_content %}
-<div id="map" rel="{{ url('trace_FULL_kmz', {race: race.id}) }}"></div>
+<div id="map" rel="{{ url('base_kmz', {race: race.id, id: 'trace_FULL'}) }}"></div>
 {% endblock %}

@@ -25,10 +25,10 @@
                 <p>{{ 'All the rankings published for all the boats'|trans }}</p>
                 <ul>
                     <li><a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}" rel="tooltip" title="{{ "Autorefreshes positions' file"|trans }}"><i class="icon-globe"></i> {{ path('race_kmz', {race: race.id}) }}</a>
-                    <li><a target="_blank" href="{{ path('FULL_kmz', {race: race.id}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('FULL_kmz', {race: race.id}) }}</a>
+                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'FULL'}) }}</a>
                         <a target="_blank" href="{{ path('FULL_json', {race: race.id}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('FULL_json', {race: race.id}) }}</a>
-                    <li><a target="_blank" href="{{ path('trace_FULL_kmz', {race: race.id}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('trace_FULL_kmz', {race: race.id}) }}</a>
-                    <li><a target="_blank" href="{{ path('points_FULL_kmz', {race: race.id}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('points_FULL_kmz', {race: race.id}) }}</a>
+                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}</a>
+                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}</a>
                 </ul>
             </div>
             <div class="span4">
