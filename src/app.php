@@ -170,7 +170,7 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
 
     // Routes NOT requiring _locale param
     $arrNoLocle = array(
-        'reports_json' => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 0.5, 'freq' => 'daily'),
+        'reports_json' => array('idx' => array('k' => 'id', 'v' => $reports), 'prio' => 0.5, 'freq' => 'daily', 'race_param' => true),
         'sail_json'    => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.5, 'freq' => 'hourly'),
         'sail_kmz'     => array('idx' => array('k' => 'id', 'v' => array_keys($app['sk'])), 'prio' => 0.8, 'freq' => 'hourly'),
         'doc_format'   => array('idx' => array(), 'prio' => 0.5, 'freq' => 'monthly'),
@@ -184,7 +184,11 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         } else {
             extract($params['idx']); // $k, $v);
             foreach($v as $vv) {
-                $u = $app['url_generator']->generate($route, array($k => $vv));
+                $tmp = array($k => $vv);
+                if(isset($params['race_param'])) {
+                    $tmp['race'] = $app['race']['id'];
+                }
+                $u = $app['url_generator']->generate($route, $tmp);
                 $sitemap->addItem($u, $params['prio'], $params['freq']);
             }
         }
@@ -214,7 +218,7 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         }
     }
 
-    $sitemap->createSitemapIndex($app['config']['schema'].$app['race']['host'].$app['config']['smDir'], 'Today');
+    $sitemap->createSitemapIndex($app['config']['schema'].$app['race']['host'].$app['config']['smDir'].'/', 'Today');
     return 'OK';
 
 })->bind('sitemap');
