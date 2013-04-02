@@ -13,9 +13,8 @@
         }
     ],
     "minimum-stability" : "stable",
-
     "require"           : {
-        "silex/silex"                        : "1.0.*",
+        "silex/silex"                        : "1.0.*@dev",
 
         "symfony/config"                     : "~2.2",
         "symfony/yaml"                       : "~2.2",

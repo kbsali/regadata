@@ -5,4 +5,3 @@
 /vendor/*
 /src/config.php
 /src/races.php
-composer.lock
