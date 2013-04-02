@@ -176,6 +176,9 @@ $console
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
+            if(strlen($_tweet) <= 131) {
+                $_tweet.= ' #twailor';
+            }
             if(strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
@@ -188,6 +191,9 @@ $console
         $_tweet = $app['translator']->trans($tweet, $params, 'en');
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
+            if(strlen($_tweet) <= 131) {
+                $_tweet.= ' #twailor';
+            }
             if(strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
