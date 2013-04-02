@@ -23,7 +23,6 @@ function showmap() {
         mapTypeId: google.maps.MapTypeId.TERRAIN
     }, _map = document.getElementById("map");
     map = new google.maps.Map(_map, myOptions);
-    console.log(_map.getAttribute("rel"))
     kml = new google.maps.KmlLayer(_map.getAttribute("rel"), { preserveViewport : true });
     kml.setMap(map);
     $(document.getElementById("main")).css("padding", 0);
