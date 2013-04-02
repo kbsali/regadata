@@ -21,12 +21,13 @@ function showmap() {
         center: new google.maps.LatLng(0, 0),
         zoom: 3,
         mapTypeId: google.maps.MapTypeId.TERRAIN
-    };
-    map = new google.maps.Map(document.getElementById("map"), myOptions);
-    kml = new google.maps.KmlLayer("http://vg2012.saliou.name/json/trace_FULL.kmz",{ preserveViewport : true });
+    }, _map = document.getElementById("map");
+    map = new google.maps.Map(_map, myOptions);
+    console.log(_map.getAttribute("rel"))
+    kml = new google.maps.KmlLayer(_map.getAttribute("rel"), { preserveViewport : true });
     kml.setMap(map);
     $(document.getElementById("main")).css("padding", 0);
-    $(document.getElementById("map")).height(document.documentElement.clientHeight-115);
+    $(_map).height(document.documentElement.clientHeight-115);
 }
 
 !function ($) {
@@ -36,8 +37,8 @@ function showmap() {
         });
         var clmax = ["1hspeed", "1hvmg", "lrspeed", "lrvmg", "lrdistance", "24hspeed", "24hvmg", "24hdistance", "total_distance", "oas", "dtl_diff", "dtp"];
         for(var i=0;i<clmax.length;i++) {
-            getMax(clmax[i])
+            getMax(clmax[i]);
         }
         showmap();
-    })
+    });
 }(window.jQuery)
