@@ -11,9 +11,6 @@ use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 
-use Kud\Silex\Provider\TmhOAuthServiceProvider;
-
-
 function ldd($a) {
     var_export($a);die(PHP_EOL.'---------------------'.PHP_EOL);
 }
@@ -92,7 +89,7 @@ $app->register(new TwigServiceProvider(), array(
     ),
 ));
 
-$app->register(new TmhOAuthServiceProvider());
+$app->register(new Service\Provider\TmhOAuthServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
 if(!isset($app['imagine.factory'])) {

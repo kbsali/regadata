@@ -13,30 +13,25 @@
         }
     ],
     "minimum-stability" : "stable",
-    "require"           : {
-        "silex/silex"                        : "1.0.*@dev",
+    "require": {
+        "silex/silex": "1.0.*@dev",
 
-        "symfony/config"                     : "~2.2",
-        "symfony/yaml"                       : "~2.2",
+        "symfony/config": "~2.2",
+        "symfony/yaml": "~2.2",
+        "symfony/translation": "~2.2",
+        "symfony/twig-bridge": "~2.2",
+        "symfony/console": "~2.2",
 
-        "symfony/translation"                : "~2.2",
-        "symfony/twig-bridge"                : "~2.2",
-
-        "symfony/console"                    : "~2.2",
-
-
-        "themattharris/tmhoauth"             : "dev-master",
-        "kud/tmhoauth-silex-service-provider": "dev-master",
-
-        "imagine/Imagine"                    : "dev-develop",
-        "suin/php-rss-writer"                : ">=1.0",
-        "evert/sitemap-php"                  : "dev-master"
+        "themattharris/tmhoauth": "dev-master",
+        "imagine/Imagine": "dev-develop",
+        "suin/php-rss-writer": ">=1.0",
+        "evert/sitemap-php": "dev-master"
     },
-    "autoload"          : {
+    "autoload": {
         "psr-0": {
             "Repository": "src/",
-            "Util"      : "src/",
-            "Service"   : "src/"
+            "Util": "src/",
+            "Service": "src/"
         }
     }
 }

@@ -1,5 +1,5 @@
 {
-    "hash": "7fa11672caae72cbc80fa9145d61a4b5",
+    "hash": "713e56259a47e731c81d6ed44662a8bb",
     "packages": [
         {
             "name": "evert/sitemap-php",
@@ -98,51 +98,6 @@
                 "image processing"
             ],
             "time": "2013-02-05 00:59:16"
-        },
-        {
-            "name": "kud/tmhoauth-silex-service-provider",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kud/tmhoauth-silex-service-provider.git",
-                "reference": "3bd12950bec3cf595deebaae53cf7c38f0e1b4b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kud/tmhoauth-silex-service-provider/zipball/3bd12950bec3cf595deebaae53cf7c38f0e1b4b6",
-                "reference": "3bd12950bec3cf595deebaae53cf7c38f0e1b4b6",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.2",
-                "themattharris/tmhoauth": "dev-master"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Kud": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Erwann MEST",
-                    "email": "erwann.mest@gmail.com"
-                }
-            ],
-            "description": "tmhOAuth silex service provider.",
-            "homepage": "https://github.com/kud/tmhoauth-silex-service-provider",
-            "keywords": [
-                "oauth",
-                "service provider",
-                "silex",
-                "tmhoauth",
-                "twitter"
-            ],
-            "time": "2013-03-19 10:31:25"
         },
         {
             "name": "pimple/pimple",
@@ -949,7 +904,6 @@
     "stability-flags": {
         "silex/silex": 20,
         "themattharris/tmhoauth": 20,
-        "kud/tmhoauth-silex-service-provider": 20,
         "imagine/imagine": 20,
         "evert/sitemap-php": 20
     },
