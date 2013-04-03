@@ -93,7 +93,7 @@
 'Random boat':                      'Random boat'
 'JSON Doc':                         'JSON Doc'
 
-'#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%'
+'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%' : 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%'
 
 'Ranking of the boat': 'Ranking of the boat'
 'Country':          'Country'

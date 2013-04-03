@@ -93,7 +93,7 @@
 'Random boat':                      'Bateau au hasard'
 'JSON Doc':                         'JSON Doc'
 
-'#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%' : '#%hashtag% Dernier classement disponible, skipper le plus rapide sur les dernières 24h %skipper% (%miles% nm) %url%'
+'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%' : 'Dernier classement disponible, skipper le plus rapide sur les dernières 24h %skipper% (%miles% nm) %url% %hashtag%'
 
 'Ranking of the boat': 'Position au classement'
 'Country':          'Pays'

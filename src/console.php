@@ -161,24 +161,24 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
+        // ---- get last report + max distance boat
         $report = $app['repo.report']->getLast();
         $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
-        $tweet  = '#%hashtag% latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url%';
-
+        $tweet  = 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%';
         $params = array(
-            '%hashtag%' => $app['race']['hashtag'],
+            '%hashtag%' => '#'.$app['race']['hashtag'],
             '%skipper%' => $app['misc']->getTwitter($max['sail']),
             '%miles%'   => $max['24hour_distance'],
         );
 
-        // in french
+        // ---- translate tweet to french + tweet
         $params['%url%'] = $app['race']['tweetUrlFr'];
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
+        if(strlen($_tweet) <= 131) {
+            $_tweet.= ' #twailor';
+        }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
-            if(strlen($_tweet) <= 131) {
-                $_tweet.= ' #twailor';
-            }
             if(strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
@@ -186,14 +186,14 @@ $console
             }
         }
 
-        // in english
+        // ---- translate tweet to english + tweet
         $params['%url%'] = $app['race']['tweetUrlEn'];
         $_tweet = $app['translator']->trans($tweet, $params, 'en');
+        if(strlen($_tweet) <= 131) {
+            $_tweet.= ' #twailor';
+        }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
-            if(strlen($_tweet) <= 131) {
-                $_tweet.= ' #twailor';
-            }
             if(strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
