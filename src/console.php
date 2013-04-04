@@ -47,7 +47,7 @@ $console
             file_put_contents(
                 $app['srv.tbmxls']->xlsDir.'/'.$f,
                 file_get_contents(
-                    strtr($app['url_xls'], array('%file%' => $f))
+                    strtr($app['race']['url_xls'], array('%file%' => $f))
                 )
             );
         }
