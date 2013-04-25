@@ -174,7 +174,7 @@ $console
         // ---- translate tweet to french + tweet
         $params['%url%'] = $app['race']['tweetUrlFr'];
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        if(strlen($_tweet) <= 131) {
+        if(isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
             $_tweet.= ' #twailor';
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
@@ -189,7 +189,7 @@ $console
         // ---- translate tweet to english + tweet
         $params['%url%'] = $app['race']['tweetUrlEn'];
         $_tweet = $app['translator']->trans($tweet, $params, 'en');
-        if(strlen($_tweet) <= 131) {
+        if(isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
             $_tweet.= ' #twailor';
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
