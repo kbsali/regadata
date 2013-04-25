@@ -113,12 +113,14 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
-    /*
-    $report1 = $app['repo.report']->findBy(null, array('id' => $id));
-    $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
-    $report = $report2+$report1;
-    */
-    $report = $app['repo.report']->findBy(null, array('id' => $id));
+
+    if('vg2012' === $app['race']['id']) {
+        $report1 = $app['repo.report']->findBy(null, array('id' => $id));
+        $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
+        $report = $report2+$report1;
+    } else {
+        $report = $app['repo.report']->findBy(null, array('id' => $id));
+    }
 
     return $app['twig']->render('reports/reports.html.twig', array(
         'ts'         => $ts,
