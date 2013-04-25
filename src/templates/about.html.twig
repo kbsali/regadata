@@ -39,8 +39,8 @@
                         <li>
                             <a href="{{ path('sail', {ids: skipper.sail}) }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
                             <ul>
-                                <li><a target="_blank" href="{{ path('sail_json', {id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {id: skipper.sail}) }}</a>
-                                <li><a target="_blank" href="{{ path('sail_kmz', {id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {id: skipper.sail}) }}</a>
+                                <li><a target="_blank" href="{{ path('sail_json', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: skipper.sail}) }}</a>
+                                <li><a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}</a>
                         </ul>
                     {% endfor %}
                 </ul>
@@ -49,11 +49,11 @@
                 <h2>{{ 'Per ranking'|trans }}</h2>
                 <p>{{ 'All published rankings'|trans }}</p>
                 <ul>
-                    {% for ts in reports %}
+                    {% for reportId in reports %}
                         <li>
-                            <a href="{{ path('report', {id: ts|date("Ymd-Hi")}) }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ ts|date }}</a>
+                            <a href="{{ path('report', {id: reportId}) }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ reportId|date }}</a>
                             <ul>
-                                <li><a target="_blank" href="{{ path('reports_json', {race: race.id, id: ts|date("Ymd-Hi")}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: ts|date("Ymd-Hi")}) }}</a>
+                                <li><a target="_blank" href="{{ path('reports_json', {race: race.id, id: reportId}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: reportId}) }}</a>
                             </ul>
                     {% endfor %}
                 </ul>

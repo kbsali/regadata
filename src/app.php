@@ -30,10 +30,10 @@ $app->get('/doc/json-format', function () use ($app) {
 
 
 $app->get('/{race}.kmz', function () use ($app) {})->bind(('race_kmz'));
-$app->get('/kml/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
+$app->get('/kml/{race}/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 $app->get('/kml/{race}/{id}.kmz', function () use ($app) {})->bind(('base_kmz'));
 
-$app->get('/json/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
+$app->get('/json/{race}/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
 $app->get('/json/{race}/FULL.json', function () use ($app) {})->bind(('FULL_json'));
 $app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
 

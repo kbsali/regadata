@@ -66,19 +66,17 @@ abstract class XlsManager
 
     public function mongo2json($force = false)
     {
-        $tss    = $this->_report->getAllBy('timestamp');
-        $master = $total = $yesterday = array();
+        $reportIds = $this->_report->getAllBy('id');
+        $master    = $total = $yesterday = array();
 
-        foreach($tss as $ts) {
-            $f = $this->jsonDir.'/reports/'.date('Ymd-Hi', $ts).'.json';
-
-            $reports = $this->_report->findBy(null, array('timestamp' => $ts));
-
+        foreach($reportIds as $reportId) {
+            $f = $this->jsonDir.'/reports/'.$reportId.'.json';
+            $reports = $this->_report->findBy(null, array('id' => $reportId));
             $daily = array();
             foreach($reports as $r) {
                 unset($r['_id']);
-                $daily[$r['sail']]       = $r;
-                $master[$r['sail']][$ts] = $r;
+                $daily[$r['sail']] = $r;
+                $master[$r['sail']][$r['timestamp']] = $r;
             }
 
             if(true === $force || !file_exists($f)) {
