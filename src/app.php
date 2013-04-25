@@ -51,19 +51,20 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
         ->copyright('Copyright 2012, Kevin Saliou')
         ->appendTo($feed)
     ;
-    $reports = $app['repo.report']->getAllBy('timestamp', true);
+    $reports = $app['repo.report']->getAllBy('id', true);
 
-    foreach ($reports as $ts) {
+    foreach ($reports as $reportId) {
+        $ts = strtotime($reportId);
         $item = new Suin\RSSWriter\Item();
         $item
             ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
             // ->description("<div>Blog body</div>")
 
             // ->url($app->url('report', array('id' => $report)))
-            ->url($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true))
+            ->url($app['url_generator']->generate('report', array('id' => $reportId), true))
 
             // ->guid($app->url('report', array('id' => $report)), true)
-            ->guid($app['url_generator']->generate('report', array('id' => date('Ymd-Hi', $ts)), true), true)
+            ->guid($app['url_generator']->generate('report', array('id' => $reportId), true), true)
 
             ->pubDate($ts)
             ->appendTo($channel)
@@ -108,7 +109,6 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     // --- \PAGINATION
 
     $report1 = $app['repo.report']->findBy(null, array('id' => $id));
-    // $report1 = $app['repo.report']->findBy(null, array('timestamp' => $ts));
     $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
     $report = $report2+$report1;
 
@@ -123,7 +123,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
 })->bind('report');
 
 $app->get('/{_locale}/about', function () use ($app) {
-    $reports = $app['repo.report']->getAllBy('timestamp', true);
+    $reports = $app['repo.report']->getAllBy('id', true);
 
     return $app['twig']->render('about.html.twig', array(
         'reports' => $reports,
