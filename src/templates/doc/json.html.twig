@@ -4,7 +4,7 @@
 
 {% block container_content %}
         <div class="row-fluid">
-            <div class="span9">
+            <div class="span8">
                 <h1>{{ 'Documentation'|trans }}</h1>
                 <p>{{ 'Description of the data available in the Json files'|trans}}</p>
                 <table class="table table-striped table-bordered table-hover">
@@ -17,11 +17,15 @@
                     </tr>
                 </thead>
                 <tbody>
+                    <tr><td>race_id</td><td>1</td><td>{{ 'VG2012'|trans }}</td><td></td></tr>
                     <tr><td>rank</td><td>1</td><td>{{ 'Ranking of the boat'|trans }}</td><td></td></tr>
                     <tr><td>country</td><td>"FR"</td><td>{{ 'Country'|trans }}</td><td></td></tr>
                     <tr><td>sail</td><td>"FRA19"</td><td>{{ 'Sail number'|trans }}</td><td></td></tr>
                     <tr><td>skipper</td><td>"Armel Le Cléac'h"</td><td>{{ 'Skipper'|trans }}</td><td></td></tr>
                     <tr><td>boat</td><td>"Banque Populaire"</td><td>{{ 'Boat name'|trans }}</td><td></td></tr>
+
+                    <tr><td>source</td><td>"12910"</td><td>{{ 'Source filename (usually Excel format)'|trans }}</td><td></td></tr>
+                    <tr><td>id</td><td>"20130401-1340"</td><td>{{ 'Unique report id - YYYYMMDD-HHmi'|trans }}</td><td></td></tr>
 
                     <tr><td>time</td><td>"10:00"</td><td>{{ 'Time'|trans }}</td><td>{{ 'HH:mi'|trans }}</td></tr>
                     <tr><td>date</td><td>"2012-11-27"</td><td>{{ 'Date'|trans }}</td><td>{{ 'YYYY-MM-DD'|trans }}</td></tr>
@@ -49,16 +53,17 @@
 
                     <tr><td>dtf</td><td>19547</td><td>{{ 'Distance To Final' }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
                     <tr><td>dtl</td><td>0</td><td>{{ 'Distance To Leader'|trans }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
+                    <tr><td>dtl_diff</td><td>-32.54</td><td>{{ 'Distance To Leader Change'|trans }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
+                    <tr><td>total_distance</td><td>354</td><td>{{ 'Real total distance travelled'|trans }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
 
-                    <tr><td>total_distance</td><td>0</td><td>{{ 'Real total distance travelled'|trans }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
-                    <tr><td>dtl_diff</td><td>0</td><td>{{ 'Distance To Leader Change'|trans }}</td><td>{{ 'Nautical Miles'|trans }}</td></tr>
+                    <tr><td>color</td><td>558a42</td><td>{{ 'Hexadecimal color code for this boat'|trans }}</td><td>{{ 'Hexadecimal'|trans }}</td></tr>
                 </tbody>
                 </table>
             </div>
-            <div class="span3">
+            <div class="span4">
                 <h3>{{ 'Json Preview'|trans }}</h3>
                 <p>&nbsp;</p>
-                <iframe style="height: 600px" src="{{ path('doc_format') }}"></iframe>
+                <iframe style="height: 600px;width: 330px" src="{{ path('doc_format') }}"></iframe>
             </div>
         </div>
 {% endblock %}
