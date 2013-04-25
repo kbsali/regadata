@@ -115,6 +115,9 @@ class Vg
         $i = 0;
         $ret = array();
         foreach ($arr as $_arr) {
+            if(isset($_arr['has_arrived'])) {
+                break;
+            }
             $i++;
             if ($limitFactor === $i) {
                 $i = 0;

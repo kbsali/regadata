@@ -128,9 +128,9 @@ class TbmXls extends XlsManager implements XlsManagerInterface
         [15] =>
          */
         $ret = $this->_report->schema();
-        $ret['rank']      = (int) $rank;
-        $ret['country']   = trim('fr');
-        $ret['skipper']   = utf8_decode(trim($row[2]));
+        $ret['rank']    = (int) $rank;
+        $ret['country'] = trim('fr');
+        $ret['skipper'] = utf8_decode(trim($row[2]));
         $boat           = trim($row[1]);
         $ret['sail']    = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
         $ret['skipper'] = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['skipper'];
@@ -141,13 +141,23 @@ class TbmXls extends XlsManager implements XlsManagerInterface
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);
 
-        preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time);
-        // if (false === preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time)) {
-        //     $ts = 0;
+        // preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time);
+        // if(isset($time[3])) {
+        //     $date = \DateTime::createFromFormat('Y-m-d H:i', $time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
+        //     $ts = $date->getTimestamp();
         // }
-        if(isset($time[3])) {
-            $ts = strtotime($time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
-        }
+        // $date = \DateTime::createFromFormat('Ymd Hi', $ret['id']);
+        // $date = \DateTime::createFromFormat('d/m/Y H:i:s', $row[5]); // 17/03/2013 15:45:00
+        // if(!$date) {
+        //     return false;
+        // }
+        // $_ts = $date->getTimestamp();
+        // if($_ts == 1357295400) {
+        //     ld($ts);
+        //     ld(date('r', $ts));
+        //     ld($date);
+        //     ldd($row);
+        // }
         $ret['date']      = date('Y-m-d', $ts);
         $ret['time']      = date('H:i', $ts);
         $ret['timestamp'] = $ts;
@@ -162,17 +172,6 @@ class TbmXls extends XlsManager implements XlsManagerInterface
             $ret['lon_dms'] = self::DECtoDMS($this->race['arrival_lon']);
             $ret['lat_dec'] = $this->race['arrival_lat'];
             $ret['lon_dec'] = $this->race['arrival_lat'];
-
-            $ret['date']      = date('Y-m-d', $ts);
-            $ret['timestamp'] = $ts;
-
-            // if (false === preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time)) {
-            //     $time[0] = 0;
-            // }
-            // $ts = strtotime($time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
-            // $ret['time'] = date('H:i', $ts);
-            // $ret['date'] = date('Y-m-d', $ts);
-            // $ret['timestamp'] = $ts;
 
             $ret['has_arrived'] = true;
 

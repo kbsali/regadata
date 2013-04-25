@@ -83,9 +83,9 @@
                     <td>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></td>
                     <td colspan="2">
                         <strong>{{ 'JSON'|trans }}</strong>
-                        <a target="_blank" href="{{ path('sail_json', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {id: info.info.sail}) }}</a><br>
+                        <a target="_blank" href="{{ path('sail_json', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: info.info.sail}) }}</a><br>
                         <strong>{{ 'KMZ'|trans }}</strong>
-                        <a target="_blank" href="{{ path('sail_kmz', {id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {id: info.info.sail}) }}</a>
+                        <a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}</a>
                     </td>
                 </tr>
             </table>
