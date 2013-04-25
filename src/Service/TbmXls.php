@@ -195,6 +195,9 @@ class TbmXls extends XlsManager implements XlsManagerInterface
 
         $ret['24hour_vmg']  = (int) trim($row[13]);
         $ret['24hour_distance'] = (float) trim($row[14]);
+        if($ret['24hour_distance'] > 0) {
+            $ret['24hour_speed'] = $ret['24hour_distance'] / 24;
+        }
 
         $ret['dtf'] = (float) trim($row[3]);
         $ret['dtl'] = (float) trim($row[4]);
