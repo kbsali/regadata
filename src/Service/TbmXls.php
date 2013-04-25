@@ -68,7 +68,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
                     }
                     $total[$r['sail']]     += $r['lastreport_distance'];
                     $r['total_distance']   = $total[$r['sail']];
-                    $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                    $r['dtl_diff']         = isset($yesterday[$r['sail']]) && !isset($r['has_arrived']) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
                     $r['color']            = $this->_misc->getColor($r['sail']);
                     $yesterday[$r['sail']] = $r;
                     try {
@@ -131,50 +131,57 @@ class TbmXls extends XlsManager implements XlsManagerInterface
         $ret['rank']      = (int) $rank;
         $ret['country']   = trim('fr');
         $ret['skipper']   = utf8_decode(trim($row[2]));
-        // ld($row);
-        // ld($ret);
-        // ldd($this->boats);
-        // // $ret['sail']      = $this->boats[ $ret['skipper'] ];
-        $boat      = trim($row[1]);
-        // $ret['boat']      = trim($row[1]);
-        $ret['sail']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
-        $ret['skipper']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['skipper'];
-        $ret['boat']      = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['boat'];
-        // $ret['boat']      = !isset($this->boats[ $ret['boat'] ]) ? null : $this->boats[ $ret['boat'] ]['sail'];
-        $ret['source']    = basename($file);
-
-        $ret['id']        = date('Ymd-Hi', $ts);
-        $ret['date']      = date('Y-m-d', $ts);
-        $ret['timestamp'] = $ts;
-
-        // ----------------------------
-        // HANDLE ARRIVAL (WHAT IS THE FORMAT???)
-        // if('' !== trim($row[4])) {
-        //     $_ts = $this->_getArrivalDate($row[4]);
-
-        //     $ret['timestamp'] = $_ts;
-        //     $ret['time'] = date('H:i', $_ts);
-        //     $ret['date'] = date('Y-m-d', $_ts);
-        //     $ret['lat_dms'] = self::DECtoDMS($this->race['arrival_lat']);
-        //     $ret['lon_dms'] = self::DECtoDMS($this->race['arrival_lon']);
-        //     $ret['lat_dec'] = $this->race['arrival_lat'];
-        //     $ret['lon_dec'] = $this->race['arrival_lat'];
-
-        //     $ret['has_arrived'] = true;
-
-        //     return $ret;
-        // }
-        // ----------------------------
-
-        if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
-            $time[0] = 0;
-        }
-        $ret['time'] = $time[0];
+        $boat           = trim($row[1]);
+        $ret['sail']    = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
+        $ret['skipper'] = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['skipper'];
+        $ret['boat']    = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['boat'];
+        $ret['source']  = basename($file);
+        $ret['id']      = date('Ymd-Hi', $ts);
 
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);
-        $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[6])));
-        $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[7])));
+
+        preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time);
+        // if (false === preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time)) {
+        //     $ts = 0;
+        // }
+        if(isset($time[3])) {
+            $ts = strtotime($time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
+        }
+        $ret['date']      = date('Y-m-d', $ts);
+        $ret['time']      = date('H:i', $ts);
+        $ret['timestamp'] = $ts;
+        // if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
+        //     $time[0] = 0;
+        // }
+        // $ret['time'] = $time[0];
+
+        // ----------------------------
+        if(empty($ret['lat_dms'])) {
+            $ret['lat_dms'] = self::DECtoDMS($this->race['arrival_lat']);
+            $ret['lon_dms'] = self::DECtoDMS($this->race['arrival_lon']);
+            $ret['lat_dec'] = $this->race['arrival_lat'];
+            $ret['lon_dec'] = $this->race['arrival_lat'];
+
+            $ret['date']      = date('Y-m-d', $ts);
+            $ret['timestamp'] = $ts;
+
+            // if (false === preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time)) {
+            //     $time[0] = 0;
+            // }
+            // $ts = strtotime($time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
+            // $ret['time'] = date('H:i', $ts);
+            // $ret['date'] = date('Y-m-d', $ts);
+            // $ret['timestamp'] = $ts;
+
+            $ret['has_arrived'] = true;
+
+            return $ret;
+        }
+        // ----------------------------
+
+        $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS($ret['lat_dms']));
+        $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS($ret['lon_dms']));
 
         $ret['1hour_speed']    = (float) trim($row[8]);
         $ret['1hour_vmg']      = (float) trim($row[9]);
@@ -215,6 +222,14 @@ class TbmXls extends XlsManager implements XlsManagerInterface
      */
     public static function strtoDMS($str)
     {
+        if(empty($str)) {
+            return array(
+                'deg' => 0,
+                'min' => 0,
+                'sec' => 0,
+                'dir' => 0,
+            );
+        }
         // preg_match("|(\d)°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
         if (false === preg_match("|(.*?) (.*?)\.(.*?)' ([A-Z]{1})$|s", $str, $matches)) {
             return array(
@@ -224,7 +239,6 @@ class TbmXls extends XlsManager implements XlsManagerInterface
                 'dir' => 0,
             );
         }
-
         return array(
             'deg' => $matches[1],
             'min' => $matches[2],

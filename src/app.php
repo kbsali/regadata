@@ -84,7 +84,6 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     }
     $ts = strtotime($time[1].'-'.$time[2].'-'.$time[3].' '.$time[4].':'.$time[5]);
 
-
     // --- /PAGINATION
     $idx = array_search($id, $reports);
 
@@ -108,7 +107,8 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
-    $report1 = $app['repo.report']->findBy(null, array('timestamp' => $ts));
+    $report1 = $app['repo.report']->findBy(null, array('id' => $id));
+    // $report1 = $app['repo.report']->findBy(null, array('timestamp' => $ts));
     $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
     $report = $report2+$report1;
 
