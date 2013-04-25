@@ -141,30 +141,9 @@ class TbmXls extends XlsManager implements XlsManagerInterface
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);
 
-        // preg_match("|(\d{2})/(\d{2})/(\d{4}) (\d{2}):(\d{2})|", $row[5], $time);
-        // if(isset($time[3])) {
-        //     $date = \DateTime::createFromFormat('Y-m-d H:i', $time[3].'-'.$time[2].'-'.$time[1].' '.$time[4].':'.$time[5]);
-        //     $ts = $date->getTimestamp();
-        // }
-        // $date = \DateTime::createFromFormat('Ymd Hi', $ret['id']);
-        // $date = \DateTime::createFromFormat('d/m/Y H:i:s', $row[5]); // 17/03/2013 15:45:00
-        // if(!$date) {
-        //     return false;
-        // }
-        // $_ts = $date->getTimestamp();
-        // if($_ts == 1357295400) {
-        //     ld($ts);
-        //     ld(date('r', $ts));
-        //     ld($date);
-        //     ldd($row);
-        // }
         $ret['date']      = date('Y-m-d', $ts);
         $ret['time']      = date('H:i', $ts);
         $ret['timestamp'] = $ts;
-        // if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
-        //     $time[0] = 0;
-        // }
-        // $ret['time'] = $time[0];
 
         // ----------------------------
         if(empty($ret['lat_dms'])) {

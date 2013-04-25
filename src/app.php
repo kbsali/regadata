@@ -80,10 +80,15 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     if ('latest' === $id) {
         $id = $reports[0];
     }
-    if (false === preg_match("|(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})|", $id, $time)) {
-        return false;
+    if(false === $date = \DateTime::createFromFormat('Ymd-Hi', $id)) {
+        if (false === preg_match("|(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})|", $id, $time)) {
+            return false;
+        } else {
+            $ts = strtotime($time[1].'-'.$time[2].'-'.$time[3].' '.$time[4].':'.$time[5]);
+        }
+    } else {
+        $ts = $date->getTimestamp();
     }
-    $ts = strtotime($time[1].'-'.$time[2].'-'.$time[3].' '.$time[4].':'.$time[5]);
 
     // --- /PAGINATION
     $idx = array_search($id, $reports);
@@ -108,9 +113,12 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
+    /*
     $report1 = $app['repo.report']->findBy(null, array('id' => $id));
     $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
     $report = $report2+$report1;
+    */
+    $report = $app['repo.report']->findBy(null, array('id' => $id));
 
     return $app['twig']->render('reports/reports.html.twig', array(
         'ts'         => $ts,
