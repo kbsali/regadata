@@ -39,37 +39,7 @@ $app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(
 
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
-    $feed = new Suin\RSSWriter\Feed();
-
-    $channel = new Suin\RSSWriter\Channel();
-    $channel
-        ->title($app['translator']->trans('VG2012 rankings'))
-        ->description($app['translator']->trans('All the rankings of the Vendée Globe 2012'))
-        // ->url($app->url('homepage'))
-        ->url($app['url_generator']->generate('homepage', array(), true))
-        ->language('en')
-        ->copyright('Copyright 2012, Kevin Saliou')
-        ->appendTo($feed)
-    ;
-    $reports = $app['repo.report']->getAllBy('id', true);
-
-    foreach ($reports as $reportId) {
-        $ts = strtotime($reportId);
-        $item = new Suin\RSSWriter\Item();
-        $item
-            ->title($app['translator']->trans('General ranking %date%', array('%date%' => date('Y-m-d H:i', $ts)), 'messages', 'en'))
-            // ->description("<div>Blog body</div>")
-
-            // ->url($app->url('report', array('id' => $report)))
-            ->url($app['url_generator']->generate('report', array('id' => $reportId), true))
-
-            // ->guid($app->url('report', array('id' => $report)), true)
-            ->guid($app['url_generator']->generate('report', array('id' => $reportId), true), true)
-
-            ->pubDate($ts)
-            ->appendTo($channel)
-        ;
-    }
+    $feed = $app['srv.rss']->generate();
 
     return new Response($feed, 200, array('Content-Type' => 'application/rss+xml'));
 })->bind('reports_rss');

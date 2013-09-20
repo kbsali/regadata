@@ -56,7 +56,6 @@ class MyApp extends Silex\Application
             return $translator;
         }));
         $this['translator.domains'] = array();
-
     }
     // use Silex\Application\TwigTrait;
     // use Silex\Application\SecurityTrait;
@@ -110,6 +109,14 @@ $app['repo.report'] = $app->share(function($app) {
 });
 $app['repo.sail'] = $app->share(function($app) {
     return new Repository\Sail($app['mongo']);
+});
+
+$app['srv.rss'] = $app->share(function($app) {
+    return new Service\Rss(
+        $app['translator'],
+        $app['url_generator'],
+        $app['repo.report']
+    );
 });
 
 $app['misc'] = new stdclass();
