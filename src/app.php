@@ -76,7 +76,9 @@ $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
 
 $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app) {
     $reports = $app['repo.report']->getAllBy('id', true);
-
+    if (0 === count($reports)) {
+        return new Response('No report yet', 404);
+    }
     if ('latest' === $id) {
         $id = $reports[0];
     }
@@ -143,7 +145,6 @@ $app->get('/{_locale}/about', function () use ($app) {
 $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     $ids   = explode('-', $ids);
     $infos = array();
-
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
             if(!$info['info']) {
@@ -162,6 +163,9 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
                 'tdtl_diff'        => json_encode(array('label' => $info['info']['skipper'], 'color' => $c, 'data' => $info['tdtl_diff'])),
             );
         }
+    }
+    if (0 === count($infos)) {
+        return new Response('No report yet', 404);
     }
     return $app['twig']->render('sail/sail.html.twig', array(
         'infos' => $infos,
