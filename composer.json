@@ -14,13 +14,13 @@
     ],
     "minimum-stability" : "stable",
     "require": {
-        "silex/silex": "1.0.*@dev",
+        "silex/silex": "1.0.*",
 
-        "symfony/config": "~2.2",
-        "symfony/yaml": "~2.2",
-        "symfony/translation": "~2.2",
-        "symfony/twig-bridge": "~2.2",
-        "symfony/console": "~2.2",
+        "symfony/config": "2.3.*",
+        "symfony/yaml": "2.3.*",
+        "symfony/translation": "2.3.*",
+        "symfony/twig-bridge": "2.3.*",
+        "symfony/console": "2.3.*",
 
         "themattharris/tmhoauth": "dev-master",
         "imagine/Imagine": "dev-develop",
