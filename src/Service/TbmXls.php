@@ -2,8 +2,6 @@
 
 namespace Service;
 
-use Service\Vg;
-
 class TbmXls extends XlsManager implements XlsManagerInterface
 {
     public $ts;
@@ -20,6 +18,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
                 $ret[] = $xlsx;
             }
         }
+
         return $ret;
     }
 
@@ -57,13 +56,13 @@ class TbmXls extends XlsManager implements XlsManagerInterface
                 $data = new \SpreadsheetReader_XLS($xlsx);
                 foreach ($data as $row) {
                     $this->_getDate($row);
-                    if(null === $this->ts) {
+                    if (null === $this->ts) {
                         continue;
                     }
                     if (false === $r = $this->_cleanRow($row, $this->ts, $xlsx)) {
                         continue;
                     }
-                    if(!isset($total[$r['sail']])) {
+                    if (!isset($total[$r['sail']])) {
                         $total[$r['sail']] = 0;
                     }
                     $total[$r['sail']]     += $r['lastreport_distance'];
@@ -146,7 +145,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
         $ret['timestamp'] = $ts;
 
         // ----------------------------
-        if(empty($ret['lat_dms'])) {
+        if (empty($ret['lat_dms'])) {
             $ret['lat_dms'] = self::DECtoDMS($this->race['arrival_lat']);
             $ret['lon_dms'] = self::DECtoDMS($this->race['arrival_lon']);
             $ret['lat_dec'] = $this->race['arrival_lat'];
@@ -173,7 +172,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
 
         $ret['24hour_vmg']  = (int) trim($row[13]);
         $ret['24hour_distance'] = (float) trim($row[14]);
-        if($ret['24hour_distance'] > 0) {
+        if ($ret['24hour_distance'] > 0) {
             $ret['24hour_speed'] = $ret['24hour_distance'] / 24;
         }
 
@@ -187,7 +186,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
 
     private function _getDate($data)
     {
-        if(false === strpos($data[0], 'Date retenue pour')) {
+        if (false === strpos($data[0], 'Date retenue pour')) {
             return false;
         }
         // Figaro - Date retenue pour le calcul du classement intermiaire estim: 17/03/13 15:45 Fr
@@ -203,7 +202,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
      */
     public static function strtoDMS($str)
     {
-        if(empty($str)) {
+        if (empty($str)) {
             return array(
                 'deg' => 0,
                 'min' => 0,
@@ -220,6 +219,7 @@ class TbmXls extends XlsManager implements XlsManagerInterface
                 'dir' => 0,
             );
         }
+
         return array(
             'deg' => $matches[1],
             'min' => $matches[2],

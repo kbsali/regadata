@@ -13,23 +13,25 @@ class Misc
 
     public function getTwitter($skipper, $noAt = false)
     {
-        if(!isset($this->skippers[$skipper])) {
+        if (!isset($this->skippers[$skipper])) {
             return false;
         }
-        if(!isset($this->skippers[$skipper]['twitter']) || empty($this->skippers[$skipper]['twitter'])) {
+        if (!isset($this->skippers[$skipper]['twitter']) || empty($this->skippers[$skipper]['twitter'])) {
             return $this->skippers[$skipper]['skipper'];
         }
+
         return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
     }
 
     public function getColor($skipper)
     {
-        if(!isset($this->skippers[$skipper])) {
+        if (!isset($this->skippers[$skipper])) {
             return false;
         }
-        if(!isset($this->skippers[$skipper]['color'])) {
+        if (!isset($this->skippers[$skipper]['color'])) {
             return 'fff';
         }
+
         return $this->skippers[$skipper]['color'];
     }
 
@@ -42,7 +44,7 @@ class Misc
         );
         foreach ($pings as $ping) {
             $cmd = 'wget -nv -O /dev/null "'.$ping.urlencode($url).'"';
-            if($debug) {
+            if ($debug) {
                 echo $cmd.PHP_EOL;
             } else {
                 system($cmd);
@@ -56,6 +58,7 @@ class Misc
         for ($x=0;$x<3;$x++) {
             $rgb[$x] = hexdec(substr($color, (2*$x), 2));
         }
+
         return $rgb;
     }
 
@@ -64,6 +67,7 @@ class Misc
         $rr = substr($color, 0, 2);
         $gg = substr($color, 2, 2);
         $bb = substr($color, 4, 2);
+
         return strtolower($aa.$bb.$gg.$rr);
     }
 
@@ -72,6 +76,7 @@ class Misc
         $rr = substr($color, 6, 2);
         $gg = substr($color, 4, 2);
         $bb = substr($color, 2, 2);
+
         return strtolower($rr.$gg.$bb);
     }
 }

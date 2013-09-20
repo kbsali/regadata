@@ -15,7 +15,7 @@ class Geovoile
         $this->_misc   = $_misc;
         $this->race    = $race;
         $this->xmlDir  = $root.$xmlDir.'/'.$this->race['id'];
-        if(!is_dir($this->xmlDir)) {
+        if (!is_dir($this->xmlDir)) {
             mkdir($this->xmlDir);
         }
     }
@@ -31,7 +31,7 @@ class Geovoile
 
     public function dlAndUnzip($url, $zip, $force = false)
     {
-        if(file_exists($this->xmlDir.'/'.$zip) && false === $force) {
+        if (file_exists($this->xmlDir.'/'.$zip) && false === $force) {
             return;
         }
         echo ' - downloading '.$url.' to '.$zip.PHP_EOL;

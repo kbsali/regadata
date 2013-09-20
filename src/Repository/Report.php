@@ -20,7 +20,7 @@ class Report
 
     private function _initDb($collectionName = null)
     {
-        if(null === $collectionName) {
+        if (null === $collectionName) {
             return false;
         }
         $this->raceId = $collectionName;
@@ -75,10 +75,10 @@ class Report
 
     public function insert(array $r = array(), $force = false)
     {
-        if(empty($r)) {
+        if (empty($r)) {
             return false;
         }
-        if($force) {
+        if ($force) {
             return $this->_col->update(
                 array(
                     'timestamp' => $r['timestamp'],
@@ -90,6 +90,7 @@ class Report
                 )
             );
         }
+
         return $this->_col->insert($r, array('safe' => true));
     }
 
@@ -99,10 +100,11 @@ class Report
             ->find(array('has_arrived' => true))
         ;
         $ret = array();
-        foreach($arrived as $a) {
+        foreach ($arrived as $a) {
             unset($a['_id']);
             $ret[$a['sail']] = $a;
         }
+
         return $ret;
     }
 
@@ -111,9 +113,10 @@ class Report
         $tmp = $this->_db
             ->command(array('distinct' => $this->col, 'key' => $key))
         ;
-        if($reverse) {
+        if ($reverse) {
             rsort($tmp['values']);
         }
+
         return $tmp['values'];
     }
 
@@ -123,13 +126,14 @@ class Report
             ->find($arr)
             ->sort($orderby)
         ;
-        if(null === $indexBy) {
+        if (null === $indexBy) {
             return iterator_to_array($tmp);
         }
         $ret = array();
         foreach (iterator_to_array($tmp) as $v) {
             $ret[$v[$indexBy]] = $v;
         }
+
         return $ret;
     }
 
@@ -141,6 +145,7 @@ class Report
             ->limit(1)
         ;
         $tmp =current(iterator_to_array($report));
+
         return $tmp['timestamp'];
     }
 
@@ -149,15 +154,15 @@ class Report
         return $this->findBy(null, array('timestamp' => $this->getLastTs()));
     }
 
-
     public function extractMaxByKey($report, $key)
     {
         $max = null;
         foreach ($report as $r) {
-            if(null === $max || $r[$key] > $max[$key]) {
+            if (null === $max || $r[$key] > $max[$key]) {
                 $max = $r;
             }
         }
+
         return $max;
     }
 }

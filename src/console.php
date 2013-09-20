@@ -124,7 +124,7 @@ $console
         $sails = file(__DIR__.'/init/sails_vg2012.csv', FILE_IGNORE_NEW_LINES);
         $header = array();
         foreach ($sails as $sail) {
-            if(empty($header)) {
+            if (empty($header)) {
                 $header = explode(',', $sail);
                 continue;
             }
@@ -141,7 +141,7 @@ $console
     ->setDescription('Creates icons rotated from 0 to 360º')
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
         $color = new Imagine\Image\Color('000', 100);
-        for($i=0; $i<=360; $i++) {
+        for ($i=0; $i<=360; $i++) {
             $output->writeln('<info>Generating web/icons/boat_'.$i.'.png</info>');
             $image = $app['imagine']
                 ->open(__DIR__.'/../web/img/boat_marker.png')
@@ -174,12 +174,12 @@ $console
         // ---- translate tweet to french + tweet
         $params['%url%'] = $app['race']['tweetUrlFr'];
         $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        if(isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
+        if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
             $_tweet.= ' #twailor';
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
-            if(strlen($_tweet) <= 140) {
+            if (strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
                 ));
@@ -189,12 +189,12 @@ $console
         // ---- translate tweet to english + tweet
         $params['%url%'] = $app['race']['tweetUrlEn'];
         $_tweet = $app['translator']->trans($tweet, $params, 'en');
-        if(isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
+        if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
             $_tweet.= ' #twailor';
         }
         $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
         if (!$input->getOption('debug')) {
-            if(strlen($_tweet) <= 140) {
+            if (strlen($_tweet) <= 140) {
                 $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
                   'status' => $_tweet
                 ));

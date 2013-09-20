@@ -46,6 +46,7 @@ class Rss
                    ->appendTo($channel)
                ;
         }
+
         return $feed;
     }
 }

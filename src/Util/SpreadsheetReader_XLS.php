@@ -42,28 +42,25 @@
          */
         public function __construct($Filepath, array $Options = null)
         {
-            if (!is_readable($Filepath))
-            {
+            if (!is_readable($Filepath)) {
                 throw new Exception('SpreadsheetReader_XLS: File not readable ('.$Filepath.')');
             }
 
-            if (!class_exists('Spreadsheet_Excel_Reader'))
-            {
+            if (!class_exists('Spreadsheet_Excel_Reader')) {
                 throw new Exception('SpreadsheetReader_XLS: Spreadsheet_Excel_Reader class not available');
             }
 
             $this -> Handle = new Spreadsheet_Excel_Reader;
             $this -> Handle -> setOutputEncoding('UTF-8');
 
-            if (function_exists('mb_convert_encoding'))
-            {
+            if (function_exists('mb_convert_encoding')) {
                 $this -> Handle -> setUTFEncoder('mb');
             }
 
             $this -> Handle -> read($Filepath);
-            if (empty($this -> Handle -> sheets))
-            {
+            if (empty($this -> Handle -> sheets)) {
                 $this -> Error = true;
+
                 return null;
             }
 
@@ -78,10 +75,10 @@
 
         public function __get($Name)
         {
-            if ($Name == 'Error')
-            {
+            if ($Name == 'Error') {
                 return $this -> Error;
             }
+
             return null;
         }
 
@@ -103,8 +100,7 @@
          */
         public function current()
         {
-            if ($this -> Index == 0)
-            {
+            if ($this -> Index == 0) {
                 $this -> next();
             }
 
@@ -122,15 +118,11 @@
             //  present at all
             $this -> Index++;
 
-            if ($this -> Error)
-            {
+            if ($this -> Error) {
                 return array();
-            }
-            elseif (isset($this -> Handle -> sheets[0]['cells'][$this -> Index]))
-            {
+            } elseif (isset($this -> Handle -> sheets[0]['cells'][$this -> Index])) {
                 $this -> CurrentRow = $this -> Handle -> sheets[0]['cells'][$this -> Index];
-                if (!$this -> CurrentRow)
-                {
+                if (!$this -> CurrentRow) {
                     return array();
                 }
 
@@ -138,11 +130,11 @@
                 ksort($this -> CurrentRow);
 
                 $this -> CurrentRow = array_values($this -> CurrentRow);
+
                 return $this -> CurrentRow;
-            }
-            else
-            {
+            } else {
                 $this -> CurrentRow = $this -> EmptyRow;
+
                 return $this -> CurrentRow;
             }
         }
@@ -166,10 +158,10 @@
          */
         public function valid()
         {
-            if ($this -> Error)
-            {
+            if ($this -> Error) {
                 return false;
             }
+
             return ($this -> Index <= $this -> Handle -> sheets[0]['numRows']);
         }
 
@@ -180,12 +172,10 @@
          */
         public function count()
         {
-            if ($this -> Error)
-            {
+            if ($this -> Error) {
                 return 0;
             }
 
             return $this -> Handle -> sheets[0]['numRows'];
         }
     }
-?>

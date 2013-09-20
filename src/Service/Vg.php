@@ -39,6 +39,7 @@ class Vg
         if (false === $arr = $this->_report->findBy(null, array('sail' => $id), array('timestamp' => 1))) {
             return false;
         }
+
         return array(
             'info'             => end($arr),
             'rank'             => $this->filterBy($arr, 'rank', 1),
@@ -115,7 +116,7 @@ class Vg
         $i = 0;
         $ret = array();
         foreach ($arr as $_arr) {
-            if(isset($_arr['has_arrived'])) {
+            if (isset($_arr['has_arrived'])) {
                 break;
             }
             $i++;

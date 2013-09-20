@@ -8,10 +8,12 @@ $app = require __DIR__.'/bootstrap.php';
 // ---- /REDIRECT OLD URLS (indexed by search engines)
 $app->get('/json/sail/{id}.kmz', function ($id) use ($app) {
     $u = $app['url_generator']->generate('sail_kmz', array('id' => $id));
+
     return $app->redirect($u, 301);
 });
 $app->get('/json/{id}.kmz', function ($id) use ($app) {
     $u = $app['url_generator']->generate('base_kmz', array('id' => $id, 'race' => $app['race']['id']));
+
     return $app->redirect($u, 301);
 });
 // ---- \REDIRECT OLD URLS (indexed by search engines)
@@ -28,7 +30,6 @@ $app->get('/doc/json-format', function () use ($app) {
     return $app['twig']->render('doc/json-format.html.twig', array());
 })->bind('doc_format');
 
-
 $app->get('/{race}.kmz', function () use ($app) {})->bind(('race_kmz'));
 $app->get('/kml/{race}/sail/{id}.kmz', function ($id) use ($app) {})->bind(('sail_kmz'));
 $app->get('/kml/{race}/{id}.kmz', function () use ($app) {})->bind(('base_kmz'));
@@ -36,7 +37,6 @@ $app->get('/kml/{race}/{id}.kmz', function () use ($app) {})->bind(('base_kmz'))
 $app->get('/json/{race}/sail/{id}.json', function ($id) use ($app) {})->bind(('sail_json'));
 $app->get('/json/{race}/FULL.json', function () use ($app) {})->bind(('FULL_json'));
 $app->get('/json/{race}/reports/{id}.json', function ($id) use ($app) {})->bind(('reports_json'));
-
 
 $app->get('/{_locale}/reports.rss', function (Request $request) use ($app) {
     $feed = $app['srv.rss']->generate();
@@ -52,7 +52,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     if ('latest' === $id) {
         $id = $reports[0];
     }
-    if(false === $date = \DateTime::createFromFormat('Ymd-Hi', $id)) {
+    if (false === $date = \DateTime::createFromFormat('Ymd-Hi', $id)) {
         if (false === preg_match("|(\d{4})(\d{2})(\d{2})-(\d{2})(\d{2})|", $id, $time)) {
             return false;
         } else {
@@ -85,8 +85,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     );
     // --- \PAGINATION
 
-
-    if('vg2012' === $app['race']['id']) {
+    if ('vg2012' === $app['race']['id']) {
         $report1 = $app['repo.report']->findBy(null, array('id' => $id));
         $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
         $report = $report2+$report1;
@@ -117,7 +116,7 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     $infos = array();
     foreach ($ids as $id) {
         if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
-            if(!$info['info']) {
+            if (!$info['info']) {
                 continue;
             }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['race']['start_date']);
@@ -137,13 +136,14 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     if (0 === count($infos)) {
         return new Response('No report yet', 404);
     }
+
     return $app['twig']->render('sail/sail.html.twig', array(
         'infos' => $infos,
     ));
 })->bind('sail');
 
 $app->get('/gensitemap', function (Request $request) use ($app) {
-    if(!in_array($request->getClientIp(), array('127.0.0.1', $app['config']['authIp']))) {
+    if (!in_array($request->getClientIp(), array('127.0.0.1', $app['config']['authIp']))) {
         return new Response('Not allowed', 401);
     }
     $sitemap = new SitemapPHP\Sitemap($app['config']['schema'].$app['race']['host']);
@@ -161,15 +161,15 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         'homepage'     => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
     // addItem($loc, $priority = self::DEFAULT_PRIORITY, $changefreq = NULL, $lastmod = NULL) {
-    foreach($arrNoLocle as $route => $params) {
-        if(empty($params['idx'])) {
+    foreach ($arrNoLocle as $route => $params) {
+        if (empty($params['idx'])) {
             $u = $app['url_generator']->generate($route);
             $sitemap->addItem($u, $params['prio'], $params['freq']);
         } else {
             extract($params['idx']); // $k, $v);
-            foreach($v as $vv) {
+            foreach ($v as $vv) {
                 $tmp = array($k => $vv);
-                if(isset($params['race_param'])) {
+                if (isset($params['race_param'])) {
                     $tmp['race'] = $app['race']['id'];
                 }
                 $u = $app['url_generator']->generate($route, $tmp);
@@ -187,14 +187,14 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
         'sail'        => array('idx' => array('k' => 'ids', 'v' => array_keys($app['sk'])), 'prio' => 1, 'freq' => 'hourly'),
         '_homepage'   => array('idx' => array(), 'prio' => 0.1, 'freq' => 'yearly'),
     );
-    foreach($arrLocle as $route => $params) {
-        foreach(array('en', 'fr') as $_locale) {
-            if(empty($params['idx'])) {
+    foreach ($arrLocle as $route => $params) {
+        foreach (array('en', 'fr') as $_locale) {
+            if (empty($params['idx'])) {
                 $u = $app['url_generator']->generate($route, array('_locale' => $_locale));
                 $sitemap->addItem($u, $params['prio'], $params['freq']);
             } else {
                 extract($params['idx']); // $k, $v);
-                foreach($v as $vv) {
+                foreach ($v as $vv) {
                     $u = $app['url_generator']->generate($route, array($k => $vv, '_locale' => $_locale));
                    $sitemap->addItem($u, $params['prio'], $params['freq']);
                 }
@@ -203,6 +203,7 @@ $app->get('/gensitemap', function (Request $request) use ($app) {
     }
 
     $sitemap->createSitemapIndex($app['config']['schema'].$app['race']['host'].$app['config']['smDir'].'/', 'Today');
+
     return 'OK';
 
 })->bind('sitemap');

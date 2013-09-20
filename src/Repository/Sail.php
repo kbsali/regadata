@@ -20,7 +20,7 @@ class Sail
 
     private function _initDb($collectionName = null)
     {
-        if(null === $collectionName) {
+        if (null === $collectionName) {
             return false;
         }
         $this->raceId = $collectionName;
@@ -31,12 +31,13 @@ class Sail
 
     public function insert(array $r = array(), $force = false)
     {
-        if(empty($r)) {
+        if (empty($r)) {
             return false;
         }
-        if($force) {
+        if ($force) {
             return $this->_col->update(array('sail' => $r['sail']), $r, array('safe' => true));
         }
+
         return $this->_col->insert($r, array('safe' => true));
     }
 
@@ -45,9 +46,10 @@ class Sail
         $tmp = $this->_db
             ->command(array('distinct' => $this->col, 'key' => $key))
         ;
-        if($reverse) {
+        if ($reverse) {
             rsort($tmp['values']);
         }
+
         return $tmp['values'];
     }
 
@@ -57,13 +59,14 @@ class Sail
             ->find($arr)
             ->sort($orderby)
         ;
-        if(null === $indexBy) {
+        if (null === $indexBy) {
             return iterator_to_array($tmp);
         }
         $ret = array();
         foreach (iterator_to_array($tmp) as $v) {
             $ret[$v[$indexBy]] = $v;
         }
+
         return $ret;
     }
 }

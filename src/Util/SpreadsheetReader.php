@@ -39,19 +39,16 @@
          */
         public function __construct($Filepath, $OriginalFilename = false, $MimeType = false)
         {
-            if (!is_readable($Filepath))
-            {
+            if (!is_readable($Filepath)) {
                 throw new Exception('SpreadsheetReader: File ('.$Filepath.') not readable');
             }
 
             // 1. Determine type
-            if (!$OriginalFilename)
-            {
+            if (!$OriginalFilename) {
                 $OriginalFilename = $Filepath;
             }
 
-            switch ($MimeType)
-            {
+            switch ($MimeType) {
                 case 'text/csv':
                 case 'text/comma-separated-values':
                 case 'text/plain':
@@ -69,12 +66,9 @@
                 case 'application/x-xls':
                     // Excel does weird stuff
                     $Extension = substr($OriginalFilename, -4);
-                    if (in_array($Extension, array('.csv', '.tsv', '.txt')))
-                    {
+                    if (in_array($Extension, array('.csv', '.tsv', '.txt'))) {
                         $this -> Type = self::TYPE_CSV;
-                    }
-                    else
-                    {
+                    } else {
                         $this -> Type = self::TYPE_XLS;
                     }
                     break;
@@ -93,57 +87,42 @@
                     break;
             }
 
-            if (!$this -> Type)
-            {
-                if (substr($OriginalFilename, -5) == '.xlsx' || substr($OriginalFilename, -5) == '.xltx')
-                {
+            if (!$this -> Type) {
+                if (substr($OriginalFilename, -5) == '.xlsx' || substr($OriginalFilename, -5) == '.xltx') {
                     $this -> Type = self::TYPE_XLSX;
                     $Extension = '.xlsx';
-                }
-                else
-                {
+                } else {
                     $Extension = substr($OriginalFilename, -4);
                 }
 
-                if ($Extension == '.xls' || $Extension == '.xlt')
-                {
+                if ($Extension == '.xls' || $Extension == '.xlt') {
                     $this -> Type = self::TYPE_XLS;
-                }
-                elseif ($Extension == '.ods' || $Extension == '.odt')
-                {
+                } elseif ($Extension == '.ods' || $Extension == '.odt') {
                     $this -> Type = self::TYPE_ODS;
-                }
-                elseif (!$this -> Type)
-                {
+                } elseif (!$this -> Type) {
                     // If type cannot be determined, try parsing as CSV, it might just be a text file
                     $this -> Type = self::TYPE_CSV;
                 }
             }
 
             // Pre-checking XLS files, in case they are renamed CSV or XLSX files
-            if ($this -> Type == self::TYPE_XLS)
-            {
+            if ($this -> Type == self::TYPE_XLS) {
                 self::Load(self::TYPE_XLS);
                 $this -> Handle = new SpreadsheetReader_XLS($Filepath);
-                if ($this -> Handle -> Error)
-                {
+                if ($this -> Handle -> Error) {
                     $this -> Handle -> __destruct();
 
-                    if (is_resource($ZipHandle = zip_open($Filepath)))
-                    {
+                    if (is_resource($ZipHandle = zip_open($Filepath))) {
                         $this -> Type = self::TYPE_XLSX;
                         zip_close($ZipHandle);
-                    }
-                    else
-                    {
+                    } else {
                         $this -> Type = self::TYPE_CSV;
                     }
                 }
             }
 
             // 2. Create handle
-            switch ($this -> Type)
-            {
+            switch ($this -> Type) {
                 case self::TYPE_XLSX:
                     self::Load(self::TYPE_XLSX);
                     $this -> Handle = new SpreadsheetReader_XLSX($Filepath);
@@ -169,13 +148,11 @@
          */
         private static function Load($Type)
         {
-            if (!in_array($Type, array(self::TYPE_XLSX, self::TYPE_XLS, self::TYPE_CSV, self::TYPE_ODS)))
-            {
+            if (!in_array($Type, array(self::TYPE_XLSX, self::TYPE_XLS, self::TYPE_CSV, self::TYPE_ODS))) {
                 throw new Exception('SpreadsheetReader: Invalid type ('.$Type.')');
             }
 
-            if (!class_exists('SpreadsheetReader_'.$Type))
-            {
+            if (!class_exists('SpreadsheetReader_'.$Type)) {
                 require(dirname(__FILE__).DIRECTORY_SEPARATOR.'SpreadsheetReader_'.$Type.'.php');
             }
         }
@@ -189,8 +166,7 @@
         public function rewind()
         {
             $this -> Index = 0;
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 $this -> Handle -> rewind();
             }
         }
@@ -203,10 +179,10 @@
          */
         public function current()
         {
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 return $this -> Handle -> current();
             }
+
             return null;
         }
 
@@ -216,12 +192,12 @@
          */
         public function next()
         {
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 $this -> Index++;
 
                 return $this -> Handle -> next();
             }
+
             return null;
         }
 
@@ -233,10 +209,10 @@
          */
         public function key()
         {
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 return $this -> Handle -> key();
             }
+
             return null;
         }
 
@@ -248,21 +224,20 @@
          */
         public function valid()
         {
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 return $this -> Handle -> valid();
             }
+
             return false;
         }
 
         // !Countable interface method
         public function count()
         {
-            if ($this -> Handle)
-            {
+            if ($this -> Handle) {
                 return $this -> Handle -> count();
             }
+
             return 0;
         }
     }
-?>

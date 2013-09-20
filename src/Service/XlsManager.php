@@ -15,28 +15,28 @@ abstract class XlsManager
         $this->race    = $race;
 
         $this->xlsDir = $root.$xlsDir.'/'.$this->race['id'];
-        if(!is_dir($this->xlsDir)) {
+        if (!is_dir($this->xlsDir)) {
             mkdir($this->xlsDir);
         }
         $this->jsonDir = $root.$jsonDir.'/'.$this->race['id'];
-        if(!is_dir($this->jsonDir.'/reports')) {
-            if(!mkdir($this->jsonDir.'/reports', 0777, true)) {
+        if (!is_dir($this->jsonDir.'/reports')) {
+            if (!mkdir($this->jsonDir.'/reports', 0777, true)) {
                 throw new \Exception('Could not create dir '.$this->jsonDir.'/reports');
             }
         }
-        if(!is_dir($this->jsonDir.'/sail')) {
-            if(!mkdir($this->jsonDir.'/sail', 0777, true)) {
+        if (!is_dir($this->jsonDir.'/sail')) {
+            if (!mkdir($this->jsonDir.'/sail', 0777, true)) {
                 throw new \Exception('Could not create dir '.$this->jsonDir.'/sail');
             }
         }
         $this->kmlDir = $root.$kmlDir.'/'.$this->race['id'];
-        if(!is_dir($this->kmlDir.'/reports')) {
-            if(!mkdir($this->kmlDir.'/reports', 0777, true)) {
+        if (!is_dir($this->kmlDir.'/reports')) {
+            if (!mkdir($this->kmlDir.'/reports', 0777, true)) {
                 throw new \Exception('Could not create dir '.$this->kmlDir.'/reports');
             }
         }
-        if(!is_dir($this->kmlDir.'/sail')) {
-            if(!mkdir($this->kmlDir.'/sail', 0777, true)) {
+        if (!is_dir($this->kmlDir.'/sail')) {
+            if (!mkdir($this->kmlDir.'/sail', 0777, true)) {
                 throw new \Exception('Could not create dir '.$this->kmlDir.'/sail');
             }
         }
@@ -69,17 +69,17 @@ abstract class XlsManager
         $reportIds = $this->_report->getAllBy('id');
         $master    = $total = $yesterday = array();
 
-        foreach($reportIds as $reportId) {
+        foreach ($reportIds as $reportId) {
             $f = $this->jsonDir.'/reports/'.$reportId.'.json';
             $reports = $this->_report->findBy(null, array('id' => $reportId));
             $daily = array();
-            foreach($reports as $r) {
+            foreach ($reports as $r) {
                 unset($r['_id']);
                 $daily[$r['sail']] = $r;
                 $master[$r['sail']][$r['timestamp']] = $r;
             }
 
-            if(true === $force || !file_exists($f)) {
+            if (true === $force || !file_exists($f)) {
                 echo ' saving data to '.$f.PHP_EOL;
                 file_put_contents($f, json_encode($daily));
             }
@@ -100,7 +100,7 @@ abstract class XlsManager
 
     public function export2kml(array $arr = array())
     {
-        if(empty($arr)) {
+        if (empty($arr)) {
             return;
         }
         $kmlFull = $lineFull = $pointsFull = $lastPosFull = '';
@@ -246,7 +246,7 @@ abstract class XlsManager
 
         $points = array();
         $i = 0;$j = count($coordinates);
-        foreach($coordinates as $ts => $coordinate) {
+        foreach ($coordinates as $ts => $coordinate) {
             $i++;
             $points[] = strtr($this->_point, array(
                 '%color%'       => $this->_misc->hexToKml( $this->_misc->getColor($info['sail']) ),
@@ -295,7 +295,8 @@ abstract class XlsManager
         return $ret;
     }
 
-    public static function DECtoDMS($dec) {
+    public static function DECtoDMS($dec)
+    {
         $vars   = explode('.',$dec);
         $deg    = $vars[0];
         $tempma = '0.'.$vars[1];

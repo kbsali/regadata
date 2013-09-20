@@ -2,7 +2,6 @@
 
 require_once __DIR__.'/../vendor/autoload.php';
 
-
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,29 +10,34 @@ use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 
-function ldd($a) {
+function ldd($a)
+{
     var_export($a);die(PHP_EOL.'---------------------'.PHP_EOL);
 }
-function ld($a) {
+function ld($a)
+{
     var_export($a);echo PHP_EOL.'---------------------'.PHP_EOL;
 }
 
 class MyApp extends Silex\Application
 {
-    public static function extractSubDomain($request) {
+    public static function extractSubDomain($request)
+    {
         $tmp = explode('.', $request->getHost());
         if (3 !== count($tmp)) {
             return false;
         }
+
         return $tmp[0];
     }
 
-    public function setRace($raceId = null) {
-        if(null === $raceId) {
+    public function setRace($raceId = null)
+    {
+        if (null === $raceId) {
             $raceId = getenv('RACE') ?: 'vg2012';
         }
 
-        if(!isset($this['races'][$raceId])) {
+        if (!isset($this['races'][$raceId])) {
             throw new \Exception('Race not defined');
             // die('Race no defined');
         }
@@ -91,12 +95,13 @@ $app->register(new TwigServiceProvider(), array(
 $app->register(new Service\Provider\TmhOAuthServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
 
-if(!isset($app['imagine.factory'])) {
+if (!isset($app['imagine.factory'])) {
     $app['imagine.factory'] = 'Imagick';
 }
 
 $app['imagine'] = $app->share(function ($app) {
     $class = sprintf('\Imagine\%s\Imagine', $app['imagine.factory']);
+
     return new $class();
 });
 
@@ -174,14 +179,15 @@ $app->before(function(Request $request) use ($app) {
 
     $app->setRace();
 
-    if(!in_array($request->getLocale(), array('en', 'fr'))) {
+    if (!in_array($request->getLocale(), array('en', 'fr'))) {
         $u = $app['url_generator']->generate('_homepage', array('_locale' => 'en'));
+
         return $app->redirect($u);
     }
 
     putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
     setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
-    if('fr' === $request->getLocale()) {
+    if ('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }
     $app['twig']->addGlobal('sk', $app['sk']);

@@ -2,8 +2,6 @@
 
 namespace Service;
 
-use Service\Vg;
-
 class VgXls extends XlsManager implements XlsManagerInterface
 {
     public function listMissingXlsx()
@@ -17,6 +15,7 @@ class VgXls extends XlsManager implements XlsManagerInterface
                 $ret[] = $xlsx;
             }
         }
+
         return $ret;
     }
 
@@ -54,7 +53,7 @@ class VgXls extends XlsManager implements XlsManagerInterface
                     if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
                         continue;
                     }
-                    if(!isset($total[$r['sail']])) {
+                    if (!isset($total[$r['sail']])) {
                         $total[$r['sail']] = 0;
                     }
                     $total[$r['sail']]     += $r['lastreport_distance'];
@@ -168,7 +167,7 @@ class VgXls extends XlsManager implements XlsManagerInterface
         $ret['date']      = date('Y-m-d', $ts);
         $ret['timestamp'] = $ts;
 
-        if(null !== $row[4]) {
+        if (null !== $row[4]) {
             $_ts = $this->_getArrivalDate($row[4]);
 
             $ret['timestamp'] = $_ts;
