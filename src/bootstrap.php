@@ -116,6 +116,16 @@ $app['repo.sail'] = $app->share(function($app) {
     return new Repository\Sail($app['mongo']);
 });
 
+$app['srv.sitemap'] = $app->share(function($app) {
+    return new Service\Sitemap(
+        $app['config'],
+        $app['race'],
+        $app['sk'],
+        $app['url_generator'],
+        $app['repo.report']
+    );
+});
+
 $app['srv.rss'] = $app->share(function($app) {
     return new Service\Rss(
         $app['translator'],
