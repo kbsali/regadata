@@ -1,31 +1,33 @@
 <?php
 $app['races'] = array(
-    'vg2012' => array(
-        'id'                 => 'vg2012',
-        'hashtag'            => 'VG2012',
+    'tjv2013' => array(
+        'id'                 => 'tjv2013',
+        'hashtag'            => 'tjv2013',
         'showTwailorHashtag' => false,
-        'host'               => 'vg2012.saliou.name',
-        'ua'                 => 'UA-328215-5',
-        'departure'          => "Les Sables-d'Olonne",
-        'departure_lat'      => '46.4972',
-        'departure_lon'      => '-1.7833',
-        'arrival'            => "Les Sables-d'Olonne",
-        'arrival_lat'        => '46.4972',
-        'arrival_lon'        => '-1.7833',
-        'start_date'         => 'saturday 10 november 2012 15:02',
-        'url_xls'            => 'http://tracking2012.vendeeglobe.org/download/%file%',
-        'url_map'            => 'http://tracking2012.vendeeglobe.org/fr/',
-        'url_gmap'           => 'http://goo.gl/yQPoY', // https://maps.google.com/?q=http://vg2012.saliou.name/json/vg2012/trace_FULL.kmz
-        'parser'             => 'vg',
+        'host'               => 'tjv2013.regadata.org',
+        'ua'                 => 'UA-328215-6',
+        'departure'          => 'Le Havre',
+        'departure_lat'      => '49.4900000',
+        'departure_lon'      => '00.1000000',
+        'arrival'            => 'Itajaí',
+        'arrival_lat'        => '-26.9077778',
+        'arrival_lon'        => '-048.6619444',
+        'start_date'         => 'sunday 3 november 2013 13:02',
+        'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
+        'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
+        'url_xls'            => 'http://www.transat-jacques-vabre.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
+        'url_map'            => 'http://transat-jacquesvabre.geovoile.com/2013/',
+        'url_gmap'           => 'http://goo.gl/ggmpy', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
+        'parser'             => 'geovoile',
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'xls_service'        => 'srv.tbmxls',
         'showReportFooter'   => true,
-        'xls_service'        => 'srv.vgxls',
         'menu' => array(
             'map'           => true,
             'documentation' => true,
-            'about'         => true,
+            'about'         => false,
         ),
     ),
     'tbm2013' => array(
@@ -56,6 +58,34 @@ $app['races'] = array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
+        ),
+    ),
+    'vg2012' => array(
+        'id'                 => 'vg2012',
+        'hashtag'            => 'VG2012',
+        'showTwailorHashtag' => false,
+        'host'               => 'vg2012.saliou.name',
+        'ua'                 => 'UA-328215-5',
+        'departure'          => "Les Sables-d'Olonne",
+        'departure_lat'      => '46.4972',
+        'departure_lon'      => '-1.7833',
+        'arrival'            => "Les Sables-d'Olonne",
+        'arrival_lat'        => '46.4972',
+        'arrival_lon'        => '-1.7833',
+        'start_date'         => 'saturday 10 november 2012 15:02',
+        'url_xls'            => 'http://tracking2012.vendeeglobe.org/download/%file%',
+        'url_map'            => 'http://tracking2012.vendeeglobe.org/fr/',
+        'url_gmap'           => 'http://goo.gl/yQPoY', // https://maps.google.com/?q=http://vg2012.saliou.name/json/vg2012/trace_FULL.kmz
+        'parser'             => 'vg',
+        'type'               => 'race',
+        'tweetUrlFr'         => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'showReportFooter'   => true,
+        'xls_service'        => 'srv.vgxls',
+        'menu' => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => true,
         ),
     ),
     'guochuansailing-2012' => array(
