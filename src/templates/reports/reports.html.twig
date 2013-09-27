@@ -6,6 +6,7 @@
 {% block container_content %}
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
+            <div class="table-responsive">
             <table class="table table-condensed table-bordered table-hover table-striped" id="report">
                 <caption>{{ 'Ranking : %date%'|trans({'%date%': ts|date}) }}</caption>
                 <thead>
@@ -101,6 +102,7 @@
                     {% endfor %}
                 </tbody>
             </table>
+            </div>
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
             <ul class="pager hidden-desktop">

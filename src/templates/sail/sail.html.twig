@@ -13,7 +13,7 @@
 {% endif %}
 
 {% block container_content %}
-    <div class="row-fluid">
+    <div class="row">
         {% for info in infos %}
         <div class="span6 sail">
             <table class="table">
@@ -118,15 +118,15 @@
             </div>
         {% endif %}
 
-    </div>{# row-fluid #}
-    <div class="row-fluid">
+    </div>{# row #}
+    <div class="row">
         <p>
             * {{ 'Sum of the distances travelled between each ranking since race start'|trans }}<br>
             ** {{ 'Average speed since race start based on the real distance travelled'|trans }}
         </p>
     </div>
 
-    <div class="row-fluid">
+    <div class="row">
         <div class="span6">
             <h3>{{ 'Rank'|trans }}</h3>
             <div id="rank" class="chart"></div>
@@ -136,7 +136,7 @@
             <div id="dtl" class="chart"></div>
         </div>
     </div>
-    <div class="row-fluid">
+    <div class="row">
         <div class="span6">
             <h3>{{ 'Distance last 24 hours'|trans }}</h3>
             <div id="24hour_distance" class="chart"></div>
@@ -147,7 +147,7 @@
         </div>
     </div>
     {#
-    <div class="row-fluid">
+    <div class="row">
         <div class="span6">
             <h3>{{ 'Progress'|trans }}</h3>
             <div id="dtl_diff" class="chart"></div>
