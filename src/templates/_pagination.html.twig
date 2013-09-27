@@ -5,8 +5,8 @@
 {% if p.next is not null %}
     {% set meta_page_next = '<link rel="next" href="' ~ url('report', {id: p.next}) ~ '">' %}
 {% endif %}
-            <div class="pagination pagination-centered">
-                <ul>
+            <div class="text-center">
+                <ul class="pagination">
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
                         <a href="{{ p.prev is null ? '#' : path('report', {id: p.first}) }}">&lt;&lt;</a>
                     </li>

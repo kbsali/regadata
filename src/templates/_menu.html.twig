@@ -1,39 +1,38 @@
-    <div class="navbar navbar-fixed-top">
-        <div class="navbar-inner">
-            <div class="container-fluid">
-                <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </a>
-                <a class="brand" href="{{ path('_homepage') }}"><span>{{ '#VG2012 - OpenData'|trans }}</span></a>
-                <div class="nav-collapse">
-                    <p class="navbar-text pull-right">
-                        <a class="{% if app.request.locale == 'fr' %}active {% endif %}navbar-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'fr'})) }}" title="En français">fr</a>
-                        <a class="{% if app.request.locale == 'en' %}active {% endif %}navbar-link" href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'en'})) }}" title="In english">en</a>
-                    </p>
-                    <ul class="nav">
-                        <li{% if 'homepage' == active %} class="active"{% endif %}><a href="{{ path('_homepage') }}">{{ 'Home'|trans }}</a></li>
-                        <li{% if 'reports' == active %} class="active"{% endif %}><a href="{{ path('report', {id: 'latest'}) }}">{{ 'Last ranking'|trans }}</a></li>
-                        <li class="dropdown">
-                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
-                            <ul class="dropdown-menu">
-                            {% for skipper in sk %}
-                                <li{% if skipper.sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
-                            {% endfor %}
-                            </ul>
-                        </li>
-                        {% if true == race.menu.map %}
-                        <li{% if 'map' == active %} class="active"{% endif %}><a href="{{ path('map') }}">{{ 'Map'|trans }}</a></li>
-                        {% endif %}
-                        {% if true == race.menu.documentation %}
-                        <li{% if 'doc' == active %} class="active"{% endif %}><a href="{{ path('doc_json') }}">{{ 'Documentation'|trans }}</a></li>
-                        {% endif %}
-                        {% if true == race.menu.about %}
-                        <li{% if 'about' == active %} class="active"{% endif %}><a href="{{ path('about') }}">{{ 'About'|trans }}</a></li>
-                        {% endif %}
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="{{ path('_homepage') }}">{{ '#VG2012 - OpenData'|trans }}</a>
+        </div>
+        <div class="collapse navbar-collapse navbar-ex1-collapse">
+            <ul class="nav navbar-nav">
+                <li{% if 'homepage' == active %} class="active"{% endif %}><a href="{{ path('_homepage') }}">{{ 'Home'|trans }}</a></li>
+                <li{% if 'reports' == active %} class="active"{% endif %}><a href="{{ path('report', {id: 'latest'}) }}">{{ 'Last ranking'|trans }}</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    {% for skipper in sk %}
+                        <li{% if skipper.sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
+                    {% endfor %}
                     </ul>
-                </div>
-            </div>
+                </li>
+                {% if true == race.menu.map %}
+                <li{% if 'map' == active %} class="active"{% endif %}><a href="{{ path('map') }}">{{ 'Map'|trans }}</a></li>
+                {% endif %}
+                {% if true == race.menu.documentation %}
+                <li{% if 'doc' == active %} class="active"{% endif %}><a href="{{ path('doc_json') }}">{{ 'Documentation'|trans }}</a></li>
+                {% endif %}
+                {% if true == race.menu.about %}
+                <li{% if 'about' == active %} class="active"{% endif %}><a href="{{ path('about') }}">{{ 'About'|trans }}</a></li>
+                {% endif %}
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li{% if app.request.locale == 'fr' %} class="active"{% endif %}><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'fr'})) }}" title="En français">fr</a></li>
+                <li{% if app.request.locale == 'en' %} class="active"{% endif %}><a href="{{ path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')|merge({_locale: 'en'})) }}" title="In english">en</a></li>
+            </ul>
         </div>
     </div>

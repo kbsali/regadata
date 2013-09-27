@@ -40,9 +40,14 @@
     <link rel="alternate" type="application/rss+xml" title="{{ 'RSS feed for VG2012 rankings'|trans }}" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
+        <link href="/css/bootstrap.3.0.0.min.css" rel="stylesheet">
+        {#
         <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
-        {# <link href="/css/font-awesome.css" rel="stylesheet"> #}
+        #}
+        {#
+        <link href="/css/font-awesome.css" rel="stylesheet">
+        #}
         <!--[if IE 7]>
         <link href="/css/font-awesome-ie7.css" rel="stylesheet">
         <![endif]-->
@@ -51,8 +56,11 @@
         <script src="/js/html5.js"></script>
         <![endif]-->
     {% else %}
+        <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+        {#
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
+        #}
         <!--[if IE 7]>
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome-ie7.css" rel="stylesheet">
         <![endif]-->
@@ -66,11 +74,16 @@
     <link rel="apple-touch-icon-precomposed" href="/img/logo-60.png">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    <style>
+    .container {
+        max-width: 100%;
+    }
+    </style>
 </head>
 <body id="{{ bodyId }}">
     {% set active = active|default(null) %}
     {% include '_menu.html.twig' with { 'active': active } %}
-    <div class="container-fluid" id="main">
+    <div class="container" id="main">
         {% block container_content %}{% endblock %}
         <hr>
         <footer>
@@ -89,14 +102,18 @@
     <script>window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 
     {% if assets_local == true %}
-        <script src="/js/bootstrap.min.js"></script>
+        <script src="/js/bootstrap.3.0.0.min.js"></script>
         <script src="/js/jquery.flot.js"></script>
         {#
+        <script src="/js/bootstrap.min.js"></script>
         <script src="/js/bootstrap-modalmanager.js"></script>
         <script src="/js/bootstrap-modal.js"></script>
         #}
     {% else %}
+        <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+        {#
         <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js"></script>
+        #}
         <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.7/jquery.flot.min.js"></script>
     {% endif %}
     <script src="/js/jquery.flot.time.js"></script>
