@@ -10,7 +10,7 @@
             <table class="table table-condensed table-bordered table-hover table-striped" id="report">
                 <caption>{{ 'Ranking : %date%'|trans({'%date%': ts|date}) }}</caption>
                 <thead>
-                    <tr class="{{ full ? '' : ' hidden-xs hidden-sm' }}">
+                    <tr class="{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">
                         <th scope="colgroup" colspan="2">&nbsp;</th>
                         <th scope="colgroup" class="c borderleft" colspan="2">{{ 'Ranking'|trans }}</th>
                         <th scope="colgroup" class="c borderleft borderrigtht" colspan="3">{{ '1 hour'|trans }}</th>
@@ -23,29 +23,29 @@
                         <th scope="col" class="t">{{ 'Rank'|trans }}</th>
                         <th scope="col" class="t">{{ 'Skipper [Boat]'|trans}}</th>
 
-                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-xs' }}"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs' }}"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
 
-                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-xs' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t borderrigtht{{ full ? '' : ' hidden-xs' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderrigtht{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
 
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
 
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }} borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
                         <th scope="col" class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
                         <th scope="col" class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
 
-                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-xs hidden-sm' }}"><abbr title="{{ 'Real total distance travelled'|trans }}">{{ 'RTDT'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs hidden-sm' }}"><abbr title="{{ 'Overall average speed'|trans }}">{{ 'OAS'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Real total distance travelled'|trans }}">{{ 'RTDT'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Overall average speed'|trans }}">{{ 'OAS'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
 
                         <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader Change'|trans }}">{{ 'DTLC'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
-                        <th scope="col" class="c t{{ full ? '' : ' hidden-xs' }}"><abbr title="{{ 'Distance to Predecessor'|trans }}">{{ 'DTP'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Distance to Predecessor'|trans }}">{{ 'DTP'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                         <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
                     </tr>
                 </thead>
@@ -71,33 +71,33 @@
                                 <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
                                 <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
                                 <a href="{{ path('sail', {ids: r.sail}) }}">{{ r.skipper }}</a>
-                                <span class="hidden-xs hidden-sm">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
+                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
                             </span>
                         </td>
 
-                        <td class="borderleft{{ full ? '' : ' hidden-xs' }}">{{ r.lat_dms }}</td>
-                        <td class="{{ full ? '' : ' hidden-xs' }}">{{ r.lon_dms }}</td>
+                        <td class="borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ r.lat_dms }}</td>
+                        <td class="{{ full ? '' : ' hidden-inline-xs' }}">{{ r.lon_dms }}</td>
 
-                        <td class="r borderleft{{ full ? '' : ' hidden-xs' }}">{{ r['1hour_heading'] }}</td>
-                        <td class="r 1hspeed{{ full ? '' : ' hidden-xs' }}">{{ '%.1f' | format(r['1hour_speed']) }}</td>
-                        <td class="r 1hvmg borderrigtht{{ full ? '' : ' hidden-xs' }}">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
+                        <td class="r borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ r['1hour_heading'] }}</td>
+                        <td class="r 1hspeed{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['1hour_speed']) }}</td>
+                        <td class="r 1hvmg borderrigtht{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
 
-                        <td class="r{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ r.lastreport_heading }}</td>
-                        <td class="r{{ full ? '' : ' hidden-xs hidden-sm' }} lrspeed">{{ '%.1f' | format(r.lastreport_speed) }}</td>
-                        <td class="r{{ full ? '' : ' hidden-xs hidden-sm' }} lrvmg">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
-                        <td class="r{{ full ? '' : ' hidden-xs hidden-sm' }} lrdistance">{{ '%.1f' | format(r.lastreport_distance) }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ r.lastreport_heading }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrspeed">{{ '%.1f' | format(r.lastreport_speed) }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrvmg">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrdistance">{{ '%.1f' | format(r.lastreport_distance) }}</td>
 
-                        <td class="r{{ full ? '' : ' hidden-xs hidden-sm' }} borderleft">{{ r['24hour_heading'] }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} borderleft">{{ r['24hour_heading'] }}</td>
                         <td class="r 24hspeed">{{ '%.1f' | format(r['24hour_speed']) }}</td>
                         <td class="r 24hvmg">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
                         <td class="r 24hdistance">{{ '%.1f' | format(r['24hour_distance']) }}</td>
 
-                        <td class="r total_distance borderleft{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ '%.1f' | format(r['total_distance']) }}</td>
-                        <td class="r oas{{ full ? '' : ' hidden-xs hidden-sm' }}">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
+                        <td class="r total_distance borderleft{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ '%.1f' | format(r['total_distance']) }}</td>
+                        <td class="r oas{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
 
                         <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
                         <td class="r dtl_diff"><span class="label {{ class1 }}">{{ '%.1f' | format(r['dtl_diff']|abs) }} <i class="icon-white {{ class2 }}"></i></span></td>
-                        <td class="r dtp{{ full ? '' : ' hidden-xs' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
+                        <td class="r dtp{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
                         <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
                         {% set dtp = r['dtl'] %}
                     </tr>
@@ -107,7 +107,7 @@
             </div>
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
-            <ul class="pager hidden-desktop">
+            <ul class="pager hidden-inline-desktop">
                 <li>
                     {% if full == false %}
                     <a href="?full=1"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
