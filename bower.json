@@ -1,0 +1,29 @@
+{
+  "name": "regadata",
+  "version": "0.1.0",
+  "authors": [
+    "Kevin Saliou <kevin@saliou.name>"
+  ],
+  "description": "See regatta data in an accessible way",
+  "main": "web/regadata.js",
+  "keywords": [
+    "regatta",
+    "opendata"
+  ],
+  "license": "MIT",
+  "homepage": "regadata.org",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "~3.0.0",
+    "font-awesome": "~3.2.1",
+    "flot": "~0.8.1",
+    "jquery.easy-pie-chart": "~2.0.3"
+  }
+}
