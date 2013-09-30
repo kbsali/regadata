@@ -25,7 +25,9 @@
         "themattharris/tmhoauth": "dev-master",
         "imagine/Imagine": "dev-develop",
         "suin/php-rss-writer": ">=1.0",
-        "evert/sitemap-php": "dev-master"
+        "evert/sitemap-php": "dev-master",
+
+        "raulfraile/ladybug": "~1.0"
     },
     "autoload": {
         "psr-0": {
