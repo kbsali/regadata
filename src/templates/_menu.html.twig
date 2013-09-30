@@ -6,7 +6,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" href="{{ path('_homepage') }}">{{ '#VG2012 - OpenData'|trans }}</a>
+            <a class="navbar-brand" href="{{ path('_homepage') }}"><span>{{ '#VG2012 - OpenData'|trans }}</span></a>
         </div>
         <div class="collapse navbar-collapse navbar-ex1-collapse">
             <ul class="nav navbar-nav">
@@ -16,7 +16,10 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ 'Boats'|trans }} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
                     {% for skipper in sk %}
-                        <li{% if skipper.sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }} [{{ skipper.boat }}]</a></li>
+                        <li{% if skipper.sail == active %} class="active"{% endif %}><a href="{{ path('sail', {ids: skipper.sail}) }}">
+                            <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span>
+                            {{ skipper.skipper }} [{{ skipper.boat }}]
+                        </a></li>
                     {% endfor %}
                     </ul>
                 </li>

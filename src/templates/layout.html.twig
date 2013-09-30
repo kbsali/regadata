@@ -41,6 +41,7 @@
 
     {% if assets_local == true %}
         <link href="/css/bootstrap.3.0.0.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
         {#
         <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
@@ -57,6 +58,7 @@
         <![endif]-->
     {% else %}
         <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet">
+        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
         {#
         <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
@@ -74,11 +76,6 @@
     <link rel="apple-touch-icon-precomposed" href="/img/logo-60.png">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
-    <style>
-    .container {
-        max-width: 100%;
-    }
-    </style>
 </head>
 <body id="{{ bodyId }}">
     {% set active = active|default(null) %}
