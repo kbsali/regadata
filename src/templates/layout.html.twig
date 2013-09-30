@@ -40,8 +40,8 @@
     <link rel="alternate" type="application/rss+xml" title="{{ 'RSS feed for VG2012 rankings'|trans }}" href="{{ url('reports_rss') }}">
 
     {% if assets_local == true %}
-        <link href="/css/bootstrap.3.0.0.min.css" rel="stylesheet">
-        <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+        <link href="/vendor/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+        <link href="/vendor/font-awesome/css/font-awesome.css" rel="stylesheet">
         {#
         <link href="/css/bootstrap.no-icons.min.css" rel="stylesheet">
         <link href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css" rel="stylesheet">
@@ -99,8 +99,8 @@
     <script>window.Modernizr || document.write('<script src="/js/modernizr-2.6.1.custom.js">\x3C/script>')</script>
 
     {% if assets_local == true %}
-        <script src="/js/bootstrap.3.0.0.min.js"></script>
-        <script src="/js/jquery.flot.js"></script>
+        <script src="/vendor/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/vendor/flot/jquery.flot.js"></script>
         {#
         <script src="/js/bootstrap.min.js"></script>
         <script src="/js/bootstrap-modalmanager.js"></script>
@@ -113,8 +113,7 @@
         #}
         <script src="//cdnjs.cloudflare.com/ajax/libs/flot/0.7/jquery.flot.min.js"></script>
     {% endif %}
-    <script src="/js/jquery.flot.time.js"></script>
-
+    <script src="/vendor/flot/jquery.flot.time.js"></script>
     {% block extra_js %}{% endblock %}
     <script src="/js/script.js?5"></script>
     <script>

@@ -62,12 +62,14 @@
                             {% set class2 = 'icon-circle-arrow-down' %}
                         {% endif %}
                     <tr>
-                        <td class="r"><i class="badge">{{ r.rank }}</i></td>
+                        <td class="r">
+                            <i class="badge">{{ r.rank }}</i>
+                            <span class="label" style="background: #{{ r.color }}">&nbsp;&nbsp;</span>
+                        </td>
                         <td>
                             <span class="geo">
                                 <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
                                 <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
-                                <span class="label" style="background: #{{ r.color }}">&nbsp;&nbsp;</span>
                                 <a href="{{ path('sail', {ids: r.sail}) }}">{{ r.skipper }}</a>
                                 <span class="hidden-xs hidden-sm">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
                             </span>

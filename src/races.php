@@ -13,6 +13,7 @@ $app['races'] = array(
         'arrival_lat'        => '-26.9077778',
         'arrival_lon'        => '-048.6619444',
         'start_date'         => 'sunday 3 november 2013 13:02',
+        'total_distance'     => '5450',
         'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
         'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
         'url_xls'            => 'http://www.transat-jacques-vabre.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
@@ -43,6 +44,7 @@ $app['races'] = array(
         'arrival_lat'        => '14.603518',
         'arrival_lon'        => '-61.066818',
         'start_date'         => 'sunday 17 march 2013 13:00',
+        'total_distance'     => '3500',
         'url_update'         => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.update.hwz',
         'url_static'         => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz',
         'url_xls'            => 'http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
@@ -73,6 +75,7 @@ $app['races'] = array(
         'arrival_lat'        => '46.4972',
         'arrival_lon'        => '-1.7833',
         'start_date'         => 'saturday 10 november 2012 15:02',
+        'total_distance'     => '24016',
         'url_xls'            => 'http://tracking2012.vendeeglobe.org/download/%file%',
         'url_map'            => 'http://tracking2012.vendeeglobe.org/fr/',
         'url_gmap'           => 'http://goo.gl/yQPoY', // https://maps.google.com/?q=http://vg2012.saliou.name/json/vg2012/trace_FULL.kmz
