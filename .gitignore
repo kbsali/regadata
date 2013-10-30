@@ -5,3 +5,5 @@
 /vendor/*
 /src/config.php
 /src/races.php
+/web/vendor
+/web/kml

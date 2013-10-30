@@ -10,11 +10,11 @@ use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
 
-function ldd($a)
+function _ldd($a)
 {
     var_export($a);die(PHP_EOL.'---------------------'.PHP_EOL);
 }
-function ld($a)
+function _ld($a)
 {
     var_export($a);echo PHP_EOL.'---------------------'.PHP_EOL;
 }

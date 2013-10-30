@@ -1,11 +1,17 @@
 body {
-    padding-top: 41px;
+    padding-top: 51px;
     /*padding-bottom: 40px;*/
 }
+
 body#high {
     padding-top: 60px;
     /*padding-bottom: 40px;*/
 }
+
+body#normal .container {
+    max-width: 100%;
+}
+
 /* http://stackoverflow.com/a/14258496 */
 .navbar-fixed-top, .navbar-fixed-bottom {
     position: fixed;
@@ -15,8 +21,8 @@ body#high {
     margin-bottom: 0;
 }
 
-.brand span {
-    background: url("/img/logo-20.png") no-repeat 0 3px;
+.navbar-brand span {
+    background: url("/img/logo-20.png") no-repeat 0 0;
     padding-left: 25px;
 }
 
@@ -59,6 +65,7 @@ body#high {
     width: 100%;
     height: 500px;
 }
+
 #map img {
   max-width: none;
 }
@@ -71,6 +78,7 @@ body#high {
 .sail .progress {
     margin-top: 18px;
 }
+
 @media (max-width: 767px) {
     .navbar .container-fluid {
         padding-left: 20px;

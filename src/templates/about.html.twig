@@ -5,60 +5,79 @@
 {% set bodyId = 'high' %}
 
 {% block container_content %}
-        <div class="hero-unit" lang="fr">
-            <h2>{{ "Let's open the data : VG 2012 Open Data!"|trans }} <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ url('homepage') }}" data-text="{{ 'Rankings and graphs of the Vendée Globe 2012'|trans }}" data-via="VG2012RaceData" data-lang="{{ app.request.locale }}" data-hashtags="{{ race.hashtag }}">{{ 'Tweet'|trans }}</a></h2>
-            <p>
-                {{ 'Rankings and graphs of the <strong>Vendée Globe 2012</strong>'|trans|raw }}.
-                {{ 'This data is extracted from non user friendly Excel files published by the regatta organizers and published in <strong><a href="http://www.json.org/"><abbr title="JavaScript Object Notation">JSON</abbr></a></strong> and <strong><a href="http://en.wikipedia.org/wiki/Keyhole_Markup_Language"><abbr title="Keyhole Markup Language">KML</abbr></a></strong> format, ready for you to use and consume. So go ahead and create new <strong>tables, graphs or maps</strong> to visualize and analyse all those regatta data in different ways!'|trans|raw }}
-            </p>
-            <p>
-                <a href="{{ path('report', {id: 'latest'}) }}" class="btn btn-success btn-large"><i class="icon-table"></i> {{ 'Last ranking'|trans }}</a>
-                <a href="{{ path('sail', {ids: random(sk).sail}) }}" class="btn btn-success btn-large"><i class="icon-signal"></i> {{ 'Random boat'|trans }}</a>
-                <a href="{{ path('doc_json') }}" class="jsondoc btn btn-primary" target="_blank"><i class="icon-book"></i> {{ 'JSON Doc'|trans }}</a>
-            </p>
-
+        <div class="jumbotron">
+            <div class="container">
+                <h2>{{ "Let's open the data : VG 2012 Open Data!"|trans }} <a href="https://twitter.com/share" class="twitter-share-button" data-url="{{ url('homepage') }}" data-text="{{ 'Rankings and graphs of the Vendée Globe 2012'|trans }}" data-via="VG2012RaceData" data-lang="{{ app.request.locale }}" data-hashtags="{{ race.hashtag }}">{{ 'Tweet'|trans }}</a></h2>
+                <p>
+                    {{ 'Rankings and graphs of the <strong>Vendée Globe 2012</strong>'|trans|raw }}.
+                    {{ 'This data is extracted from non user friendly Excel files published by the regatta organizers and published in <strong><a href="http://www.json.org/"><abbr title="JavaScript Object Notation">JSON</abbr></a></strong> and <strong><a href="http://en.wikipedia.org/wiki/Keyhole_Markup_Language"><abbr title="Keyhole Markup Language">KML</abbr></a></strong> format, ready for you to use and consume. So go ahead and create new <strong>tables, graphs or maps</strong> to visualize and analyse all those regatta data in different ways!'|trans|raw }}
+                </p>
+                <p>
+                    <a href="{{ path('report', {id: 'latest'}) }}" class="btn btn-success btn-lg"><i class="icon-table"></i> {{ 'Last ranking'|trans }}</a>
+                    <a href="{{ path('sail', {ids: random(sk).sail}) }}" class="btn btn-success btn-lg"><i class="icon-signal"></i> {{ 'Random boat'|trans }}</a>
+                    <a href="{{ path('doc_json') }}" class="jsondoc btn btn-primary" target="_blank"><i class="icon-book"></i> {{ 'JSON Doc'|trans }}</a>
+                </p>
+            </div>
         </div>
         <div id="ajax-modal" class="modal hide fade" tabindex="-1"></div>
 
         <!-- Example row of columns -->
-        <div class="row-fluid tooltips">
-            <div class="span4">
-                <h2>{{ 'Full'|trans }}</h2>
-                <p>{{ 'All the rankings published for all the boats'|trans }}</p>
-                <ul>
-                    <li><a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}" rel="tooltip" title="{{ "Autorefreshes positions' file"|trans }}"><i class="icon-globe"></i> {{ path('race_kmz', {race: race.id}) }}</a>
-                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'FULL'}) }}</a>
-                        <a target="_blank" href="{{ path('FULL_json', {race: race.id}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('FULL_json', {race: race.id}) }}</a>
-                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}</a>
-                    <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}</a>
-                </ul>
-            </div>
-            <div class="span4">
-                <h2>{{ 'Per boat' }}</h2>
-                <p>{{ 'All rankings published per boat'|trans }}</p>
-                <ul>
-                    {% for skipper in sk %}
-                        <li>
-                            <a href="{{ path('sail', {ids: skipper.sail}) }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
-                            <ul>
-                                <li><a target="_blank" href="{{ path('sail_json', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: skipper.sail}) }}</a>
-                                <li><a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}</a>
+        <div class="row tooltips">
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>{{ 'Full'|trans }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ 'All the rankings published for all the boats'|trans }}</p>
+                        <ul>
+                            <li><a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}" rel="tooltip" title="{{ "Autorefreshes positions' file"|trans }}"><i class="icon-globe"></i> {{ path('race_kmz', {race: race.id}) }}</a>
+                            <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'FULL'}) }}</a>
+                                <a target="_blank" href="{{ path('FULL_json', {race: race.id}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('FULL_json', {race: race.id}) }}</a>
+                            <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'trace_FULL'}) }}</a>
+                            <li><a target="_blank" href="{{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('base_kmz', {race: race.id, id: 'points_FULL'}) }}</a>
                         </ul>
-                    {% endfor %}
-                </ul>
+                    </div>
+                </div>
             </div>
-            <div class="span4">
-                <h2>{{ 'Per ranking'|trans }}</h2>
-                <p>{{ 'All published rankings'|trans }}</p>
-                <ul>
-                    {% for reportId in reports %}
-                        <li>
-                            <a href="{{ path('report', {id: reportId}) }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ reportId|date }}</a>
-                            <ul>
-                                <li><a target="_blank" href="{{ path('reports_json', {race: race.id, id: reportId}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: reportId}) }}</a>
-                            </ul>
-                    {% endfor %}
-                </ul>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>{{ 'Per boat' }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ 'All rankings published per boat'|trans }}</p>
+                        <ul>
+                            {% for skipper in sk %}
+                                <li>
+                                    <a href="{{ path('sail', {ids: skipper.sail}) }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
+                                    <ul>
+                                        <li><a target="_blank" href="{{ path('sail_json', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: skipper.sail}) }}</a>
+                                        <li><a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}</a>
+                                </ul>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4>{{ 'Per ranking'|trans }}</h4>
+                    </div>
+                    <div class="panel-body">
+                        <p>{{ 'All published rankings'|trans }}</p>
+                        <ul>
+                            {% for reportId in reports %}
+                                <li>
+                                    <a href="{{ path('report', {id: reportId}) }}" rel="tooltip" title="{{ 'See the report'|trans }}"><i class="icon-table"></i> {{ reportId|date }}</a>
+                                    <ul>
+                                        <li><a target="_blank" href="{{ path('reports_json', {race: race.id, id: reportId}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: reportId}) }}</a>
+                                    </ul>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
             </div>
         </div>
 {% endblock %}

@@ -6,22 +6,64 @@ $app['races'] = array(
         'showTwailorHashtag' => false,
         'host'               => 'tjv2013.regadata.org',
         'ua'                 => 'UA-328215-6',
+
         'departure'          => 'Le Havre',
         'departure_lat'      => '49.4900000',
         'departure_lon'      => '00.1000000',
+
         'arrival'            => 'Itajaí',
         'arrival_lat'        => '-26.9077778',
         'arrival_lon'        => '-048.6619444',
+        'total_distance'     => '5450',
+
         'start_date'         => 'sunday 3 november 2013 13:02',
-        'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
-        'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
-        'url_xls'            => 'http://www.transat-jacques-vabre.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
-        'url_map'            => 'http://transat-jacquesvabre.geovoile.com/2013/',
-        'url_gmap'           => 'http://goo.gl/ggmpy', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
+        // 'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
+        // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
+        'url_xls'            => 'http://??????? www.transat-jacques-vabre.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
+        'url_map'            => 'http://??????? transat-jacquesvabre.geovoile.com/2013/',
+        'url_gmap'           => 'http://goo.gl/BkQhrm', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => 'goo.gl/59V2ut', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/saaPX3', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'xls_service'        => 'srv.tbmxls',
+        'showReportFooter'   => true,
+        'menu' => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => false,
+        ),
+    ),
+    'mini2013' => array(
+        'id'                 => 'mini2013',
+        'hashtag'            => 'MiniTransat',
+        'showTwailorHashtag' => false,
+        'host'               => 'mini2013.regadata.org',
+        'ua'                 => 'UA-328215-6',
+        'departure'          => 'Dournenez',
+        'departure_lat'      => '48.0954200',
+        'departure_lon'      => '-4.3290400',
+        'arrival'            => 'Pointe-à-Pitre',
+        'arrival_lat'        => '16.2411',
+        'arrival_lon'        => '-61.5331',
+        'total_distance'     => '1250',
+
+        // 'arrival'            => 'Lanzarote',
+        // 'arrival_lat'        => '19.6716700',
+        // 'arrival_lon'        => '-99.3350000',
+        // 'total_distance'     => '2770',
+
+        'start_date'         => 'sunday 13 november 2013 13:00',
+        // 'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
+        // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
+        'url_xls'            => 'http://??????? http://www.minitransat.fr//s10p04_get_xls.php?no_classement=%file%',
+        'url_xls'            => 'http://??????? /s10p04_get_xls.php?no_classement=%file%',
+        'url_map'            => 'http://??????? transat-jacquesvabre.geovoile.com/2013/',
+        'url_gmap'           => 'http://goo.gl/LDXWos', // https://maps.google.com/?q=http://mini2013.regadata.org/json/mini2013/trace_FULL.kmz
+        'parser'             => 'geovoile',
+        'type'               => 'race',
+        'tweetUrlFr'         => 'goo.gl/t1zp9L', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/aHv5cw', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tbmxls',
         'showReportFooter'   => true,
         'menu' => array(
@@ -43,6 +85,7 @@ $app['races'] = array(
         'arrival_lat'        => '14.603518',
         'arrival_lon'        => '-61.066818',
         'start_date'         => 'sunday 17 march 2013 13:00',
+        'total_distance'     => '3500',
         'url_update'         => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.update.hwz',
         'url_static'         => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz',
         'url_xls'            => 'http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
@@ -73,6 +116,7 @@ $app['races'] = array(
         'arrival_lat'        => '46.4972',
         'arrival_lon'        => '-1.7833',
         'start_date'         => 'saturday 10 november 2012 15:02',
+        'total_distance'     => '24016',
         'url_xls'            => 'http://tracking2012.vendeeglobe.org/download/%file%',
         'url_map'            => 'http://tracking2012.vendeeglobe.org/fr/',
         'url_gmap'           => 'http://goo.gl/yQPoY', // https://maps.google.com/?q=http://vg2012.saliou.name/json/vg2012/trace_FULL.kmz

@@ -1,0 +1,295 @@
+.hidden-inline-xs {
+  display: inline !important;
+}
+
+tr.hidden-inline-xs {
+  display: table-row !important;
+}
+
+th.hidden-inline-xs,
+td.hidden-inline-xs {
+  display: table-cell !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-inline-xs {
+    display: none !important;
+  }
+  tr.hidden-inline-xs {
+    display: none !important;
+  }
+  th.hidden-inline-xs,
+  td.hidden-inline-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-inline-xs.hidden-inline-sm {
+    display: none !important;
+  }
+  tr.hidden-inline-xs.hidden-inline-sm {
+    display: none !important;
+  }
+  th.hidden-inline-xs.hidden-inline-sm,
+  td.hidden-inline-xs.hidden-inline-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hidden-inline-xs.hidden-inline-md {
+    display: none !important;
+  }
+  tr.hidden-inline-xs.hidden-inline-md {
+    display: none !important;
+  }
+  th.hidden-inline-xs.hidden-inline-md,
+  td.hidden-inline-xs.hidden-inline-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-inline-xs.hidden-inline-lg {
+    display: none !important;
+  }
+  tr.hidden-inline-xs.hidden-inline-lg {
+    display: none !important;
+  }
+  th.hidden-inline-xs.hidden-inline-lg,
+  td.hidden-inline-xs.hidden-inline-lg {
+    display: none !important;
+  }
+}
+
+.hidden-inline-sm {
+  display: inline !important;
+}
+
+tr.hidden-inline-sm {
+  display: table-row !important;
+}
+
+th.hidden-inline-sm,
+td.hidden-inline-sm {
+  display: table-cell !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-inline-sm.hidden-inline-xs {
+    display: none !important;
+  }
+  tr.hidden-inline-sm.hidden-inline-xs {
+    display: none !important;
+  }
+  th.hidden-inline-sm.hidden-inline-xs,
+  td.hidden-inline-sm.hidden-inline-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-inline-sm {
+    display: none !important;
+  }
+  tr.hidden-inline-sm {
+    display: none !important;
+  }
+  th.hidden-inline-sm,
+  td.hidden-inline-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hidden-inline-sm.hidden-inline-md {
+    display: none !important;
+  }
+  tr.hidden-inline-sm.hidden-inline-md {
+    display: none !important;
+  }
+  th.hidden-inline-sm.hidden-inline-md,
+  td.hidden-inline-sm.hidden-inline-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-inline-sm.hidden-inline-lg {
+    display: none !important;
+  }
+  tr.hidden-inline-sm.hidden-inline-lg {
+    display: none !important;
+  }
+  th.hidden-inline-sm.hidden-inline-lg,
+  td.hidden-inline-sm.hidden-inline-lg {
+    display: none !important;
+  }
+}
+
+.hidden-inline-md {
+  display: inline !important;
+}
+
+tr.hidden-inline-md {
+  display: table-row !important;
+}
+
+th.hidden-inline-md,
+td.hidden-inline-md {
+  display: table-cell !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-inline-md.hidden-inline-xs {
+    display: none !important;
+  }
+  tr.hidden-inline-md.hidden-inline-xs {
+    display: none !important;
+  }
+  th.hidden-inline-md.hidden-inline-xs,
+  td.hidden-inline-md.hidden-inline-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-inline-md.hidden-inline-sm {
+    display: none !important;
+  }
+  tr.hidden-inline-md.hidden-inline-sm {
+    display: none !important;
+  }
+  th.hidden-inline-md.hidden-inline-sm,
+  td.hidden-inline-md.hidden-inline-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hidden-inline-md {
+    display: none !important;
+  }
+  tr.hidden-inline-md {
+    display: none !important;
+  }
+  th.hidden-inline-md,
+  td.hidden-inline-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-inline-md.hidden-inline-lg {
+    display: none !important;
+  }
+  tr.hidden-inline-md.hidden-inline-lg {
+    display: none !important;
+  }
+  th.hidden-inline-md.hidden-inline-lg,
+  td.hidden-inline-md.hidden-inline-lg {
+    display: none !important;
+  }
+}
+
+.hidden-inline-lg {
+  display: inline !important;
+}
+
+tr.hidden-inline-lg {
+  display: table-row !important;
+}
+
+th.hidden-inline-lg,
+td.hidden-inline-lg {
+  display: table-cell !important;
+}
+
+@media (max-width: 767px) {
+  .hidden-inline-lg.hidden-inline-xs {
+    display: none !important;
+  }
+  tr.hidden-inline-lg.hidden-inline-xs {
+    display: none !important;
+  }
+  th.hidden-inline-lg.hidden-inline-xs,
+  td.hidden-inline-lg.hidden-inline-xs {
+    display: none !important;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  .hidden-inline-lg.hidden-inline-sm {
+    display: none !important;
+  }
+  tr.hidden-inline-lg.hidden-inline-sm {
+    display: none !important;
+  }
+  th.hidden-inline-lg.hidden-inline-sm,
+  td.hidden-inline-lg.hidden-inline-sm {
+    display: none !important;
+  }
+}
+
+@media (min-width: 992px) and (max-width: 1199px) {
+  .hidden-inline-lg.hidden-inline-md {
+    display: none !important;
+  }
+  tr.hidden-inline-lg.hidden-inline-md {
+    display: none !important;
+  }
+  th.hidden-inline-lg.hidden-inline-md,
+  td.hidden-inline-lg.hidden-inline-md {
+    display: none !important;
+  }
+}
+
+@media (min-width: 1200px) {
+  .hidden-inline-lg {
+    display: none !important;
+  }
+  tr.hidden-inline-lg {
+    display: none !important;
+  }
+  th.hidden-inline-lg,
+  td.hidden-inline-lg {
+    display: none !important;
+  }
+}
+
+.visible-print {
+  display: none !important;
+}
+
+tr.visible-print {
+  display: none !important;
+}
+
+th.visible-print,
+td.visible-print {
+  display: none !important;
+}
+
+@media print {
+  .visible-print {
+    display: inline !important;
+  }
+  tr.visible-print {
+    display: table-row !important;
+  }
+  th.visible-print,
+  td.visible-print {
+    display: table-cell !important;
+  }
+  .hidden-inline-print {
+    display: none !important;
+  }
+  tr.hidden-inline-print {
+    display: none !important;
+  }
+  th.hidden-inline-print,
+  td.hidden-inline-print {
+    display: none !important;
+  }
+}

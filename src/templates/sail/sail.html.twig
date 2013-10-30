@@ -5,7 +5,8 @@
 {% if infos|length > 1 %}
     {% set title = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
     {% set extra_meta = 'Race progress for %boat%'|trans({ '%boat%': [infos[0].info.skipper, infos[1].info.skipper]|join(' & ') }) %}
-    {% set compare_lbl = '<i class="icon-sign-blank" style="color: #' ~ infos[1].info.color ~ '"></i> ' ~ infos[1].info.skipper %}
+    {% set compare_lbl = '<span class="label" style="background: #' ~ infos[1].info.color ~ '">&nbsp;&nbsp;</span> ' ~ infos[1].info.skipper %}
+
 {% else %}
     {% set title = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
     {% set extra_meta = 'Race progress for %boat%'|trans({'%boat%': infos[0].info.skipper}) %}
@@ -13,142 +14,162 @@
 {% endif %}
 
 {% block container_content %}
-    <div class="row-fluid">
+    <div class="row">
         {% for info in infos %}
-        <div class="span6 sail">
-            <table class="table">
-                <tr>
-                    <td colspan="2">
-                        <h3>
-                            <span class="geo">
-                                <span class="latitude"><span class="value-title" title="{{ info.info.lat_dec }}"></span></span>
-                                <span class="longitude"><span class="value-title" title="{{ info.info.lon_dec }}"></span></span>
+        <div class="col-xs-12 col-md-6 sail" id="sail_{{ info.info.id }}">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span class="geo">
+                        <span class="latitude"><span class="value-title" title="{{ info.info.lat_dec }}"></span></span>
+                        <span class="longitude"><span class="value-title" title="{{ info.info.lon_dec }}"></span></span>
                         {% if loop.index0 == 0 %}
-                            #{{ info.info.rank }} <i class="icon-sign-blank" style="color: #{{ info.info.color }}"></i> {{ info.info.skipper }}
+                            #{{ info.info.rank }}
+                            <span class="label" style="background: #{{ info.info.color }}">&nbsp;&nbsp;</span> {{ info.info.skipper }}
                         {% else %}
                             {# two sails compared #}
                             #{{ info.info.rank }}
                             <div class="btn-group">
-                                <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                    {{ compare_lbl|raw }}
+                                <button type="button" class="btn btn-xs btn-default">{{ compare_lbl|raw }}</button>
+                                <button type="button" class="btn btn-xs btn-default dropdown-toggle" data-toggle="dropdown">
                                     <span class="caret"></span>
-                                </a>
-                                <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
                                     {% for skipper in sk %}
                                     <li>
-                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
+                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                        <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                                     {% endfor %}
                                 </ul>
                             </div>
                         {% endif %}
-                            </span>
-                        </h3>
-                        {% if '' != info.info.twitter %}
-                        <a class="btn btn-mini" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
-                        {% endif %}
-                    </td>
-                    <td colspan="2">
-                        <div class="progress">
-                            <div class="bar" style="width:{{ '%.2f' | format((24016.60-info.info.dtf)/24016.60*100) }}%"></div>
-                            <div class="togo">
-                                {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
-                            </div>
+                    </span>
+                </div>{# .panel-heading #}
+                <div class="panel-body">
+                    {# <div class="col-sm-3">
+                        <div class="e-chart" data-percent="{{ '%.2f' | format((race.total_distance-info.info.dtf)/race.total_distance*100) }}%;" data-bar-color="#{{ info.info.color }}"><span>{{ '%.2f' | format((race.total_distance-info.info.dtf)/race.total_distance*100) }}%</span></div>
+                    </div> #}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ '%.2f' | format((race.total_distance-info.info.dtf)/race.total_distance*100) }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ '%.2f' | format((race.total_distance-info.info.dtf)/race.total_distance*100) }}%;">
+                            <span class="sr-only">{{ '%.2f' | format((race.total_distance-info.info.dtf)/race.total_distance*100) }}% Complete</span>
                         </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th>{{ 'Last ranking'|trans }}</th>
-                    <td>{{ info.info.timestamp|date }}</td>
-                    <th>{{ 'Boat'|trans }}</th>
-                    <td>{{ info.info.boat }} [{{ info.info.sail }}]</td>
-                </tr>
-                <tr>
-                    <th>{{ 'Heading'|trans }}</th>
-                    <td>{{ info.info['1hour_heading'] }}&deg;</td>
-                    <th>{{ 'Coordinates'|trans }}</th>
-                    <td>{{ info.info.lat_dms }} / {{ info.info.lon_dms }}</td>
-                </tr>
-                <tr>
-                    <th>{{ 'Distance to finish'|trans }}</th>
-                    <td>
-                        {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
-                    </td>
-                    <th>{{ 'Distance To Leader'|trans }}</th>
-                    <td>
-                        {{ info.info.dtl }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
-                    </td>
-                </tr>
-                <tr>
-                    <th>{{ 'Real total distance travelled'|trans }} * /<br>{{ 'Overall average speed'|trans }} **</th>
-                    <td>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></td>
-                    <td colspan="2">
-                        <strong>{{ 'JSON'|trans }}</strong>
-                        <a target="_blank" href="{{ path('sail_json', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: info.info.sail}) }}</a><br>
-                        <strong>{{ 'KMZ'|trans }}</strong>
-                        <a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
+                    </div>
+                    <table class="table table-responsive">
+                        <tr>
+                            <th>{{ 'Last ranking'|trans }}</th>
+                            <td>{{ info.info.timestamp|date }}</td>
+                            <th>{{ 'Boat'|trans }}</th>
+                            <td>{{ info.info.boat }} [{{ info.info.sail }}]</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Heading'|trans }}</th>
+                            <td>{{ info.info['1hour_heading'] }}&deg;</td>
+                            <th>{{ 'Coordinates'|trans }}</th>
+                            <td>{{ info.info.lat_dms }} / {{ info.info.lon_dms }}</td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Distance to finish'|trans }}</th>
+                            <td>
+                                {{ info.info.dtf }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+                            </td>
+                            <th>{{ 'Distance To Leader'|trans }}</th>
+                            <td>
+                                {{ info.info.dtl }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{{ 'Real total distance travelled'|trans }} * /<br>{{ 'Overall average speed'|trans }} **</th>
+                            <td>{{ info.info.total_distance }} <abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr> / {{ '%.1f' | format(info.info.total_distance / (info.info.time_travelled / (60 * 60))) }} <abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr></td>
+                            <td colspan="2">
+                                <strong>{{ 'JSON'|trans }}</strong>
+                                <a target="_blank" href="{{ path('sail_json', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: info.info.sail}) }}</a><br>
+                                <strong>{{ 'KMZ'|trans }}</strong>
+                                <a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}" rel="tooltip" data-placement="right" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: info.info.sail}) }}</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>{# .panel-body #}
+
+                <div class="panel-footer">
+                    {% if "" != info.info.twitter %}
+                    <a class="btn btn-default btn-xs" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
+                    {% endif %}
+                </div>{# .panel-footer #}
+            </div>{# .panel #}
+        </div>{# .sail #}
         {% endfor %}
 
         {# only one sail selected #}
         {% if infos|length == 1 %}
-            <div class="span6">
-                <table class="table">
-                    <tr>
-                        <td colspan="2">
-                            <h3>
-                                <div class="btn-group">
-                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-                                        {{ compare_lbl }}
-                                        <span class="caret"></span>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu">
-                                        {% for skipper in sk %}
-                                        <li>
-                                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><i class="icon-sign-blank" style="color: #{{ skipper.color }}"></i> {{ skipper.skipper }}</a>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            </h3>
-                        </td>
-                    </tr>
-                </table>
+            <div class="col-xs-12 col-md-6">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-lg btn-default dropdown-toggle" data-toggle="dropdown">
+                        {{ compare_lbl|raw }}
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        {% for skipper in sk %}
+                        <li>
+                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
         {% endif %}
 
-    </div>{# row-fluid #}
-    <div class="row-fluid">
+    </div>{# row #}
+    <div class="well well-sm">
         <p>
             * {{ 'Sum of the distances travelled between each ranking since race start'|trans }}<br>
             ** {{ 'Average speed since race start based on the real distance travelled'|trans }}
         </p>
     </div>
 
-    <div class="row-fluid">
-        <div class="span6">
-            <h3>{{ 'Rank'|trans }}</h3>
-            <div id="rank" class="chart"></div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ 'Rank'|trans }}
+                </div>
+                <div class="panel-body">
+                    <div id="rank" class="chart"></div>
+                </div>
+            </div>
         </div>
-        <div class="span6">
-            <h3>{{ 'Distance To Leader'|trans }}</h3>
-            <div id="dtl" class="chart"></div>
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ 'Distance To Leader'|trans }}
+                </div>
+                <div class="panel-body">
+                    <div id="dtl" class="chart"></div>
+                </div>
         </div>
     </div>
-    <div class="row-fluid">
-        <div class="span6">
-            <h3>{{ 'Distance last 24 hours'|trans }}</h3>
-            <div id="24hour_distance" class="chart"></div>
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ 'Distance last 24 hours'|trans }}
+                </div>
+                <div class="panel-body">
+                    <div id="24hour_distance" class="chart"></div>
+                </div>
+            </div>
         </div>
-        <div class="span6">
-            <h3>{{ 'Speed last 24 hours'|trans }}</h3>
-            <div id="24hour_speed" class="chart"></div>
+        <div class="col-xs-12 col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    {{ 'Speed last 24 hours'|trans }}
+                </div>
+                <div class="panel-body">
+                    <div id="24hour_speed" class="chart"></div>
+                </div>
+            </div>
         </div>
     </div>
     {#
-    <div class="row-fluid">
-        <div class="span6">
+    <div class="row">
+        <div class="col-xs-12 col-md-6">
             <h3>{{ 'Progress'|trans }}</h3>
             <div id="dtl_diff" class="chart"></div>
         </div>
@@ -157,8 +178,10 @@
 {% endblock %}
 
 {% block extra_js %}
+{# <script src="/vendor/jquery.easy-pie-chart/dist/jquery.easypiechart.js"></script> #}
 <script type="text/javascript">
 $(function() {
+    // $(".e-chart").easyPieChart();
     var data, $rank = $("#rank"), $dtl = $("#dtl"), $24hour_distance = $("#24hour_distance"), $24hour_speed = $("#24hour_speed"), $dtl_diff = $("dtl_diff");
     var options = {
         series: {
