@@ -167,6 +167,28 @@ $app['srv.tbmxls'] = $app->share(function($app) {
         $app['repo.sail']
     );
 });
+$app['srv.mini2013xls'] = $app->share(function($app) {
+    return new Service\Mini2013Xls(
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['config']['kmlDir'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race'],
+        $app['repo.sail']
+    );
+});
+$app['srv.tjv2013xls'] = $app->share(function($app) {
+    return new Service\Mini2013Xls(
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['config']['kmlDir'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race'],
+        $app['repo.sail']
+    );
+});
 
 $app['gvparser'] = $app->share(function($app) {
     return new Service\GeovoileParser(
