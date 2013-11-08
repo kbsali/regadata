@@ -42,14 +42,19 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        foreach ($app[ $app['race']['xls_service'] ]->listMissingXlsx() as $f) {
-            $output->writeln('<info>Downloading '.$f.'</info>');
-            file_put_contents(
-                $app['srv.tbmxls']->xlsDir.'/'.$f,
-                file_get_contents(
-                    strtr($app['race']['url_xls'], array('%file%' => $f))
-                )
-            );
+        if('srv.tjv2013xls' === $app['race']['xls_service']) {
+            // $app[ $app['race']['xls_service'] ]->renameFiles();
+            $app[ $app['race']['xls_service'] ]->downloadXlsx();
+        } else {
+            foreach ($app[ $app['race']['xls_service'] ]->listMissingXlsx() as $f) {
+                $output->writeln('<info>Downloading '.$f.'</info>');
+                file_put_contents(
+                    $app['srv.tbmxls']->xlsDir.'/'.$f,
+                    file_get_contents(
+                        strtr($app['race']['url_xls'], array('%file%' => $f))
+                    )
+                );
+            }
         }
         $output->writeln('<info>Done</info>');
     })

@@ -179,7 +179,7 @@ $app['srv.mini2013xls'] = $app->share(function($app) {
     );
 });
 $app['srv.tjv2013xls'] = $app->share(function($app) {
-    return new Service\Mini2013Xls(
+    return new Service\Tjv2013Xls(
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
         $app['config']['kmlDir'],

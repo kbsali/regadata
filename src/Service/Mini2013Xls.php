@@ -177,7 +177,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
     }
 
     /**
-     * @param  string $str 48 17.23' N
+     * @param  string $str 48°17.23' N
      * @return array
      */
     public static function strtoDMS($str)
