@@ -234,7 +234,6 @@ class OLERead
             }
             $offset += PROPERTY_STORAGE_BLOCK_SIZE;
         }
-
     }
 
     public function getWorkBook()
