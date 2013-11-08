@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
 abstract class XlsManager
 {
@@ -8,7 +8,7 @@ abstract class XlsManager
 
     public function __construct($xlsDir, $jsonDir, $kmlDir, $_report, $_misc, $race, $_sails)
     {
-        $root = __DIR__.'/../..';
+        $root = __DIR__.'/../../..';
         $this->_report = $_report;
         $this->_sails  = $_sails;
         $this->_misc   = $_misc;

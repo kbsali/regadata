@@ -27,6 +27,7 @@ $app['races'] = array(
         'tweetUrlFr'         => 'goo.gl/59V2ut', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'         => 'goo.gl/saaPX3', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tjv2013xls',
+        'xls_service_class'  => 'Service\Xls\Tjv2013Xls',
         'showReportFooter'   => true,
         'modes'              => array(
             'mod70'   => 'MOD 70',
@@ -70,6 +71,7 @@ $app['races'] = array(
         'tweetUrlFr'         => 'goo.gl/t1zp9L', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'         => 'goo.gl/aHv5cw', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.mini2013xls',
+        'xls_service_class'  => 'Service\Xls\Mini2013Xls',
         'showReportFooter'   => true,
         'modes'              => false,
         'menu'               => array(
@@ -102,6 +104,7 @@ $app['races'] = array(
         'tweetUrlFr'         => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'         => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tbmxls',
+        'xls_service_class'  => 'Service\Xls\Tbm2013Xls',
         'showReportFooter'   => true,
         'modes'              => false,
         'menu'               => array(
@@ -133,6 +136,7 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'showReportFooter'   => true,
         'xls_service'        => 'srv.vgxls',
+        'xls_service_class'  => 'Service\Xls\Vg2012Xls',
         'modes'              => false,
         'menu'               => array(
             'map'           => true,

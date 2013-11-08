@@ -1,8 +1,8 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
-class VgXls extends XlsManager implements XlsManagerInterface
+class Vg2012Xls extends XlsManager implements XlsManagerInterface
 {
     public function listMissingXlsx()
     {
@@ -36,7 +36,7 @@ class VgXls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../Util/XLSXReader.php');
+        require(__DIR__.'/../../Util/XLSXReader.php');
 
         $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
         sort($xlsxs);

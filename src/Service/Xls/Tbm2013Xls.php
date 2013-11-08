@@ -1,8 +1,8 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
-class TbmXls extends XlsManager implements XlsManagerInterface
+class Tbm2013Xls extends XlsManager implements XlsManagerInterface
 {
     public $ts;
 
@@ -40,8 +40,8 @@ class TbmXls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../Util/Spreadsheet_Excel_Reader.php');
-        require(__DIR__.'/../Util/SpreadsheetReader_XLS.php');
+        require(__DIR__.'/../../Util/Spreadsheet_Excel_Reader.php');
+        require(__DIR__.'/../../Util/SpreadsheetReader_XLS.php');
 
         $this->boats = $this->_sails->findBy('boat2');
 

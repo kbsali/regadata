@@ -43,13 +43,13 @@ $console
         $app->setRace($input->getArgument('race'));
 
         if('tjv2013' === $app['race']['id']) {
-            // $app[ $app['race']['xls_service'] ]->renameFiles();
-            $app[ $app['race']['xls_service'] ]->downloadXlsx();
+            // $app['srv.xls']->renameFiles();
+            $app['srv.xls']->downloadXlsx();
         } else {
-            foreach ($app[ $app['race']['xls_service'] ]->listMissingXlsx() as $f) {
+            foreach ($app['srv.xls']->listMissingXlsx() as $f) {
                 $output->writeln('<info>Downloading '.$f.'</info>');
                 file_put_contents(
-                    $app['srv.tbmxls']->xlsDir.'/'.$f,
+                    $app['srv.xls']->xlsDir.'/'.$f,
                     file_get_contents(
                         strtr($app['race']['url_xls'], array('%file%' => $f))
                     )
@@ -70,7 +70,7 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        $app[ $app['race']['xls_service'] ]->xls2mongo(
+        $app['srv.xls']->xls2mongo(
             $input->getOption('file'),
             $input->getOption('force')
         );
@@ -87,7 +87,7 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        $app[ $app['race']['xls_service'] ]->mongo2json(
+        $app['srv.xls']->mongo2json(
             $input->getOption('force')
         );
     })

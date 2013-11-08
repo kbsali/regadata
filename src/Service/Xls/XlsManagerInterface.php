@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
 interface XlsManagerInterface
 {

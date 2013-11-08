@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
 class Mini2013Xls extends XlsManager implements XlsManagerInterface
 {
@@ -26,7 +26,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../Util/XLSXReader.php');
+        require(__DIR__.'/../../Util/XLSXReader.php');
 
         $this->boats = $this->_sails->findBy('id');
 

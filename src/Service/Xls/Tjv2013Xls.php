@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
 class Tjv2013Xls extends XlsManager implements XlsManagerInterface
 {
@@ -64,8 +64,8 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../Util/Spreadsheet_Excel_Reader.php');
-        require(__DIR__.'/../Util/SpreadsheetReader_XLS.php');
+        require(__DIR__.'/../../Util/Spreadsheet_Excel_Reader.php');
+        require(__DIR__.'/../../Util/SpreadsheetReader_XLS.php');
 
         $this->boats = $this->_sails->findBy('id');
         foreach ($this->boats as $key => $value) {
