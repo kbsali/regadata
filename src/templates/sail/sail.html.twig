@@ -1,3 +1,4 @@
+{% import "_macros.html.twig" as m %}
 {% extends 'layout.html.twig' %}
 {% set active = infos[0].info.sail %}
 {% set bodyId = 'high' %}
@@ -35,9 +36,17 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     {% for skipper in sk %}
-                                    <li>
-                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
-                                        <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                    {% if race.modes %}
+                                        {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
+                                            <li>
+                                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                                <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                        {% endif %}
+                                    {% else %}
+                                            <li>
+                                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                                <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -90,9 +99,7 @@
                 </div>{# .panel-body #}
 
                 <div class="panel-footer">
-                    {% if "" != info.info.twitter %}
-                    <a class="btn btn-default btn-xs" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
-                    {% endif %}
+                    {{ m.twitter_btn(info.info) }}
                 </div>{# .panel-footer #}
             </div>{# .panel #}
         </div>{# .sail #}
@@ -108,8 +115,15 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         {% for skipper in sk %}
-                        <li>
-                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                        {% if race.modes %}
+                            {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
+                            <li>
+                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                            {% endif %}
+                        {% else %}
+                            <li>
+                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>

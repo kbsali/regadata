@@ -1,0 +1,145 @@
+{% extends 'layout.html.twig' %}
+{% set active = 'reports' %}
+{% set title = 'General ranking %date%'|trans({'%date%': ts|date}) %}
+{% set extra_meta = 'General ranking %date%'|trans({'%date%': ts|date}) %}
+
+{% block container_content %}
+            <br>
+            <ul class="nav nav-tabs" id="modes">
+            {% for mode_k, mode_v in modes %}
+                <li{% if mode == mode_k %} class="active"{% endif %}><a data-toggle="tab" href="#{{ mode_k }}">{{ mode_v }}</a></li>
+            {% endfor %}
+            </ul>
+
+        <div class="tab-content">
+        {% for mode_k, mode_v in modes %}
+        <div class="{% if mode == mode_k %} active{% endif %} tab-pane" id="{{ mode_k }}">
+            {% include '_pagination.html.twig' with { 'p': pagination, 'mode': mode_k } %}
+
+            <div class="table-responsive">
+            <table class="table table-condensed table-bordered table-hover table-striped" id="report">
+                <caption>{{ 'Ranking : %date%'|trans({'%date%': ts|date}) }}</caption>
+                <thead>
+                    <tr class="{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">
+                        <th scope="colgroup" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="2">{{ 'Ranking'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft borderrigtht" colspan="3">{{ '1 hour'|trans }}</th>
+                        <th scope="colgroup" class="c" colspan="4">{{ 'Last ranking'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="4">{{ '24 hours'|trans }}</th>
+                        <th scope="colgroup" class="c borderleft" colspan="2">&nbsp;</th>
+                        <th scope="colgroup" class="c borderleft" colspan="4">{{ 'Overall'|trans }}</th>
+                    </tr>
+                    <tr>
+                        <th scope="col" class="t">{{ 'Rank'|trans }}</th>
+                        <th scope="col" class="t">{{ 'Skipper [Boat]'|trans}}</th>
+
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Latitude'|trans }}">{{ 'Lat'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Longitude'|trans }}">{{ 'Lon'|trans }}</abbr><br>(<abbr title="{{ 'Degrees Minutes Seconds'|trans }}">{{ 'DMS'|trans }}</abbr>)</th>
+
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t borderrigtht{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} borderleft">{{ 'Heading'|trans }}<br>(<abbr title="{{ 'Degree'|trans }}">°</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Speed'|trans }}<br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Velocity Made Good'|trans }}">{{ 'VMG'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t">{{ 'Distance'|trans }}<br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+
+                        <th scope="col" class="c t borderleft{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Real total distance travelled'|trans }}">{{ 'RTDT'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}"><abbr title="{{ 'Overall average speed'|trans }}">{{ 'OAS'|trans }}</abbr><br>(<abbr title="{{ 'Knots'|trans }}">{{ 'kn'|trans }}</abbr>)</th>
+
+                        <th scope="col" class="c t borderleft"><abbr title="{{ 'Distance To Final'|trans }}">{{ 'DTF'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader Change'|trans }}">{{ 'DTLC'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t{{ full ? '' : ' hidden-inline-xs' }}"><abbr title="{{ 'Distance to Predecessor'|trans }}">{{ 'DTP'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                        <th scope="col" class="c t"><abbr title="{{ 'Distance To Leader'|trans }}">{{ 'DTL'|trans }}</abbr><br>(<abbr title="{{ 'Nautical Miles'|trans }}">{{ 'nm'|trans }}</abbr>)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set dtp = 0 %}
+                    {% for r in report[mode_k] %}
+                        {% set class1 = 'label-info' %}
+                        {% set class2 = 'icon-circle-arrow-right' %}
+                        {% if r['dtl_diff'] < 0 %}
+                            {% set class1 = 'label-success' %}
+                            {% set class2 = 'icon-circle-arrow-up' %}
+                        {% elseif r['dtl_diff'] > 0 %}
+                            {% set class1 = 'label-danger' %}
+                            {% set class2 = 'icon-circle-arrow-down' %}
+                        {% endif %}
+                    <tr>
+                        <td class="r">
+                            <i class="badge">{{ r.rank }}</i>
+                            <span class="label" style="background: #{{ r.color }}">&nbsp;&nbsp;</span>
+                        </td>
+                        <td>
+                            <span class="geo">
+                                <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
+                                <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
+                                <a href="{{ path('sail', {ids: r.sail}) }}">{{ r.skipper }}</a>
+                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {ids: r.sail}) }}">{{ r.boat }}</a>]</span>
+                            </span>
+                        </td>
+
+                        <td class="borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ r.lat_dms }}</td>
+                        <td class="{{ full ? '' : ' hidden-inline-xs' }}">{{ r.lon_dms }}</td>
+
+                        <td class="r borderleft{{ full ? '' : ' hidden-inline-xs' }}">{{ r['1hour_heading'] }}</td>
+                        <td class="r 1hspeed{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['1hour_speed']) }}</td>
+                        <td class="r 1hvmg borderrigtht{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['1hour_vmg']) }}</td>
+
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ r.lastreport_heading }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrspeed">{{ '%.1f' | format(r.lastreport_speed) }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrvmg">{{ '%.1f' | format(r.lastreport_vmg) }}</td>
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} lrdistance">{{ '%.1f' | format(r.lastreport_distance) }}</td>
+
+                        <td class="r{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }} borderleft">{{ r['24hour_heading'] }}</td>
+                        <td class="r 24hspeed">{{ '%.1f' | format(r['24hour_speed']) }}</td>
+                        <td class="r 24hvmg">{{ '%.1f' | format(r['24hour_vmg']) }}</td>
+                        <td class="r 24hdistance">{{ '%.1f' | format(r['24hour_distance']) }}</td>
+
+                        <td class="r total_distance borderleft{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ '%.1f' | format(r['total_distance']) }}</td>
+                        <td class="r oas{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">{{ '%.1f' | format(r['total_distance'] / ((r['timestamp'] - start_date) / (60 * 60))) }}</td>
+
+                        <td class="r borderleft">{{ '%.1f' | format(r['dtf']) }}</td>
+                        <td class="r dtl_diff"><span class="label {{ class1 }}">{{ '%.1f' | format(r['dtl_diff']|abs) }} <i class="icon-white {{ class2 }}"></i></span></td>
+                        <td class="r dtp{{ full ? '' : ' hidden-inline-xs' }}">{{ '%.1f' | format(r['dtl']-dtp|abs) }}</td>
+                        <td class="r">{{ '%.1f' | format(r['dtl']) }}</td>
+                        {% set dtp = r['dtl'] %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            </div>{# /.table-responsive #}
+
+            {% include '_pagination.html.twig' with { 'p': pagination, 'mode': mode_k } %}
+
+            <ul class="pager hidden-inline-desktop">
+                <li>
+                    {% if full == false %}
+                    <a href="?full=1&amp;mode={{ mode_k }}"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
+                    {% else %}
+                    <a href="?mode={{ mode_k }}"><i class="icon-resize-small"></i>{{ 'Mobile view'|trans }}</a>
+                    {% endif %}
+                </li>
+            </ul>
+
+        </div>{# /.tab-pane #}
+        {% endfor %}
+        </div>{# /.tab-content #}
+
+            {% if race.showReportFooter == true %}
+            <p class="tooltips">
+                {{ 'Source'|trans }} : <a target="_blank" href="{{ path('reports_json', {race: race.id, id: report_id}) }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: report_id}) }}</a>
+                | <a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}"><i class="icon-download"></i> {{ path('race_kmz', {race: race.id}) }}</a>
+                | <a target="_blank" href="{{ race.url_map }}"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
+                | <a target="_blank" href="{{ race.url_gmap }}"><i class="icon-globe"></i> {{ 'Google Map'|trans }}</a>
+                <br>
+                * {{ 'Bold numbers are the greatest values of the report'|trans }}
+            </p>
+            {% endif %}
+{% endblock %}

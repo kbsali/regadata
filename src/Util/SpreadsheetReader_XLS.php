@@ -36,12 +36,17 @@
          */
         private $EmptyRow = array();
 
+        private $sheet = 0;
+
         /**
          * @param string Path to file
          * @param array Options
          */
         public function __construct($Filepath, array $Options = null)
         {
+            if(isset($Options['sheet'])) {
+                $this->sheet = $Options['sheet'];
+            }
             if (!is_readable($Filepath)) {
                 throw new Exception('SpreadsheetReader_XLS: File not readable ('.$Filepath.')');
             }
@@ -50,33 +55,32 @@
                 throw new Exception('SpreadsheetReader_XLS: Spreadsheet_Excel_Reader class not available');
             }
 
-            $this -> Handle = new Spreadsheet_Excel_Reader;
-            $this -> Handle -> setOutputEncoding('UTF-8');
+            $this->Handle = new Spreadsheet_Excel_Reader;
+            $this->Handle->setOutputEncoding('UTF-8');
 
             if (function_exists('mb_convert_encoding')) {
-                $this -> Handle -> setUTFEncoder('mb');
+                $this->Handle->setUTFEncoder('mb');
             }
 
-            $this -> Handle -> read($Filepath);
-            if (empty($this -> Handle -> sheets)) {
-                $this -> Error = true;
+            $this->Handle->read($Filepath);
+            if (empty($this->Handle->sheets)) {
+                $this->Error = true;
 
                 return null;
             }
-
-            $this -> ColumnCount = $this -> Handle -> sheets[0]['numCols'];
-            $this -> EmptyRow = array_fill(1, $this -> ColumnCount, '');
+            $this->ColumnCount = $this->Handle->sheets[$this->sheet]['numCols'];
+            $this->EmptyRow = array_fill(1, $this->ColumnCount, '');
         }
 
         public function __destruct()
         {
-            unset($this -> Handle);
+            unset($this->Handle);
         }
 
         public function __get($Name)
         {
             if ($Name == 'Error') {
-                return $this -> Error;
+                return $this->Error;
             }
 
             return null;
@@ -89,7 +93,7 @@
          */
         public function rewind()
         {
-            $this -> Index = 0;
+            $this->Index = 0;
         }
 
         /**
@@ -100,11 +104,11 @@
          */
         public function current()
         {
-            if ($this -> Index == 0) {
-                $this -> next();
+            if ($this->Index == 0) {
+                $this->next();
             }
 
-            return $this -> CurrentRow;
+            return $this->CurrentRow;
         }
 
         /**
@@ -116,26 +120,26 @@
             // Internal counter is advanced here instead of the if statement
             //  because apparently it's fully possible that an empty row will not be
             //  present at all
-            $this -> Index++;
+            $this->Index++;
 
-            if ($this -> Error) {
+            if ($this->Error) {
                 return array();
-            } elseif (isset($this -> Handle -> sheets[0]['cells'][$this -> Index])) {
-                $this -> CurrentRow = $this -> Handle -> sheets[0]['cells'][$this -> Index];
-                if (!$this -> CurrentRow) {
+            } elseif (isset($this->Handle->sheets[$this->sheet]['cells'][$this->Index])) {
+                $this->CurrentRow = $this->Handle->sheets[$this->sheet]['cells'][$this->Index];
+                if (!$this->CurrentRow) {
                     return array();
                 }
 
-                $this -> CurrentRow = $this -> CurrentRow + $this -> EmptyRow;
-                ksort($this -> CurrentRow);
+                $this->CurrentRow = $this->CurrentRow + $this->EmptyRow;
+                ksort($this->CurrentRow);
 
-                $this -> CurrentRow = array_values($this -> CurrentRow);
+                $this->CurrentRow = array_values($this->CurrentRow);
 
-                return $this -> CurrentRow;
+                return $this->CurrentRow;
             } else {
-                $this -> CurrentRow = $this -> EmptyRow;
+                $this->CurrentRow = $this->EmptyRow;
 
-                return $this -> CurrentRow;
+                return $this->CurrentRow;
             }
         }
 
@@ -147,7 +151,7 @@
          */
         public function key()
         {
-            return $this -> Index;
+            return $this->Index;
         }
 
         /**
@@ -158,11 +162,11 @@
          */
         public function valid()
         {
-            if ($this -> Error) {
+            if ($this->Error) {
                 return false;
             }
 
-            return ($this -> Index <= $this -> Handle -> sheets[0]['numRows']);
+            return ($this->Index <= $this->Handle->sheets[$this->sheet]['numRows']);
         }
 
         // !Countable interface method
@@ -172,10 +176,10 @@
          */
         public function count()
         {
-            if ($this -> Error) {
+            if ($this->Error) {
                 return 0;
             }
 
-            return $this -> Handle -> sheets[0]['numRows'];
+            return $this->Handle->sheets[$this->sheet]['numRows'];
         }
     }

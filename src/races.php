@@ -19,16 +19,22 @@ $app['races'] = array(
         'start_date'         => 'sunday 3 november 2013 13:02',
         // 'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
-        'url_xls'            => 'http://??????? www.transat-jacques-vabre.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
-        'url_map'            => 'http://??????? transat-jacquesvabre.geovoile.com/2013/',
+        'url_xls'            => 'http://www.transat-jacques-vabre.com/sites/default/files/classement/classement.xls',
+        'url_map'            => 'http://tracking.transat-jacques-vabre.com/fr/',
         'url_gmap'           => 'http://goo.gl/BkQhrm', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/59V2ut', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'         => 'goo.gl/saaPX3', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
-        'xls_service'        => 'srv.tbmxls',
+        'xls_service'        => 'srv.tjv2013xls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => array(
+            'mod70'   => 'MOD 70',
+            'multi50' => 'Multi 50',
+            'imoca'   => 'IMOCA',
+            'class40' => 'Class 40',
+        ),
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -40,9 +46,9 @@ $app['races'] = array(
         'showTwailorHashtag' => false,
         'host'               => 'mini2013.regadata.org',
         'ua'                 => 'UA-328215-6',
-        'departure'          => 'Dournenez',
-        'departure_lat'      => '48.0954200',
-        'departure_lon'      => '-4.3290400',
+        'departure'          => 'Sada',
+        'departure_lat'      => '43.3609',
+        'departure_lon'      => '-8.2465',
         'arrival'            => 'Pointe-à-Pitre',
         'arrival_lat'        => '16.2411',
         'arrival_lon'        => '-61.5331',
@@ -53,20 +59,20 @@ $app['races'] = array(
         // 'arrival_lon'        => '-99.3350000',
         // 'total_distance'     => '2770',
 
-        'start_date'         => 'sunday 13 november 2013 13:00',
+        'start_date'         => 'tuesday 29 october 2013 13:00',
         // 'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
-        'url_xls'            => 'http://??????? http://www.minitransat.fr//s10p04_get_xls.php?no_classement=%file%',
-        'url_xls'            => 'http://??????? /s10p04_get_xls.php?no_classement=%file%',
-        'url_map'            => 'http://??????? transat-jacquesvabre.geovoile.com/2013/',
+        'url_xls'            => 'http://www.minitransat.fr/classement/historique/doc/%file%',
+        'url_map'            => 'http://www.minitransat.fr/cartographie',
         'url_gmap'           => 'http://goo.gl/LDXWos', // https://maps.google.com/?q=http://mini2013.regadata.org/json/mini2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/t1zp9L', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         'tweetUrlEn'         => 'goo.gl/aHv5cw', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
-        'xls_service'        => 'srv.tbmxls',
+        'xls_service'        => 'srv.mini2013xls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -97,7 +103,8 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tbmxls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -126,7 +133,8 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'showReportFooter'   => true,
         'xls_service'        => 'srv.vgxls',
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => true,
@@ -146,6 +154,7 @@ $app['races'] = array(
         'url_static'    => 'http://guochuansailing.geovoile.com/roundtheworld/2012/shared/data/race/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
+        'modes'         => false,
     ),
     'soldini-2012' => array(
         'id'            => 'soldini-2012',
@@ -161,5 +170,6 @@ $app['races'] = array(
         'url_static'    => 'http://soldini.geovoile.com/newyorksanfrancisco/2012/private/data/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
+        'modes'         => false,
     ),
 );
