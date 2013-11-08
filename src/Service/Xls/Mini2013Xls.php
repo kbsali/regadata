@@ -22,8 +22,6 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         return $ret;
     }
 
-    public function downloadXlsx() { }
-
     public function xls2mongo($file = null, $force = false)
     {
         require(__DIR__.'/../../Util/XLSXReader.php');
@@ -163,9 +161,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         return $ret;
     }
 
-    private function _getArrivalDate($date) {}
-
-    private function _getDate($data)
+    protected function _getDate($data)
     {
         $date = $data[2][1];
         // Classement du 29/10/2013 à 12:00:00 FR
@@ -174,39 +170,5 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
 
         return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
         // $this->ts = strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
-    }
-
-    /**
-     * @param  string $str 48°17.23' N
-     * @return array
-     */
-    public static function strtoDMS($str)
-    {
-        if (empty($str)) {
-            return array(
-                'deg' => 0,
-                'min' => 0,
-                'sec' => 0,
-                'dir' => 0,
-            );
-        }
-        // preg_match("|(\d)°(\d{2}).(\d{2})'([A-Z]{1})$|s", $str, $matches);
-        if (false === preg_match("|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s", $str, $matches)) {
-            return array(
-                'deg' => 0,
-                'min' => 0,
-                'sec' => 0,
-                'dir' => 0,
-            );
-        }
-
-        return array(
-            'deg' => $matches[1],
-            'min' => $matches[2],
-            'sec' => $matches[3],
-            'dir' => $matches[4],
-        );
-
-        return $matches;
     }
 }
