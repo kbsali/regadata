@@ -1,6 +1,6 @@
 <?php
 
-namespace Service;
+namespace Service\Xls;
 
 abstract class XlsManager
 {
@@ -8,7 +8,7 @@ abstract class XlsManager
 
     public function __construct($xlsDir, $jsonDir, $kmlDir, $_report, $_misc, $race, $_sails)
     {
-        $root = __DIR__.'/../..';
+        $root = __DIR__.'/../../..';
         $this->_report = $_report;
         $this->_sails  = $_sails;
         $this->_misc   = $_misc;
@@ -41,6 +41,12 @@ abstract class XlsManager
             }
         }
     }
+
+    public function listMissingXlsx() {}
+    public function downloadXlsx() {}
+    public function xls2mongo($file = null, $force = false) {}
+    protected function _getArrivalDate($date) {}
+    protected function _getDate($data) {}
 
     private function kmlDeparture()
     {
@@ -310,6 +316,44 @@ abstract class XlsManager
             'min' => $min,
             'sec' => $sec,
         );
+    }
+
+    /**
+     * @param  string $str 48 17.23' N
+     * @return array
+     */
+    public static function strtoDMS($str)
+    {
+        if (empty($str)) {
+            return array(
+                'deg' => 0,
+                'min' => 0,
+                'sec' => 0,
+                'dir' => 0,
+            );
+        }
+        if(strpos($str, '°')) {
+            $regex = "|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s";
+        } else {
+            $regex = "|(.*?) (.*?)\.(.*?)' ([A-Z]{1})$|s";
+        }
+        if (false === preg_match($regex, $str, $matches)) {
+            return array(
+                'deg' => 0,
+                'min' => 0,
+                'sec' => 0,
+                'dir' => 0,
+            );
+        }
+
+        return array(
+            'deg' => $matches[1],
+            'min' => $matches[2],
+            'sec' => $matches[3],
+            'dir' => $matches[4],
+        );
+
+        return $matches;
     }
 
     public function extractSailsCoordinates(array $arr = array())

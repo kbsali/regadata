@@ -1,0 +1,6 @@
+{% macro twitter_btn(sail) %}
+    {% if sail.twitter is defined and sail.twitter is not empty %}
+        <a class="btn btn-default btn-xs" href="http://twitter.com/{{ sail.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ sail.twitter }}</a>
+    {% endif %}
+{% endmacro %}
+
