@@ -42,7 +42,7 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        if('srv.tjv2013xls' === $app['race']['xls_service']) {
+        if('tjv2013' === $app['race']['id']) {
             // $app[ $app['race']['xls_service'] ]->renameFiles();
             $app[ $app['race']['xls_service'] ]->downloadXlsx();
         } else {

@@ -39,5 +39,7 @@ function showmap() {
             getMax(clmax[i]);
         }
         showmap();
+
+        // $('#modes a[href="'+window.location.hash+'"]').tab('show');
     });
 }(window.jQuery)

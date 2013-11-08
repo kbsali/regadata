@@ -35,9 +35,11 @@
                                 </button>
                                 <ul class="dropdown-menu" role="menu">
                                     {% for skipper in sk %}
-                                    <li>
-                                        <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
-                                        <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                    {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
+                                        <li>
+                                            <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                            <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                    {% endif %}
                                     {% endfor %}
                                 </ul>
                             </div>
@@ -108,8 +110,10 @@
                     </button>
                     <ul class="dropdown-menu" role="menu">
                         {% for skipper in sk %}
+                        {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
                         <li>
                             <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                        {% endif %}
                         {% endfor %}
                     </ul>
                 </div>

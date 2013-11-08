@@ -28,7 +28,13 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/saaPX3', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tjv2013xls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => array(
+            'mod70'   => 'MOD 70',
+            'multi50' => 'Multi 50',
+            'imoca'   => 'IMOCA',
+            'class40' => 'Class 40',
+        ),
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -65,7 +71,8 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/aHv5cw', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.mini2013xls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -96,7 +103,8 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/PXc96', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tbmxls',
         'showReportFooter'   => true,
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => false,
@@ -125,7 +133,8 @@ $app['races'] = array(
         'tweetUrlEn'         => 'goo.gl/3VJyD', // http://vg2012.saliou.name/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'showReportFooter'   => true,
         'xls_service'        => 'srv.vgxls',
-        'menu' => array(
+        'modes'              => false,
+        'menu'               => array(
             'map'           => true,
             'documentation' => true,
             'about'         => true,
@@ -145,6 +154,7 @@ $app['races'] = array(
         'url_static'    => 'http://guochuansailing.geovoile.com/roundtheworld/2012/shared/data/race/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
+        'modes'         => false,
     ),
     'soldini-2012' => array(
         'id'            => 'soldini-2012',
@@ -160,5 +170,6 @@ $app['races'] = array(
         'url_static'    => 'http://soldini.geovoile.com/newyorksanfrancisco/2012/private/data/static.hwz',
         'parser'        => 'geovoile',
         'type'          => 'record',
+        'modes'         => false,
     ),
 );

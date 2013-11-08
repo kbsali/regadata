@@ -8,21 +8,21 @@
             <div class="text-center">
                 <ul class="pagination">
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '#' : path('report', {id: p.first}) }}">&lt;&lt;</a>
+                        <a href="{{ p.prev is null ? '' : path('report', {id: p.first}) }}{% if mode is not null %}?mode={{ mode }}{% endif %}">&lt;&lt;</a>
                     </li>
                     <li class="previous{{ p.prev is null ? ' disabled' : '' }}">
-                        <a href="{{ p.prev is null ? '/#' : path('report', {id: p.prev}) }}">&lt;</a>
+                        <a href="{{ p.prev is null ? '/' : path('report', {id: p.prev}) }}{% if mode is not null %}?mode={{ mode }}{% endif %}">&lt;</a>
                     </li>
 
                     <li class="disabled">
-                        <a href="#">{{ 'Ranking %x% of %y%'|trans({'%x%': p.current, '%y%': p.total }) }}</a>
+                        <a href="?mode={% if mode is not null %}{{ mode }}{% endif %}">{{ 'Ranking %x% of %y%'|trans({'%x%': p.current, '%y%': p.total }) }}</a>
                     </li>
 
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : path('report', {id: p.next}) }}">&gt;</a>
+                        <a href="{{ p.next is null ? '' : path('report', {id: p.next}) }}{% if mode is not null %}?mode={{ mode }}{% endif %}">&gt;</a>
                     </li>
                     <li class="next{{ p.next is null ? ' disabled' : '' }}">
-                        <a href="{{ p.next is null ? '#' : path('report', {id: 'latest'}) }}">&gt;&gt;</a>
+                        <a href="{{ p.next is null ? '' : path('report', {id: 'latest'}) }}{% if mode is not null %}?mode={{ mode }}{% endif %}">&gt;&gt;</a>
                     </li>
                 </ul>
             </div>

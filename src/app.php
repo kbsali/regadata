@@ -90,11 +90,26 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         $report2 = $app['repo.report']->findBy(null, array('has_arrived' => true, 'timestamp' => array('$lte' => $ts)));
         $report = $report2+$report1;
     } else {
-        $report = $app['repo.report']->findBy(null, array('id' => $id));
+        if(false !== $app['race']['modes']) {
+            $report = $app['repo.report']->findBy(null, array('id' => $id));
+            foreach ($report as $r) {
+                $tmp[ $r['class'] ][ (string)$r['_id'] ] = $r;
+            }
+            $report = $tmp;
+        } else {
+            $report = $app['repo.report']->findBy(null, array('id' => $id));
+        }
     }
 
-    return $app['twig']->render('reports/reports.html.twig', array(
+    $tpl = 'reports/reports.html.twig';
+    if(false !== $app['race']['modes']) {
+        $tpl = 'reports/reports_modes.html.twig';
+    }
+
+    return $app['twig']->render($tpl, array(
         'ts'         => $ts,
+        'modes'      => $app['race']['modes'],
+        'mode'       => $request->get('mode', 'mod70'),
         'report'     => $report,
         'report_id'  => $id,
         'start_date' => strtotime($app['race']['start_date']),
