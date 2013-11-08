@@ -1,3 +1,4 @@
+{% import "_macros.html.twig" as m %}
 {% extends 'layout.html.twig' %}
 {% set active = infos[0].info.sail %}
 {% set bodyId = 'high' %}
@@ -98,9 +99,7 @@
                 </div>{# .panel-body #}
 
                 <div class="panel-footer">
-                    {% if "" != info.info.twitter %}
-                    <a class="btn btn-default btn-xs" href="http://twitter.com/{{ info.info.twitter }}" target="_blank"><i class="icon-twitter icon-large"></i> @{{ info.info.twitter }}</a>
-                    {% endif %}
+                    {{ m.twitter_btn(info.info) }}
                 </div>{# .panel-footer #}
             </div>{# .panel #}
         </div>{# .sail #}

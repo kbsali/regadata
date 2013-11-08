@@ -16,11 +16,19 @@ class Misc
         if (!isset($this->skippers[$skipper])) {
             return false;
         }
-        if (!isset($this->skippers[$skipper]['twitter']) || empty($this->skippers[$skipper]['twitter'])) {
-            return $this->skippers[$skipper]['skipper'];
+        if (isset($this->skippers[$skipper]['twitter']) && !empty($this->skippers[$skipper]['twitter'])) {
+            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
         }
-
-        return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
+        if (isset($this->skippers[$skipper]['twitter_skipper1']) && !empty($this->skippers[$skipper]['twitter_skipper1'])) {
+            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_skipper1'];
+        }
+        if (isset($this->skippers[$skipper]['twitter_skipper2']) && !empty($this->skippers[$skipper]['twitter_skipper2'])) {
+            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_skipper2'];
+        }
+        if (isset($this->skippers[$skipper]['twitter_sponsor']) && !empty($this->skippers[$skipper]['twitter_sponsor'])) {
+            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_sponsor'];
+        }
+        return false;
     }
 
     public function getColor($skipper)
