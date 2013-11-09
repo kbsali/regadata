@@ -19,7 +19,7 @@ $app['races'] = array(
         'start_date'         => 'sunday 3 november 2013 13:02',
         // 'url_update'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/update.hwz',
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
-        'url_xls'            => 'http://www.transat-jacques-vabre.com/sites/default/files/classement/classement.xls',
+        'url_xls'            => 'http://www.transat-jacques-vabre.com/sites/default/files/classement/%file%',
         'url_map'            => 'http://tracking.transat-jacques-vabre.com/fr/',
         'url_gmap'           => 'http://goo.gl/BkQhrm', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
         'parser'             => 'geovoile',
@@ -30,10 +30,10 @@ $app['races'] = array(
         'xls_service_class'  => 'Service\Xls\Tjv2013Xls',
         'showReportFooter'   => true,
         'modes'              => array(
-            'mod70'   => 'MOD 70',
+            'class40' => 'Class 40',
             'multi50' => 'Multi 50',
             'imoca'   => 'IMOCA',
-            'class40' => 'Class 40',
+            'mod70'   => 'MOD 70',
         ),
         'menu'               => array(
             'map'           => true,

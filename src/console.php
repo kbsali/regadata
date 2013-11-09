@@ -42,19 +42,15 @@ $console
 
         $app->setRace($input->getArgument('race'));
 
-        if('tjv2013' === $app['race']['id']) {
-            // $app['srv.xls']->renameFiles();
-            $app['srv.xls']->downloadXlsx();
-        } else {
-            foreach ($app['srv.xls']->listMissingXlsx() as $f) {
-                $output->writeln('<info>Downloading '.$f.'</info>');
-                file_put_contents(
-                    $app['srv.xls']->xlsDir.'/'.$f,
-                    file_get_contents(
-                        strtr($app['race']['url_xls'], array('%file%' => $f))
-                    )
-                );
-            }
+        foreach ($app['srv.xls']->listMissingXlsx() as $f) {
+            // $output->writeln('<info>'.strtr($app['race']['url_xls'], array('%file%' => $f)).'</info>');
+            $output->writeln('<info>Downloading '.$f.'</info>');
+            file_put_contents(
+                $app['srv.xls']->xlsDir.'/'.$f,
+                file_get_contents(
+                    strtr($app['race']['url_xls'], array('%file%' => $f))
+                )
+            );
         }
         $output->writeln('<info>Done</info>');
     })

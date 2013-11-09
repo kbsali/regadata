@@ -6,60 +6,20 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
 {
     public $ts;
 
-    public function listMissingXlsx() {}
-
-    protected function extractLastSaveDT($file)
+    public function listMissingXlsx()
     {
-        if(!file_exists($file)) {
-            return false;
-        }
-        $output = exec('/usr/bin/file ' . $file);
-        $outputs = explode(', ', $output);
-        foreach ($outputs as $v) {
-            if(false !== strpos($v, 'Last Saved Time')) {
-                list($bla, $dt) = explode(':', $v, 2);
-                return strtotime($dt);
+        $html = file_get_contents('http://www.transat-jacques-vabre.com/fr/tjv/historique-classement');
+        // <a href="http://www.transat-jacques-vabre.com/sites/default/files/classement/classement_20131108_1858.xls" download="classement_20131108_1858.xls" class="link-news">
+        $s = '<a href="http://www.transat-jacques-vabre.com/sites/default/files/classement/(.*?)" download=';
+        preg_match_all('|'.$s.'|s', $html, $matches);
+
+        $ret = array();
+        foreach ($matches[1] as $xlsx) {
+            if (!file_exists($this->xlsDir.'/'.$xlsx)) {
+                $ret[] = $xlsx;
             }
         }
-        return false;
-    }
-
-    public function renameFiles()
-    {
-        $xlsxs = glob($this->xlsDir.'/*');
-        foreach ($xlsxs as $xlsx) {
-            if(false === $mtime = $this->extractLastSaveDT($xlsx)) {
-                return false;
-            }
-            $f = $this->xlsDir.'/'.date('Ymd-Hi', $mtime).'.xls';
-            if(!file_exists($f)) {
-                echo 'renaming '.$xlsx. ' to '. $f.PHP_EOL;
-                rename($xlsx, $f);
-            } else {
-                unlink($xlsx);
-            }
-        }
-    }
-
-    public function downloadXlsx()
-    {
-        $tmpFile = $this->xlsDir.'/tmp.xls';
-
-        file_put_contents(
-            $tmpFile,
-            file_get_contents(
-                'http://www.transat-jacques-vabre.com/sites/default/files/classement/classement.xls'
-            )
-        );
-        if(false === $mtime = $this->extractLastSaveDT($tmpFile)) {
-            return false;
-        }
-        $f = $this->xlsDir.'/'.date('Ymd-Hi', $mtime).'.xls';
-        if(!file_exists($f)) {
-            rename($tmpFile, $f);
-        } else {
-            unlink($tmpFile);
-        }
+        return $ret;
     }
 
     public function xls2mongo($file = null, $force = false)
@@ -68,6 +28,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
         require(__DIR__.'/../../Util/SpreadsheetReader_XLS.php');
 
         $this->boats = $this->_sails->findBy('id');
+        $tmp = [];
         foreach ($this->boats as $key => $value) {
             $tmp[strtolower($key)] = $value;
         }
@@ -87,7 +48,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
                     'imoca'   => 2,
                     'mod70'   => 3,
                 );
-                $this->ts =  null;
+                $this->ts = null;
                 foreach ($sheets as $class => $sheetId) {
                     $data = new \SpreadsheetReader_XLS($xlsx, array('sheet' => $sheetId));
                     foreach ($data as $row) {
