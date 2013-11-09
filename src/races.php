@@ -11,9 +11,14 @@ $app['races'] = array(
         'departure_lat'      => '49.4900000',
         'departure_lon'      => '00.1000000',
 
-        'arrival'            => 'Itajaí',
-        'arrival_lat'        => '-26.9077778',
-        'arrival_lon'        => '-048.6619444',
+        // 'arrival'            => 'Itajaí',
+        // 'arrival_lat'        => '-26.9077778',
+        // 'arrival_lon'        => '-048.6619444',
+
+        'arrival'            => 'Roscoff',
+        'arrival_lat'        => '48.7162, ',
+        'arrival_lon'        => '-3.9652',
+
         'total_distance'     => '5450',
 
         'start_date'         => 'sunday 3 november 2013 13:02',
