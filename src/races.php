@@ -21,7 +21,7 @@ $app['races'] = array(
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
         'url_xls'            => 'http://www.transat-jacques-vabre.com/sites/default/files/classement/%file%',
         'url_map'            => 'http://tracking.transat-jacques-vabre.com/fr/',
-        'url_gmap'           => 'http://goo.gl/TkAyin', // https://maps.google.com/?q=http://tjv2013.regadata.org/json/tjv2013/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/GjX18r', // https://maps.google.com/?q=http://tjv2013.regadata.org/kml/tjv2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/iqqyF0', // http://tjv2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
@@ -65,7 +65,7 @@ $app['races'] = array(
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
         'url_xls'            => 'http://www.minitransat.fr/classement/historique/doc/%file%',
         'url_map'            => 'http://www.minitransat.fr/cartographie',
-        'url_gmap'           => 'http://goo.gl/LDXWos', // https://maps.google.com/?q=http://mini2013.regadata.org/json/mini2013/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/PJpyA0', // https://maps.google.com/?q=http://mini2013.regadata.org/kml/mini2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/t1zp9L', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
@@ -98,7 +98,7 @@ $app['races'] = array(
         'url_static'         => 'http://transat-bretagnemartinique.geovoile.com/2013/shared/data/race/leg1.static.hwz',
         'url_xls'            => 'http://www.transat-bretagnemartinique.com/fr/s10_classement/s10p04_get_xls.php?no_classement=%file%',
         'url_map'            => 'http://transat-bretagnemartinique.geovoile.com/2013/',
-        'url_gmap'           => 'http://goo.gl/ggmpy', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/BE59RZ', // https://maps.google.com/?q=http://tbm2013.regadata.org/kml/tbm2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/rDb2z', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
@@ -129,7 +129,7 @@ $app['races'] = array(
         'total_distance'     => '24016',
         'url_xls'            => 'http://tracking2012.vendeeglobe.org/download/%file%',
         'url_map'            => 'http://tracking2012.vendeeglobe.org/fr/',
-        'url_gmap'           => 'http://goo.gl/yQPoY', // https://maps.google.com/?q=http://vg2012.saliou.name/json/vg2012/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/jCUHeK', // https://maps.google.com/?q=http://vg2012.saliou.name/kml/vg2012/trace_FULL.kmz
         'parser'             => 'vg',
         'type'               => 'race',
         'tweetUrlFr'         => 'goo.gl/B8yKv', // http://vg2012.saliou.name/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
