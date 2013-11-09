@@ -87,6 +87,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
                     'imoca'   => 2,
                     'mod70'   => 3,
                 );
+                $this->ts =  null;
                 foreach ($sheets as $class => $sheetId) {
                     $data = new \SpreadsheetReader_XLS($xlsx, array('sheet' => $sheetId));
                     foreach ($data as $row) {
@@ -225,6 +226,9 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
 
     protected function _getDate($data)
     {
+        if(null !== $this->ts) {
+            return false;
+        }
         if (false === strpos($data[0], 'Date retenue pour')) {
             return false;
         }

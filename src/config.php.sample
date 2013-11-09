@@ -1,22 +1,25 @@
 <?php
 $app['config'] = array(
-    'xlsDir'          => '/xls',
-    'smDir'           => '/xml',
-    'xmlDir'          => '/_xml',
-    'jsonDir'         => '/web/json',
-    'kmlDir'          => '/web/kml',
-    'docRoot'         => '/web',
+    'xlsDir'           => '/xls',
+    'smDir'            => '/xml',
+    'xmlDir'           => '/_xml',
+    'jsonDir'          => '/web/json',
+    'kmlDir'           => '/web/kml',
+    'docRoot'          => '/web',
 
-    'consumer_key'    => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_KEY',
-    'consumer_secret' => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_SECRET',
+    'consumer_key'     => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_KEY',
+    'consumer_secret'  => 'ENTER_HERE_YOUR_TWITTER_CONSUMER_SECRET',
 
-    'user_token'      => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN',
-    'user_secret'     => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN_SECRET',
+    'user_token'       => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN',
+    'user_secret'      => 'ENTER_HERE_YOUR_TWITTER_ACCESS_TOKEN_SECRET',
 
-    'schema'          => 'http://',
+    'schema'           => 'http://',
 
     'smFileName'       => '-index.xml',
     'authIp'           => '127.0.0.1',
+
+    'mongoHost'        => '127.0.0.1',
+    'mongoPort'        => '27017',
 
     'facebook.app_id'  => 'FB_APP_ID',
     'facebook.secret'  => 'FB_APP_SECRET',
