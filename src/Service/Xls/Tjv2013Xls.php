@@ -28,7 +28,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
         require(__DIR__.'/../../Util/SpreadsheetReader_XLS.php');
 
         $this->boats = $this->_sails->findBy('id');
-        $tmp = [];
+        $tmp = array();
         foreach ($this->boats as $key => $value) {
             $tmp[strtolower($key)] = $value;
         }
