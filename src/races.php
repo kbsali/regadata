@@ -21,11 +21,11 @@ $app['races'] = array(
         // 'url_static'         => 'http://transat-jacquesvabre.geovoile.com/2013/shared/data/race/static.hwz',
         'url_xls'            => 'http://www.transat-jacques-vabre.com/sites/default/files/classement/%file%',
         'url_map'            => 'http://tracking.transat-jacques-vabre.com/fr/',
-        'url_gmap'           => 'http://goo.gl/BkQhrm', // https://maps.google.com/?q=http://tbm2013.regadata.org/json/tbm2013/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/TkAyin', // https://maps.google.com/?q=http://tjv2013.regadata.org/json/tjv2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/59V2ut', // http://tbm2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/saaPX3', // http://tbm2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => 'goo.gl/iqqyF0', // http://tjv2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/yU7dhP', // http://tjv2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.tjv2013xls',
         'xls_service_class'  => 'Service\Xls\Tjv2013Xls',
         'showReportFooter'   => true,
