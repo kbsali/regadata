@@ -185,7 +185,7 @@ $console
 function tweetIt($app, $input, $output, $max) {
     $tweet  = 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%';
     $params = array(
-        '%hashtag%' => '#'.$app['race']['hashtag'].(true === $app['race']['modes'] ? ' #'.strtoupper($max['class']) : ''),
+        '%hashtag%' => '#'.$app['race']['hashtag'].(false === $app['race']['modes'] ? '' : ' #'.strtoupper($max['class'])),
         '%skipper%' => $app['misc']->getTwitter($max['sail']),
         '%miles%'   => $max['24hour_distance'],
     );
@@ -203,7 +203,7 @@ function tweetIt($app, $input, $output, $max) {
     $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
     if (!$input->getOption('debug')) {
         if (strlen($_tweet) <= 140) {
-            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1.1/statuses/update'), array(
               'status' => $_tweet
             ));
         }
@@ -222,7 +222,7 @@ function tweetIt($app, $input, $output, $max) {
     $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
     if (!$input->getOption('debug')) {
         if (strlen($_tweet) <= 140) {
-            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1.1/statuses/update'), array(
               'status' => $_tweet
             ));
         }
