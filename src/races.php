@@ -88,7 +88,10 @@ $app['races'] = array(
         'xls_service'        => 'srv.mini2013xls',
         'xls_service_class'  => 'Service\Xls\Mini2013Xls',
         'showReportFooter'   => true,
-        'modes'              => false,
+        'modes'              => array(
+            'proto' => 'Proto',
+            'serie' => 'Série',
+        ),
         'menu'               => array(
             'map'           => true,
             'documentation' => true,

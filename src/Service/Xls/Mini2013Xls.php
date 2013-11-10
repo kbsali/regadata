@@ -4,7 +4,7 @@ namespace Service\Xls;
 
 class Mini2013Xls extends XlsManager implements XlsManagerInterface
 {
-    public $ts;
+    public $ts, $class;
 
     public function listMissingXlsx()
     {
@@ -35,13 +35,16 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         foreach ($xlsxs as $xlsx) {
             $i++;
             try {
+                echo $xlsx.PHP_EOL;
                 $_xlsx = new \XLSXReader($xlsx);
                 $data  = $_xlsx->getSheetData('Proto');
                 $ts    = $this->_getDate($data);
                 foreach ($data as $row) {
+                    $this->_getClass($row);
                     if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
                         continue;
                     }
+                    $r['class'] = $this->class;
                     if (!isset($total[$r['sail']])) {
                            $total[$r['sail']] = 0;
                     }
@@ -51,7 +54,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
                     $r['color']            = $this->_misc->getColor($r['sail']);
                     $yesterday[$r['sail']] = $r;
                     try {
-                        // print_R($this->_report->insert($r, $force));
+                        // print_r($this->_report->insert($r, $force));
                         $this->_report->insert($r, $force);
                     } catch (\MongoCursorException $e) {
                         // echo $e->getMessage().PHP_EOL;
@@ -70,7 +73,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
             return false;
         } else {
             $rank = (int)$rank;
-            if (0 === (int) $rank ) {
+            if (0 === $rank ) {
                 return false;
             }
         }
@@ -161,6 +164,14 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         return $ret;
     }
 
+    protected function _getClass($row)
+    {
+        if (false !== strpos($row[1], 'Série')) {
+            $this->class = 'serie';
+        } elseif (false !== strpos($row[1], 'Proto')) {
+            $this->class = 'proto';
+        }
+    }
     protected function _getDate($data)
     {
         $date = $data[2][1];

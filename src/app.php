@@ -109,7 +109,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     return $app['twig']->render($tpl, array(
         'ts'         => $ts,
         'modes'      => $app['race']['modes'],
-        'mode'       => $request->get('mode', 'mod70'),
+        'mode'       => $request->get('mode', is_array($app['race']['modes']) ? array_keys($app['race']['modes'])[0] : false),
         'report'     => $report,
         'report_id'  => $id,
         'start_date' => strtotime($app['race']['start_date']),

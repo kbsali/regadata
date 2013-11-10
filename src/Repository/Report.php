@@ -40,6 +40,7 @@ class Report
             'skipper'             => null,
             'boat'                => null,
             'source'              => null,
+            'class'               => null,
 
             'id'                  => null,
             'time'                => 0,
