@@ -44,7 +44,7 @@
          */
         public function __construct($Filepath, array $Options = null)
         {
-            if(isset($Options['sheet'])) {
+            if (isset($Options['sheet'])) {
                 $this->sheet = $Options['sheet'];
             }
             if (!is_readable($Filepath)) {

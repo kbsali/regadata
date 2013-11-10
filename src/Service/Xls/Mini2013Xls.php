@@ -19,6 +19,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
                 $ret[] = $xlsx;
             }
         }
+
         return $ret;
     }
 
@@ -72,8 +73,8 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         if ('RET' == $rank) {
             return false;
         } else {
-            $rank = (int)$rank;
-            if (0 === $rank ) {
+            $rank = (int) $rank;
+            if (0 === $rank) {
                 return false;
             }
         }

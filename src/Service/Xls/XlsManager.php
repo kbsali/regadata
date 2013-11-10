@@ -332,7 +332,7 @@ abstract class XlsManager
                 'dir' => 0,
             );
         }
-        if(strpos($str, '°')) {
+        if (strpos($str, '°')) {
             $regex = "|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s";
         } else {
             $regex = "|(.*?) (.*?)\.(.*?)' ([A-Z]{1})$|s";

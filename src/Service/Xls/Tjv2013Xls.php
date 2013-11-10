@@ -19,6 +19,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
                 $ret[] = $xlsx;
             }
         }
+
         return $ret;
     }
 
@@ -130,7 +131,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
         $ret['country'] = 'fr';
         $ret['skipper'] = utf8_decode(trim($row[2]));
         $boat           = strtolower(utf8_decode(trim($row[1])));
-        if(!isset($this->boats[ $boat ])){
+        if (!isset($this->boats[ $boat ])) {
             echo ' NOT FOUND - '.$boat.PHP_EOL;
             ld($boat);
         }
@@ -187,7 +188,7 @@ class Tjv2013Xls extends XlsManager implements XlsManagerInterface
 
     protected function _getDate($data)
     {
-        if(null !== $this->ts) {
+        if (null !== $this->ts) {
             return false;
         }
         if (false === strpos($data[0], 'Date retenue pour')) {

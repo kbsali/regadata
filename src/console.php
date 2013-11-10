@@ -165,9 +165,9 @@ $console
         // ---- get last report + max distance boat
         $report = $app['repo.report']->getLast();
 
-        if(false !== $app['race']['modes']) {
+        if (false !== $app['race']['modes']) {
             foreach ($report as $r) {
-                $tmp[ $r['class'] ][ (string)$r['_id'] ] = $r;
+                $tmp[ $r['class'] ][ (string) $r['_id'] ] = $r;
             }
             foreach ($tmp as $class => $report) {
                 $max = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
@@ -182,7 +182,11 @@ $console
     })
 ;
 
-function tweetIt($app, $input, $output, $max) {
+function tweetIt($app, $input, $output, $max)
+{
+    if ($max['24hour_distance'] <= 0) {
+        return false;
+    }
     $tweet  = 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%';
     $params = array(
         '%hashtag%' => '#'.$app['race']['hashtag'].(false === $app['race']['modes'] ? '' : ' #'.strtoupper($max['class'])),
