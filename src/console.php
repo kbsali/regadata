@@ -164,44 +164,69 @@ $console
 
         // ---- get last report + max distance boat
         $report = $app['repo.report']->getLast();
-        $max    = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
-        $tweet  = 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%';
-        $params = array(
-            '%hashtag%' => '#'.$app['race']['hashtag'],
-            '%skipper%' => $app['misc']->getTwitter($max['sail']),
-            '%miles%'   => $max['24hour_distance'],
-        );
 
-        // ---- translate tweet to french + tweet
-        $params['%url%'] = $app['race']['tweetUrlFr'];
-        $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
-        if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
-            $_tweet.= ' #twailor';
-        }
-        $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if (!$input->getOption('debug')) {
-            if (strlen($_tweet) <= 140) {
-                $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-                  'status' => $_tweet
-                ));
+        if(false !== $app['race']['modes']) {
+            foreach ($report as $r) {
+                $tmp[ $r['class'] ][ (string)$r['_id'] ] = $r;
             }
+            foreach ($tmp as $class => $report) {
+                $max = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
+                tweetIt($app, $input, $output, $max);
+            }
+            // $report = $tmp;
+        } else {
+            $max = $app['repo.report']->extractMaxByKey($report, '24hour_distance');
+            tweetIt($app, $input, $output, $max);
         }
 
-        // ---- translate tweet to english + tweet
-        $params['%url%'] = $app['race']['tweetUrlEn'];
-        $_tweet = $app['translator']->trans($tweet, $params, 'en');
-        if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
-            $_tweet.= ' #twailor';
-        }
-        $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
-        if (!$input->getOption('debug')) {
-            if (strlen($_tweet) <= 140) {
-                $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
-                  'status' => $_tweet
-                ));
-            }
-        }
     })
 ;
+
+function tweetIt($app, $input, $output, $max) {
+    $tweet  = 'Latest ranking available, fastest boat in the last 24h %skipper% (%miles% nm) %url% %hashtag%';
+    $params = array(
+        '%hashtag%' => '#'.$app['race']['hashtag'].(true === $app['race']['modes'] ? ' #'.strtoupper($max['class']) : ''),
+        '%skipper%' => $app['misc']->getTwitter($max['sail']),
+        '%miles%'   => $max['24hour_distance'],
+    );
+
+    // ---- translate tweet to french + tweet
+    if (false === $app['race']['modes']) {
+        $params['%url%'] = $app['race']['tweetUrlFr'];
+    } else {
+        $params['%url%'] = $app['race']['tweetUrlFr'][ $max['class'] ];
+    }
+    $_tweet = $app['translator']->trans($tweet, $params, 'messages', 'fr');
+    if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
+        $_tweet.= ' #twailor';
+    }
+    $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
+    if (!$input->getOption('debug')) {
+        if (strlen($_tweet) <= 140) {
+            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+              'status' => $_tweet
+            ));
+        }
+    }
+
+    // ---- translate tweet to english + tweet
+    if (false === $app['race']['modes']) {
+        $params['%url%'] = $app['race']['tweetUrlEn'];
+    } else {
+        $params['%url%'] = $app['race']['tweetUrlEn'][ $max['class'] ];
+    }
+    $_tweet = $app['translator']->trans($tweet, $params, 'en');
+    if (isset($app['race']['showTwailorHashtag']) && true === $app['race']['showTwailorHashtag'] && strlen($_tweet) <= 131) {
+        $_tweet.= ' #twailor';
+    }
+    $output->writeln('<info>'.$_tweet.' ('.strlen($_tweet).')</info>');
+    if (!$input->getOption('debug')) {
+        if (strlen($_tweet) <= 140) {
+            $code = $app['tmhoauth']->request('POST', $app['tmhoauth']->url('1/statuses/update'), array(
+              'status' => $_tweet
+            ));
+        }
+    }
+}
 
 return $console;

@@ -2,7 +2,7 @@
 $app['races'] = array(
     'tjv2013' => array(
         'id'                 => 'tjv2013',
-        'hashtag'            => 'tjv2013',
+        'hashtag'            => 'TJV2013',
         'showTwailorHashtag' => false,
         'host'               => 'tjv2013.regadata.org',
         'ua'                 => 'UA-328215-6',
@@ -29,8 +29,18 @@ $app['races'] = array(
         'url_gmap'           => 'http://goo.gl/GjX18r', // https://maps.google.com/?q=http://tjv2013.regadata.org/kml/tjv2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/iqqyF0', // http://tjv2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/yU7dhP', // http://tjv2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => array(
+            'class40' => 'goo.gl/rHXxtC', // http://tjv2013.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'multi50' => 'goo.gl/OJQaY5', // http://tjv2013.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'imoca'   => 'goo.gl/WsL1on', // http://tjv2013.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'mod70'   => 'goo.gl/rckAEP', // http://tjv2013.regadata.org/fr/reports/latest?mode=mod70&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        ),
+        'tweetUrlEn'         => array(
+            'class40' => 'goo.gl/myqpFI', // http://tjv2013.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'multi50' => 'goo.gl/I7Y8eV', // http://tjv2013.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'imoca'   => 'goo.gl/aTkEjP', // http://tjv2013.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'mod70'   => 'goo.gl/BmvVtR', // http://tjv2013.regadata.org/en/reports/latest?mode=mod70&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        ),
         'xls_service'        => 'srv.tjv2013xls',
         'xls_service_class'  => 'Service\Xls\Tjv2013Xls',
         'showReportFooter'   => true,
