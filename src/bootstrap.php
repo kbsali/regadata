@@ -149,6 +149,7 @@ $app['srv.xls'] = $app->share(function($app) {
     return new $app['race']['xls_service_class'](
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
+        $app['config']['geoJsonDir'],
         $app['config']['kmlDir'],
         $app['repo.report'],
         $app['misc'],

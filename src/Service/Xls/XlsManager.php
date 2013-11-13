@@ -4,9 +4,9 @@ namespace Service\Xls;
 
 abstract class XlsManager
 {
-    public $xlsDir, $jsonDir, $kmlDir, $_report, $_sails, $_misc, $race;
+    public $xlsDir, $jsonDir, $geoJsonDir, $kmlDir, $_report, $_sails, $_misc, $race;
 
-    public function __construct($xlsDir, $jsonDir, $kmlDir, $_report, $_misc, $race, $_sails)
+    public function __construct($xlsDir, $jsonDir, $geoJsonDir, $kmlDir, $_report, $_misc, $race, $_sails)
     {
         $root = __DIR__.'/../../..';
         $this->_report = $_report;
@@ -27,6 +27,12 @@ abstract class XlsManager
         if (!is_dir($this->jsonDir.'/sail')) {
             if (!mkdir($this->jsonDir.'/sail', 0777, true)) {
                 throw new \Exception('Could not create dir '.$this->jsonDir.'/sail');
+            }
+        }
+        $this->geoJsonDir = $root.$geoJsonDir.'/'.$this->race['id'];
+        if (!is_dir($this->geoJsonDir.'/sail')) {
+            if (!mkdir($this->geoJsonDir.'/sail', 0777, true)) {
+                throw new \Exception('Could not create dir '.$this->geoJsonDir.'/sail');
             }
         }
         $this->kmlDir = $root.$kmlDir.'/'.$this->race['id'];
@@ -73,7 +79,7 @@ abstract class XlsManager
     public function mongo2json($force = false)
     {
         $reportIds = $this->_report->getAllBy('id');
-        $master    = $total = $yesterday = array();
+        $master = $total = $yesterday = array();
 
         foreach ($reportIds as $reportId) {
             $f = $this->jsonDir.'/reports/'.$reportId.'.json';
@@ -90,10 +96,70 @@ abstract class XlsManager
                 file_put_contents($f, json_encode($daily));
             }
         }
+        $this->export2geojson($master);
         $this->export2json($master);
         $this->export2kml($master);
     }
 
+    public function export2geojson(array $arr = array())
+    {
+
+        foreach ($arr as $sail => $partial) {
+            ksort($partial);
+            $latest = end($partial);
+            $tmp = array();
+            foreach ($partial as $ts => $wp) {
+                $tmp[] = array(
+                    $wp['lon_dec'],
+                    $wp['lat_dec'],
+                );
+            }
+            $geojson = array(
+                'type' => 'FeatureCollection',
+                'features' => array(
+                    array(
+                        'type' => 'Feature',
+                        'geometry' => array(
+                            'type' => 'LineString',
+                            'coordinates' => $tmp
+                        ),
+                        'properties' => array(
+                            'popupContent' => $latest['skipper'],
+                            'style' => array(
+                                'weight' => 2,
+                                'color' => '#999',
+                                'opacity' => 1,
+                                'fillColor' => '#B0DE5C',
+                                'fillOpacity' => 0.8
+                            )
+                        ),
+                    ),
+                    array(
+                        'type' => 'Feature',
+                        'geometry' => array(
+                            'type' => 'Point',
+                            'coordinates' => array(
+                                $latest['lon_dec'],
+                                $latest['lat_dec'],
+                            )
+                        ),
+                        'properties' => array(
+                            'popupContent' => $latest['skipper'],
+                            'style' => array(
+                                'weight' => 2,
+                                'color' => '#999',
+                                'opacity' => 1,
+                                'fillColor' => '#B0DE5C',
+                                'fillOpacity' => 0.8
+                            )
+                        ),
+                    ),
+                ),
+            );
+            echo ' saving '.$sail.' data to '.$this->geoJsonDir.'/sail/'.$sail.'.geojson'.PHP_EOL;
+            file_put_contents($this->geoJsonDir.'/sail/'.$sail.'.geojson', json_encode($geojson));
+        }
+    }
     public function export2json(array $arr = array())
     {
         foreach ($arr as $sail => $partial) {
