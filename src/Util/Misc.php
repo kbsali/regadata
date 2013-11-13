@@ -11,22 +11,26 @@ class Misc
         $this->skippers = $skippers;
     }
 
-    public function getTwitter($skipper, $noAt = false)
+    public function getTwitter($id, $noAt = false, $allowAltnerative = true)
     {
-        if (!isset($this->skippers[$skipper])) {
+        if (!isset($this->skippers[$id])) {
             return false;
         }
-        if (isset($this->skippers[$skipper]['twitter']) && !empty($this->skippers[$skipper]['twitter'])) {
-            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter'];
+        $skipper = $this->skippers[$id];
+        if (isset($this->skippers[$id]['twitter']) && !empty($this->skippers[$id]['twitter'])) {
+            return ($noAt ? '' : '@').$this->skippers[$id]['twitter'];
         }
-        if (isset($this->skippers[$skipper]['twitter_skipper1']) && !empty($this->skippers[$skipper]['twitter_skipper1'])) {
-            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_skipper1'];
+        if (isset($this->skippers[$id]['twitter_skipper1']) && !empty($this->skippers[$id]['twitter_skipper1'])) {
+            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_skipper1'];
         }
-        if (isset($this->skippers[$skipper]['twitter_skipper2']) && !empty($this->skippers[$skipper]['twitter_skipper2'])) {
-            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_skipper2'];
+        if (isset($this->skippers[$id]['twitter_skipper2']) && !empty($this->skippers[$id]['twitter_skipper2'])) {
+            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_skipper2'];
         }
-        if (isset($this->skippers[$skipper]['twitter_sponsor']) && !empty($this->skippers[$skipper]['twitter_sponsor'])) {
-            return ($noAt ? '' : '@').$this->skippers[$skipper]['twitter_sponsor'];
+        if (isset($this->skippers[$id]['twitter_sponsor']) && !empty($this->skippers[$id]['twitter_sponsor'])) {
+            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_sponsor'];
+        }
+        if (true === $allowAltnerative && isset($this->skippers[$id]['boat']) && !empty($this->skippers[$id]['boat'])) {
+            return $this->skippers[$id]['boat'];
         }
 
         return false;
