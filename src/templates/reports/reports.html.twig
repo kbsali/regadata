@@ -7,7 +7,7 @@
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
             <div class="table-responsive">
-            <table class="table table-condensed table-bordered table-hover table-striped" id="report">
+            <table class="table table-condensed table-bordered table-hover table-striped report">
                 <caption>{{ 'Ranking : %date%'|trans({'%date%': ts|date}) }}</caption>
                 <thead>
                     <tr class="{{ full ? '' : ' hidden-inline-xs hidden-inline-sm' }}">
