@@ -83,8 +83,14 @@ $app['races'] = array(
         'url_gmap'           => 'http://goo.gl/PJpyA0', // https://maps.google.com/?q=http://mini2013.regadata.org/kml/mini2013/trace_FULL.kmz
         'parser'             => 'geovoile',
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/t1zp9L', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/aHv5cw', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => array(
+            'proto' => 'goo.gl/3gRbFk', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr?mode=proto
+            'serie' => 'goo.gl/G2Glis', // http://mini2013.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr?mode=serie
+        ),
+        'tweetUrlEn'         => array(
+            'proto' => 'goo.gl/bVAYhX', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en?mode=proto
+            'serie' => 'goo.gl/aaHJri', // http://mini2013.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en?mode=serie
+        ),
         'xls_service'        => 'srv.mini2013xls',
         'xls_service_class'  => 'Service\Xls\Mini2013Xls',
         'showReportFooter'   => true,
