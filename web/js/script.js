@@ -43,7 +43,7 @@ function showmap() {
         for (var i = 0; i < clmax.length; i++) {
             getMax(clmax[i]);
         }
-        showmap();
+        // showmap();
 
         // $('#modes a[href="'+window.location.hash+'"]').tab('show');
     });
