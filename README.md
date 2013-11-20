@@ -1,31 +1,30 @@
-VG2012 Race Data
-================
+Regadata - Open Race Data
+=========================
 
 This is a web application deticated to gather and present Regatta's Data. I first started this project for following the Vendée Globe 2012.
 It is composed of 4 main pages :
 
 * an "about" page explaining the reason why this project was started and the list of available reports (rankings + sail's analysis' pages),
 * a documentation page so developpers can easily build their own applications on top of the available Race Data,
-* ranking pages (directly coming from the generated json files) giving a detailled overview of the ranking,
-* sail's pages (directly coming from the generated json files) giving a detailed view about the selected sail (including graphs showing the evolution of the boat) + a comparison option allowing the user to compare 2 boats' evolution over the course of the race.
+* ranking pages giving a detailled overview of the ranking,
+* sail's pages giving a detailed view about the selected sail (including graphs showing the evolution of the boat) + a comparison option allowing the user to compare 2 boats' evolution over the course of the race.
 
 The data is stored in MongDb and then converted to different formats :
 * json
+* geojson
 * kml
-* (todo) georss
-* (todo) geojson
 
 It also comes with a set of command line commands to :
 
 * download official ranking' spreadsheet in XLS format
-* convert those XLS files into JSON + KML files
+* convert those XLS files into JSON + GEOJSON + KML files
 * automatically tweet about the latest ranking
 
 Install
 -------
 
 ```
-wget https://bitbucket.org/kbsali/vg2012/composer.json
+wget https://github.com/kbsali/regadata/composer.json
 composer install
 ```
 
@@ -55,6 +54,7 @@ Prepare New Regatta
 
 * Prepare csv with full list of skippers/boats + import to mongodb
  *  `src/init/XXX-20XX.csv`
+  * Random color generator : =DEC2HEX(RANDBETWEEN(0, 16^6), 6)
  *  `mongoimport -d regatta -c XXX20XX_sails --type csv --file src/init/XXX-20XX.csv --headerline --drop`
 * Add race details
  *  `src/races.php`
