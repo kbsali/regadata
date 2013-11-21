@@ -41,7 +41,8 @@
 
     {% if assets_local == true %}
         <link rel="stylesheet" href="/vendor/bootstrap/dist/css/bootstrap.css">
-        <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css">
+        {# <link rel="stylesheet" href="/vendor/font-awesome/css/font-awesome.css"> #}
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css">
         {#
         <link rel="stylesheet" href="/css/bootstrap.no-icons.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.0/css/font-awesome.css">
@@ -57,7 +58,7 @@
         <script src="/js/html5.js"></script>
         <![endif]-->
     {% else %}
-        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css">
         {#
         <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap.no-icons.min.css">
@@ -79,6 +80,9 @@
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
 </head>
 <body id="{{ bodyId }}">
+    <a href="https://github.com/kbsali/regadata" class="visible-lg">
+        <img style="position:absolute;top:51px;right:0;border:;" src="//s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
+    </a>
     {% set active = active|default(null) %}
     {% include '_menu.html.twig' with { 'active': active } %}
     <div class="container" id="main">

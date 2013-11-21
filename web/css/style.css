@@ -10,6 +10,7 @@ body#high {
 
 body#normal .container {
     max-width: 100%;
+    width: 100%;
 }
 
 /* http://stackoverflow.com/a/14258496 */

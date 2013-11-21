@@ -1,14 +1,12 @@
 * -DONE- sitemap
- * -DONE- ping services
  * gzip files
  * config routes' freq/priority in config file?
- * Centralize config skippers
-  * color
-  * twitter
-  * picture?
+* Centralize config skippers
+ * color
+ * twitter
+ * picture?
  * gather all social media info (twitter, facebook, youtube, dailymotion, etc...) for skippers/sponsors
   * implement a sipmlement backoffice of easy maintenance
-* -DONE- ini file to php
 * openStreetMap rather than Google Maps (options to switch?)
  * -IN PROGRESS- routes as geoJson
 * refactor
@@ -20,10 +18,6 @@
  * translation files (base translation file to cover most of the translation strings)
  * translation : use generic translation keys rather than raw text in templates
 * New page : skipper table (all the positions in a nice table)
-* -DONE- Mongo
-* -DONE- integrate ladybug (create a provider for it?)
-* -DONE- add support for modes/classes
-
 * translate to spanish?
 
 v2

@@ -21,7 +21,7 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap": "~3.0.0",
+    "bootstrap": "~3.0.2",
     "font-awesome": "~3.2.1",
     "flot": "~0.8.1",
     "jquery.easy-pie-chart": "~2.0.3"
