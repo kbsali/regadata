@@ -1,5 +1,49 @@
 <?php
 $app['races'] = array(
+    'vor2014-1' => array(
+        'id'                 => 'vor2014-1',
+        'subid'              => 'vor2014',
+        'hashtag'            => 'VolvoOceanRace',
+        'showTwailorHashtag' => false,
+        'host'               => 'vor2014-leg1.regadata.org',
+        'ua'                 => 'UA-328215-6',
+        'leg' => array(
+            1 => array(
+                'departure'      => 'Alicate',
+                'departure_lat'  => '38.345278',
+                'departure_lon'  => '-0.483056',
+                'arrival'        => 'Cape Town',
+                'arrival_lat'    => '-33.925278',
+                'arrival_lon'    => '18.423889',
+                'start_date'     => 'saturday 11 october 2014 13:00',
+                'total_distance' => '6487',
+                'url_json'       => 'http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG1_2014.json',
+            ),
+        ),
+        'departure'          => 'Alicate',
+        'departure_lat'      => '38.345278',
+        'departure_lon'      => '-0.483056',
+        'arrival'            => 'Cape Town',
+        'arrival_lat'        => '-33.925278',
+        'arrival_lon'        => '18.423889',
+        'start_date'         => 'saturday 11 october 2014 13:00',
+        'total_distance'     => '6487',
+        'url_json'           => 'http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG1_2014.json',
+        'url_map'            => 'http://www.volvooceanrace.com/en/dashboard.html',
+        'url_gmap'           => 'http://goo.gl/d9OfuS', // https://maps.google.com/?q=http://vor2014-1.regadata.org/kml/vor2014-1/trace_FULL.kmz
+        'type'               => 'race',
+        'tweetUrlFr'         => 'goo.gl/rdDN7X', // http://vor2014-1.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/Rw2bNj', // http://vor2014-1.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'xls_service'        => 'srv.vor2014json',
+        'xls_service_class'  => 'Service\Xls\Vor2014Json',
+        'showReportFooter'   => true,
+        'modes'              => false,
+        'menu'               => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => false,
+        ),
+    ),
     'tjv2013' => array(
         'id'                 => 'tjv2013',
         'hashtag'            => 'TJV2013',

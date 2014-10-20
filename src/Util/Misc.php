@@ -11,6 +11,22 @@ class Misc
         $this->skippers = $skippers;
     }
 
+    public function getSkipper($id)
+    {
+        if (!isset($this->skippers[$id])) {
+            return false;
+        }
+        return $this->skippers[$id]['skipper'];
+    }
+
+    public function getBoat($id)
+    {
+        if (!isset($this->skippers[$id])) {
+            return false;
+        }
+        return $this->skippers[$id]['boat'];
+    }
+
     public function getTwitter($id, $noAt = false, $allowAltnerative = true)
     {
         if (!isset($this->skippers[$id])) {

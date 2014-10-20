@@ -57,6 +57,19 @@ $console
 ;
 
 $console
+    ->register('regadata:vor:dl')
+    ->setDescription('Downloads the json file from volvooceanrace.com')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+
+        $app->setRace($input->getArgument('race'));
+        $app['srv.json']->downloadAndParse();
+
+        $output->writeln('<info>Done</info>');
+    })
+;
+
+$console
     ->register('regadata:convert')
     ->setDescription('Exports xls files to mongo')
     ->addOption('file', null, InputOption::VALUE_OPTIONAL, 'To import a specific file')

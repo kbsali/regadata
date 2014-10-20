@@ -41,9 +41,9 @@ class MyApp extends Silex\Application
             throw new \Exception('Race not defined');
             // die('Race no defined');
         }
-        $this['repo.report']->setRace($raceId);
-        $this['repo.sail']->setRace($raceId);
         $this['race'] = $this['races'][$raceId];
+        $this['repo.report']->setRace($raceId);
+        $this['repo.sail']->setRace(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId);
 
         $this['sk'] = $this['repo.sail']->findBy('sail');
         $this['misc'] = $this->share(function($this) {
@@ -54,8 +54,8 @@ class MyApp extends Silex\Application
 
         $this['translator'] = $this->share($this->extend('translator', function($translator, $this) {
             $translator->addLoader('yaml', new YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_en.yml', 'en');
-            $translator->addResource('yaml', __DIR__.'/locales/'.$this['race']['id'].'_fr.yml', 'fr');
+            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId).'_en.yml', 'en');
+            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId).'_fr.yml', 'fr');
 
             return $translator;
         }));
@@ -142,6 +142,19 @@ $app['srv.vg'] = $app->share(function($app) {
         $app['config']['docRoot'],
         $app['config']['jsonDir'],
         $app['repo.report']
+    );
+});
+
+$app['srv.json'] = $app->share(function($app) {
+    return new $app['race']['xls_service_class'](
+        $app['config']['xlsDir'],
+        $app['config']['jsonDir'],
+        $app['config']['geoJsonDir'],
+        $app['config']['kmlDir'],
+        $app['repo.report'],
+        $app['misc'],
+        $app['race'],
+        $app['repo.sail']
     );
 });
 
