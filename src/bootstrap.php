@@ -54,8 +54,8 @@ class MyApp extends Silex\Application
 
         $this['translator'] = $this->share($this->extend('translator', function($translator, $this) {
             $translator->addLoader('yaml', new YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId).'_en.yml', 'en');
-            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId).'_fr.yml', 'fr');
+            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $this['race']['id']).'_en.yml', 'en');
+            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $this['race']['id']).'_fr.yml', 'fr');
 
             return $translator;
         }));

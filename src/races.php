@@ -30,10 +30,10 @@ $app['races'] = array(
         'total_distance'     => '6487',
         'url_json'           => 'http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG1_2014.json',
         'url_map'            => 'http://www.volvooceanrace.com/en/dashboard.html',
-        'url_gmap'           => 'http://goo.gl/d9OfuS', // https://maps.google.com/?q=http://vor2014-1.regadata.org/kml/vor2014-1/trace_FULL.kmz
+        'url_gmap'           => 'http://goo.gl/zrO4cK', // https://maps.google.com/?q=http://vor2014-leg1.regadata.org/kml/vor2014-1/trace_FULL.kmz
         'type'               => 'race',
-        'tweetUrlFr'         => 'goo.gl/rdDN7X', // http://vor2014-1.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-        'tweetUrlEn'         => 'goo.gl/Rw2bNj', // http://vor2014-1.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'tweetUrlFr'         => 'goo.gl/xnSqIE', // http://vor2014-leg1.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/yPyxn8', // http://vor2014-leg1.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         'xls_service'        => 'srv.vor2014json',
         'xls_service_class'  => 'Service\Xls\Vor2014Json',
         'showReportFooter'   => true,
