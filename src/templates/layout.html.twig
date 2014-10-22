@@ -7,7 +7,7 @@
 <html class="no-js" lang="{{ app.request.locale }}" itemscope itemtype="http://schema.org/WebPage" prefix="og: http://ogp.me/ns#">
 <head>
     <meta charset="utf-8">
-    <title>{{ title }} | {{ '#VG2012 - OpenData'|trans }}</title>
+    <title>{{ title }} | {{ 'meta_title'|trans }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     {#
@@ -23,9 +23,9 @@
     <link rel="index" href="http://{{ race.host }}/">
     <meta itemprop="image" content="http://{{ race.host }}/img/logo.png">
 
-    <meta property="og:title" content="{{ title }} | {{ '#VG2012 - OpenData'|trans }}">
+    <meta property="og:title" content="{{ title }} | {{ 'meta_title'|trans }}">
     <meta property="og:type" content="website">
-    <meta property="og:site_name" content="{{ '#VG2012 - OpenData'|trans }}">
+    <meta property="og:site_name" content="{{ 'meta_title'|trans }}">
     <meta property="og:url" content="http://{{ race.host }}{{ app.request.getRequestURI() }}">
     <meta property="og:description" content="{{ extra_meta }} - {{ 'meta_description'|trans }}">
     <meta property="og:image" content="http://{{ race.host }}/img/logo.png">
