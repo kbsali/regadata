@@ -90,7 +90,7 @@ class Vor2014Json extends XlsManager
                     'lon_dec' => $r['longitude'],
 
                     'dtf'      => $r['dtf'],
-                    'dtl_diff' => $r['dtlc'],
+                    'dtl_diff' => (int) $r['dtlc'],
                     // 'dtl'      => 0,
 
                     'total_distance' => $this->race['total_distance'] - $r['dtf'],
