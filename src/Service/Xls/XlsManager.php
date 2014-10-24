@@ -76,12 +76,15 @@ abstract class XlsManager
         ));
     }
 
-    public function mongo2json($force = false)
+    public function mongo2json($force = false, $by = 'id')
     {
-        $reportIds = $this->_report->getAllBy('id');
+        $reportIds = $this->_report->getAllBy($by);
+        ksort($reportIds);
         $master = $total = $yesterday = array();
 
-        foreach ($reportIds as $reportId) {
+        // foreach ($reportIds as $reportId) {
+        foreach ($reportIds as $ts) {
+            $reportId = date('Ymd-Hi', $ts);
             $f = $this->jsonDir.'/reports/'.$reportId.'.json';
             $reports = $this->_report->findBy(null, array('id' => $reportId));
             $daily = array();

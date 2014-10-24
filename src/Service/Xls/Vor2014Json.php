@@ -115,7 +115,7 @@ class Vor2014Json extends XlsManager
         // update dtl for each report
         foreach ($row as $ts => $reports) {
             foreach ($reports as $legstanding => $report) {
-                if(1 !== $legstanding) {
+                if(1 !== $legstanding && isset($reports[1]['dtf'])) {
                     $report['dtl'] = (float) $report['dtf'] - (float) $reports[1]['dtf'];
                 }
                 try {

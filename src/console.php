@@ -97,7 +97,7 @@ $console
         $app->setRace($input->getArgument('race'));
 
         $app['srv.xls']->mongo2json(
-            $input->getOption('force')
+            $input->getOption('force'), 'timestamp'
         );
     })
 ;
