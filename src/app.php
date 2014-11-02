@@ -92,6 +92,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
     } else {
         if (false !== $app['race']['modes']) {
             $report = $app['repo.report']->findBy(null, array('id' => $id));
+            $tmp = [];
             foreach ($report as $r) {
                 $tmp[ $r['class'] ][ (string) $r['_id'] ] = $r;
             }

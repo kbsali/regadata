@@ -1,5 +1,59 @@
 <?php
 $app['races'] = array(
+    'rdr2014' => array(
+        'id'                 => 'rdr2014',
+        'hashtag'            => 'RDR2014',
+        'showTwailorHashtag' => false,
+        'host'               => 'rdr2014.regadata.org',
+        'domain'             => 'regadata.org',
+        'ua'                 => 'UA-328215-6',
+
+        'departure'          => 'St-Malo',
+        'departure_lat'      => '48.6481',
+        'departure_lon'      => '-2.0075',
+
+        'arrival'            => 'Pointe-à-Pitre',
+        'arrival_lat'        => '16.2411',
+        'arrival_lon'        => '-61.5331',
+
+        'total_distance'     => '3542',
+
+        'start_date'         => 'sunday 2 november 2014 14:00',
+        'url_xls'            => 'http://www.routedurhum.com/fr/s11_classements/s11p04_get_xls.php?no_classement=%file%',
+        'url_map'            => 'http://www.routedurhum.com/en/s02_corporate/s02p08_cartographie.php',
+        'url_gmap'           => 'http://goo.gl/PqNO8X', // https://maps.google.com/?q=http://rdr2014.regadata.org/kml/rdr2014/trace_FULL.kmz
+        'parser'             => 'geovoile',
+        'type'               => 'race',
+        'tweetUrlFr'         => array(
+            'ultime'  => 'goo.gl/roRUFp', // http://rdr2014.regadata.org/fr/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'imoca'   => 'goo.gl/CLEpAk', // http://rdr2014.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'multi50' => 'goo.gl/SQFnUW', // http://rdr2014.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'class40' => 'goo.gl/3PpH4l', // http://rdr2014.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'rhum'    => 'goo.gl/CjsIbm', // http://rdr2014.regadata.org/fr/reports/latest?mode=rhum&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        ),
+        'tweetUrlEn'         => array(
+            'ultime'  => 'goo.gl/5IFzzJ', // http://rdr2014.regadata.org/en/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'imoca'   => 'goo.gl/rI3UET', // http://rdr2014.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'multi50' => 'goo.gl/AtkiSn', // http://rdr2014.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'class40' => 'goo.gl/URpHxW', // http://rdr2014.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'rhum'    => 'goo.gl/EOKCYg', // http://rdr2014.regadata.org/en/reports/latest?mode=rhum&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        ),
+        'xls_service'        => 'srv.rdr2014xls',
+        'xls_service_class'  => 'Service\Xls\Rdr2014Xls',
+        'showReportFooter'   => true,
+        'modes'              => array(
+            'ultime'  => 'Ultime',
+            'imoca'   => 'IMOCA',
+            'multi50' => 'Multi 50',
+            'class40' => 'Class 40',
+            'rhum'    => 'Rhum',
+        ),
+        'menu'               => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => false,
+        ),
+    ),
     'vor2014-1' => array(
         'id'                 => 'vor2014-1',
         'subid'              => 'vor2014',
