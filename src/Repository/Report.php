@@ -6,7 +6,7 @@ class Report
 {
     private $mongo, $_db, $_col, $raceId;
 
-   public function __construct($mongo, $race = null)
+    public function __construct($mongo, $race = null)
     {
         $this->mongo = $mongo;
         $this->_db = $this->mongo->regatta;
