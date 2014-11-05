@@ -184,6 +184,9 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
 
     protected function _getDate($data)
     {
+        if(isset($this->ts)) {
+            return;
+        }
         if (false === strpos($data[0], 'Date retenue pour')) {
             return false;
         }
