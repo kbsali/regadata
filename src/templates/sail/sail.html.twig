@@ -116,7 +116,7 @@
                     <ul class="dropdown-menu" role="menu">
                         {% for skipper in sk %}
                         {% if race.modes %}
-                            {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
+                            {% if infos[0].info.class|upper == skipper.class|upper and infos[0].info.sail|upper != skipper.sail|upper %}
                             <li>
                                 <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                             {% endif %}
