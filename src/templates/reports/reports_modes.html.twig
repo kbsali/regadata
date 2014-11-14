@@ -4,10 +4,13 @@
 {% set extra_meta = 'General ranking %date%'|trans({'%date%': ts|date}) %}
 
 {% block container_content %}
+
             <br>
             <ul class="nav nav-tabs" id="modes">
             {% for mode_k, mode_v in modes %}
-                <li{% if mode == mode_k %} class="active"{% endif %}><a data-toggle="tab" href="#{{ mode_k }}">{{ mode_v }}</a></li>
+                {% if report[mode_k] is defined %}
+                    <li{% if mode == mode_k %} class="active"{% endif %}><a data-toggle="tab" href="#{{ mode_k }}">{{ mode_v }}</a></li>
+                {% endif %}
             {% endfor %}
             </ul>
 
@@ -61,6 +64,7 @@
                 </thead>
                 <tbody>
                     {% set dtp = 0 %}
+                    {% if report[mode_k] is defined %}
                     {% for r in report[mode_k] %}
                         {% set class1 = 'label-info' %}
                         {% set class2 = 'icon-circle-arrow-right' %}
@@ -112,9 +116,10 @@
                         {% set dtp = r['dtl'] %}
                     </tr>
                     {% endfor %}
+                    {% endif %}
                 </tbody>
             </table>
-            </div>{# /.table-responsive #}
+            </div>
 
             {% include '_pagination.html.twig' with { 'p': pagination, 'mode': mode_k } %}
 
@@ -128,9 +133,9 @@
                 </li>
             </ul>
 
-        </div>{# /.tab-pane #}
+        </div>
         {% endfor %}
-        </div>{# /.tab-content #}
+        </div>
 
             {% if race.showReportFooter == true %}
             <p class="tooltips">
@@ -142,4 +147,5 @@
                 * {{ 'Bold numbers are the greatest values of the report'|trans }}
             </p>
             {% endif %}
+
 {% endblock %}

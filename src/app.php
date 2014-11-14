@@ -107,16 +107,19 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         $tpl = 'reports/reports_modes.html.twig';
     }
 
-    $mode = false;
+    $activeMode = false;
     if (is_array($app['race']['modes'])) {
-        $tmp = array_keys($app['race']['modes']);
-        $mode = $tmp[0];
+        foreach ($app['race']['modes'] as $key => $value) {
+            if (isset($report[$key])) {
+                $activeMode = $key;
+                break;
+            }
+        }
     }
-
     return $app['twig']->render($tpl, array(
         'ts'         => $ts,
         'modes'      => $app['race']['modes'],
-        'mode'       => $request->get('mode', $mode), // is_array($app['race']['modes']) ? array_keys($app['race']['modes'])[0] : false),
+        'mode'       => $request->get('mode', $activeMode), // is_array($app['race']['modes']) ? array_keys($app['race']['modes'])[0] : false),
         'report'     => $report,
         'report_id'  => $id,
         'start_date' => strtotime($app['race']['start_date']),

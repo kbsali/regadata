@@ -46,11 +46,16 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
                     'rhum'    => 4,
                 );
                 $this->ts = null;
+                $tmpClass = null;
                 foreach ($sheets as $class => $sheetId) {
                     $data = new \SpreadsheetReader_XLS($xlsx, array('sheet' => $sheetId));
                     foreach ($data as $idx => $row) {
                         if((int) $idx < 5) {
                             continue;
+                        }
+                        if (null === $tmpClass || $tmpClass !== $class) {
+                            $this->ts = null;
+                            $tmpClass = $class;
                         }
                         $this->_getDate($row);
                         if (null === $this->ts) {
