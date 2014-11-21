@@ -18,7 +18,7 @@ $app['races'] = array(
 
         'total_distance'     => '3542',
 
-        'start_date'         => 'sunday 2 november 2014 14:00',
+        'start_date'         => 'sunday 2 november 2014 14:00 +0100',
         'url_xls'            => 'http://www.routedurhum.com/fr/s11_classements/s11p04_get_xls.php?no_classement=%file%',
         'url_map'            => 'http://www.routedurhum.com/en/s02_corporate/s02p08_cartographie.php',
         'url_gmap'           => 'http://goo.gl/PqNO8X', // https://maps.google.com/?q=http://rdr2014.regadata.org/kml/rdr2014/trace_FULL.kmz
@@ -48,6 +48,51 @@ $app['races'] = array(
             'class40' => 'Class 40',
             'rhum'    => 'Rhum',
         ),
+        'menu'               => array(
+            'map'           => true,
+            'documentation' => true,
+            'about'         => false,
+        ),
+    ),
+    'vor2014-2' => array(
+        'id'                 => 'vor2014-2',
+        'subid'              => 'vor2014',
+        'hashtag'            => 'VolvoOceanRace',
+        'showTwailorHashtag' => false,
+        'host'               => 'vor2014-leg2.regadata.org',
+        'domain'             => 'regadata.org',
+        'ua'                 => 'UA-328215-6',
+        'leg' => array(
+            1 => array(
+                'departure'      => 'Cape Town',
+                'departure_lat'  => '-33.925278',
+                'departure_lon'  => '18.423889',
+                'arrival'        => 'Abu Dhabi',
+                'arrival_lat'    => '24.466667',
+                'arrival_lon'    => '54.366667',
+                'start_date'     => 'saturday 11 october 2014 13:00',
+                'total_distance' => '6487',
+                'url_json'       => 'http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG2_2014.json',
+            ),
+        ),
+        'departure'          => 'Alicate',
+        'departure_lat'      => '38.345278',
+        'departure_lon'      => '-0.483056',
+        'arrival'            => 'Cape Town',
+        'arrival_lat'        => '-33.925278',
+        'arrival_lon'        => '18.423889',
+        'start_date'         => 'saturday 11 october 2014 13:00',
+        'total_distance'     => '6487',
+        'url_json'           => 'http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG2_2014.json',
+        'url_map'            => 'http://www.volvooceanrace.com/en/dashboard.html',
+        'url_gmap'           => 'http://goo.gl/f1YNqa', // https://maps.google.com/?q=http://vor2014-leg1.regadata.org/kml/vor2014-1/trace_FULL.kmz
+        'type'               => 'race',
+        'tweetUrlFr'         => 'goo.gl/mT927u', // http://vor2014-leg2.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        'tweetUrlEn'         => 'goo.gl/KOIYp3', // http://vor2014-leg2.regadata.org/en/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        'xls_service'        => 'srv.vor2014json',
+        'xls_service_class'  => 'Service\Xls\Vor2014Json',
+        'showReportFooter'   => true,
+        'modes'              => false,
         'menu'               => array(
             'map'           => true,
             'documentation' => true,

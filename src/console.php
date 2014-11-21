@@ -63,7 +63,7 @@ $console
     ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
 
         $app->setRace($input->getArgument('race'));
-        $app['srv.json']->downloadAndParse();
+        $app['srv.json']->downloadAndParse($input->getArgument('race'));
 
         $output->writeln('<info>Done</info>');
     })

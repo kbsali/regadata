@@ -161,7 +161,6 @@ $app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
     if (0 === count($infos)) {
         return new Response('No report yet', 404);
     }
-
     return $app['twig']->render('sail/sail.html.twig', array(
         'infos' => $infos,
     ));

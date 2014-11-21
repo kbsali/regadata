@@ -4,11 +4,15 @@ namespace Service\Xls;
 
 class Vor2014Json extends XlsManager
 {
-    public function downloadAndParse($force = true)
+    public function downloadAndParse($race, $force = true)
     {
-        $file = $this->xlsDir.'/VOLVO_WEB_LEG1_2014-'.date('Ymd-H00').'.json';
+        $races = [
+            'vor2014-1' => 'VOLVO_WEB_LEG1_2014',
+            'vor2014-2' => 'VOLVO_WEB_LEG2_2014',
+        ];
+        $file = $this->xlsDir.'/'.$races[$race].'-'.date('Ymd-H00').'.json';
         if(!file_exists($file)) {
-            file_put_contents($file, file_get_contents('http://www.volvooceanrace.com/en/rdc/VOLVO_WEB_LEG1_2014.json'));
+            file_put_contents($file, file_get_contents('http://www.volvooceanrace.com/en/rdc/'.$races[$race].'.json'));
         }
         $tmp = json_decode(file_get_contents($file), true);
         /*
