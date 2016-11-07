@@ -114,21 +114,18 @@ class Report
 
     public function getAllBy($key, $reverse = false)
     {
-        $tmp = $this->_db
-            ->command(['distinct' => $this->col, 'key' => $key])
-        ;
+        $tmp = $this->_col->distinct($key);
         if ($reverse) {
-            rsort($tmp['values']);
+            rsort($tmp);
         }
 
-        return $tmp['values'];
+        return $tmp;
     }
 
     public function findBy($indexBy = null, array $arr = [], array $orderby = ['rank' => 1])
     {
         $tmp = $this->_col
-            ->find($arr)
-            ->sort($orderby)
+            ->find($arr, $orderby)
         ;
         if (null === $indexBy) {
             return iterator_to_array($tmp);
@@ -144,8 +141,7 @@ class Report
     public function getLastTs()
     {
         $report = $this->_col
-            ->find()
-            ->sort(['timestamp' => -1])
+            ->find([], ['timestamp' => -1])
             ->limit(1)
         ;
         $tmp = current(iterator_to_array($report));

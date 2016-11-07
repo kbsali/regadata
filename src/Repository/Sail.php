@@ -43,14 +43,12 @@ class Sail
 
     public function getAllBy($key, $reverse = false)
     {
-        $tmp = $this->_db
-            ->command(['distinct' => $this->col, 'key' => $key])
-        ;
+        $tmp = $this->_col->distinct($key);
         if ($reverse) {
-            rsort($tmp['values']);
+            rsort($tmp);
         }
 
-        return $tmp['values'];
+        return $tmp;
     }
 
     public function findBy($indexBy = null, array $arr = [], array $orderby = ['skipper' => 1])
