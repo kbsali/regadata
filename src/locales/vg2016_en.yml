@@ -1,4 +1,4 @@
-'meta_title': '#MINI2013 - OpenData'
+'meta_title':       '#VG2016 Open Data'
 'Home':             'Home'
 'About':            'About'
 'Boats':            'Boats'
@@ -77,9 +77,9 @@
 
 'Tweet':                    'Tweet'
 'Follow @VGRaceData':   'Follow @VGRaceData'
-'meta_description': 'Get the rankings of the Mini Transat 2013 and follow the progress of the sailors in an accessible way'
-'meta_keywords': 'Mini Transat 2013 #mini2013 !!!!!!!!!!!!!!!!!!!!'
-'Rankings and graphs of the <strong>Vendée Globe 2012</strong>': 'Rankings and graphs of the <strong>Mini Transat 2013</strong>'
+'meta_description': 'Get the rankings of the Vendée Globe 2016 and follow the progress of the sailors in an accessible way'
+'meta_keywords': 'Vendée Globe 2016 #vg2012 Didac Costa Jean Le Cam Yann Eliès Jean-Pierre Dick Eric Bellion Tanguy De Lamotte Thomas Ruyant Arnaud Boissières Sébastien Josse Armel Le Cléac’h Paul Meilhat Jérémie Beyou Bertrand De Broc Morgan Lagravière Kito De Pavant Louis Burton Fabrice Amedeo Sébastien Destremau Romain Attanasio Vincent Riou Stéphane Le Diraison Alex Thomson Nándor Fa Enda O’Coineen Kojiro Shiraishi Pieter Heerema Conrad Colman Alan Roura Rich Wilson'
+'Rankings and graphs of the <strong>Vendée Globe 2016</strong>': 'Rankings and graphs of the <strong>Vendée Globe 2016</strong>'
 'This data is extracted from non user friendly Excel files published by the regatta organizers and published in <strong><a href="http://www.json.org/"><abbr title="JavaScript Object Notation">JSON</abbr></a></strong> and <strong><a href="http://en.wikipedia.org/wiki/Keyhole_Markup_Language"><abbr title="Keyhole Markup Language">KML</abbr></a></strong> format, ready for you to use and consume. So go ahead and create new <strong>tables, graphs or maps</strong> to visualize and analyse all those regatta data in different ways!': 'This data is extracted from non user friendly Excel files published by the regatta organizers and published in <strong><a href="http://www.json.org/"><abbr title="JavaScript Object Notation">JSON</abbr></a></strong> and <strong><a href="http://en.wikipedia.org/wiki/Keyhole_Markup_Language"><abbr title="Keyhole Markup Language">KML</abbr></a></strong> format, ready for you to use and consume. So go ahead and create new <strong>tables, graphs or maps</strong> to visualize and analyse all those regatta data in different ways!'
 
 
@@ -91,7 +91,7 @@
 'See the report':                   'See the report'
 'Per ranking':                      'Per ranking'
 'All published rankings':           'All published rankings'
-"Let's open the data : VG 2012 Open Data!": "Let's open the data : MINI2013 Open Data!"
+"Let's open the data : VG 2016 Open Data!": "Let's open the data : VG 2016 Open Data!"
 'Random boat':                      'Random boat'
 'JSON Doc':                         'JSON Doc'
 
@@ -131,7 +131,7 @@
 'Full view':        'Full view'
 'Mobile view':      'Mobile view'
 
-'VG2012 rankings':  'MINI2013 rankings'
-'All the rankings of the Vendée Globe 2012': 'All the rankings of the Mini Transat 2013'
+'VG2012 rankings':  'VG2012 rankings'
+'All the rankings of the Vendée Globe 2016': 'All the rankings of the Vendée Globe 2016'
 
-'RSS feed for VG2012 rankings': 'RSS feed for MINI2013 rankings'
+'RSS feed for VG2012 rankings': 'RSS feed for VG2012 rankings'
