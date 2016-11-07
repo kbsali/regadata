@@ -1,22 +1,23 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
-
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Translation\Loader\YamlFileLoader;
-use Symfony\Component\HttpFoundation\Request;
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Silex\Provider\HttpCacheServiceProvider;
 use Silex\Provider\TranslationServiceProvider;
 use Silex\Provider\TwigServiceProvider;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Translation\Loader\YamlFileLoader;
 
 function _ldd($a)
 {
-    var_export($a);die(PHP_EOL.'---------------------'.PHP_EOL);
+    var_export($a);
+    die(PHP_EOL . '---------------------' . PHP_EOL);
 }
 function _ld($a)
 {
-    var_export($a);echo PHP_EOL.'---------------------'.PHP_EOL;
+    var_export($a);
+    echo PHP_EOL . '---------------------' . PHP_EOL;
 }
 
 class MyApp extends Silex\Application
@@ -46,20 +47,20 @@ class MyApp extends Silex\Application
         $this['repo.sail']->setRace(isset($this['race']['subid']) ? $this['race']['subid'] : $raceId);
 
         $this['sk'] = $this['repo.sail']->findBy('sail');
-        $this['misc'] = $this->share(function($this) {
+        $this['misc'] = $this->share(function ($app) {
             return new Util\Misc(
-                $this['sk']
+                $app['sk']
             );
         });
 
-        $this['translator'] = $this->share($this->extend('translator', function($translator, $this) {
+        $this['translator'] = $this->share($this->extend('translator', function ($translator, $app) {
             $translator->addLoader('yaml', new YamlFileLoader());
-            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $this['race']['id']).'_en.yml', 'en');
-            $translator->addResource('yaml', __DIR__.'/locales/'.(isset($this['race']['subid']) ? $this['race']['subid'] : $this['race']['id']).'_fr.yml', 'fr');
+            $translator->addResource('yaml', __DIR__ . '/locales/' . (isset($app['race']['subid']) ? $app['race']['subid'] : $app['race']['id']) . '_en.yml', 'en');
+            $translator->addResource('yaml', __DIR__ . '/locales/' . (isset($app['race']['subid']) ? $app['race']['subid'] : $app['race']['id']) . '_fr.yml', 'fr');
 
             return $translator;
         }));
-        $this['translator.domains'] = array();
+        $this['translator.domains'] = [];
     }
     // use Silex\Application\TwigTrait;
     // use Silex\Application\SecurityTrait;
@@ -70,27 +71,27 @@ class MyApp extends Silex\Application
     // use Silex\Application\TranslationTrait;
 }
 $app = new MyApp();
-require __DIR__.'/config.php';
-require __DIR__.'/races.php';
+require __DIR__ . '/config.php';
+require __DIR__ . '/races.php';
 
-$app['tmhoauth.config'] = array(
-    'consumer_key'    => $app['config']['consumer_key'],
+$app['tmhoauth.config'] = [
+    'consumer_key' => $app['config']['consumer_key'],
     'consumer_secret' => $app['config']['consumer_secret'],
-    'user_token'      => $app['config']['user_token'],
-    'user_secret'     => $app['config']['user_secret'],
-);
+    'user_token' => $app['config']['user_token'],
+    'user_secret' => $app['config']['user_secret'],
+];
 
 // --- Providers
 $app->register(new HttpCacheServiceProvider());
 $app->register(new TranslationServiceProvider());
 
-$app->register(new TwigServiceProvider(), array(
-    'twig.path'    => __DIR__.'/templates',
-    'twig.options' => array(
-        'cache'            => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
-        'strict_variables' => true
-    ),
-));
+$app->register(new TwigServiceProvider(), [
+    'twig.path' => __DIR__ . '/templates',
+    'twig.options' => [
+        'cache' => isset($app['twig.options.cache']) ? $app['twig.options.cache'] : false,
+        'strict_variables' => true,
+    ],
+]);
 
 $app->register(new Service\Provider\TmhOAuthServiceProvider());
 $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
@@ -105,18 +106,18 @@ $app['imagine'] = $app->share(function ($app) {
     return new $class();
 });
 
-$app['mongo'] = $app->share(function($app) {
-   return new \MongoClient('mongodb://'.$app['config']['mongoHost'].':'.$app['config']['mongoPort']);
+$app['mongo'] = $app->share(function ($app) {
+    return new \MongoDB\Client('mongodb://' . $app['config']['mongoHost'] . ':' . $app['config']['mongoPort']);
 });
 
-$app['repo.report'] = $app->share(function($app) {
+$app['repo.report'] = $app->share(function ($app) {
     return new Repository\Report($app['mongo']);
 });
-$app['repo.sail'] = $app->share(function($app) {
+$app['repo.sail'] = $app->share(function ($app) {
     return new Repository\Sail($app['mongo']);
 });
 
-$app['srv.sitemap'] = $app->share(function($app) {
+$app['srv.sitemap'] = $app->share(function ($app) {
     return new Service\Sitemap(
         $app['config'],
         $app['race'],
@@ -126,7 +127,7 @@ $app['srv.sitemap'] = $app->share(function($app) {
     );
 });
 
-$app['srv.rss'] = $app->share(function($app) {
+$app['srv.rss'] = $app->share(function ($app) {
     return new Service\Rss(
         $app['translator'],
         $app['url_generator'],
@@ -136,7 +137,7 @@ $app['srv.rss'] = $app->share(function($app) {
 
 $app['misc'] = new stdclass();
 
-$app['srv.vg'] = $app->share(function($app) {
+$app['srv.vg'] = $app->share(function ($app) {
     return new Service\Vg(
         $app['config']['xlsDir'],
         $app['config']['docRoot'],
@@ -145,7 +146,7 @@ $app['srv.vg'] = $app->share(function($app) {
     );
 });
 
-$app['srv.json'] = $app->share(function($app) {
+$app['srv.json'] = $app->share(function ($app) {
     return new $app['race']['xls_service_class'](
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
@@ -158,7 +159,7 @@ $app['srv.json'] = $app->share(function($app) {
     );
 });
 
-$app['srv.xls'] = $app->share(function($app) {
+$app['srv.xls'] = $app->share(function ($app) {
     return new $app['race']['xls_service_class'](
         $app['config']['xlsDir'],
         $app['config']['jsonDir'],
@@ -171,13 +172,13 @@ $app['srv.xls'] = $app->share(function($app) {
     );
 });
 
-$app['gvparser'] = $app->share(function($app) {
+$app['gvparser'] = $app->share(function ($app) {
     return new Service\GeovoileParser(
         $app['repo.report']
     );
 });
 
-$app['srv.geovoile'] = $app->share(function($app) {
+$app['srv.geovoile'] = $app->share(function ($app) {
     return new Service\Geovoile(
         $app['config']['xmlDir'],
         $app['config']['jsonDir'],
@@ -188,18 +189,17 @@ $app['srv.geovoile'] = $app->share(function($app) {
     );
 });
 // --- Before
-$app->before(function(Request $request) use ($app) {
-
+$app->before(function (Request $request) use ($app) {
     $app->setRace();
 
-    if (!in_array($request->getLocale(), array('en', 'fr'))) {
-        $u = $app['url_generator']->generate('_homepage', array('_locale' => 'en'));
+    if (!in_array($request->getLocale(), ['en', 'fr'], true)) {
+        $u = $app['url_generator']->generate('_homepage', ['_locale' => 'en']);
 
         return $app->redirect($u);
     }
 
-    putenv('LC_ALL='.$request->getLocale().'_'.strtoupper($request->getLocale()));
-    setlocale(LC_ALL, $request->getLocale().'_'.strtoupper($request->getLocale()));
+    putenv('LC_ALL=' . $request->getLocale() . '_' . strtoupper($request->getLocale()));
+    setlocale(LC_ALL, $request->getLocale() . '_' . strtoupper($request->getLocale()));
     if ('fr' === $request->getLocale()) {
         $app['twig']->getExtension('core')->setDateFormat('d/m/Y à H:i');
     }

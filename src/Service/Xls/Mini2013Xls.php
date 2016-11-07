@@ -10,12 +10,12 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
     {
         $html = file_get_contents('http://www.minitransat.fr/classement/historique');
         $s = '<a href="/classement/historique/doc/(.*?)">Télécharger</a>';
-        preg_match_all('|'.$s.'|s', $html, $matches);
+        preg_match_all('|' . $s . '|s', $html, $matches);
 
-        $ret = array();
+        $ret = [];
         foreach ($matches[1] as $xlsx) {
             // minitransat_20131030_090000
-            if (!file_exists($this->xlsDir.'/'.$xlsx)) {
+            if (!file_exists($this->xlsDir . '/' . $xlsx)) {
                 $ret[] = $xlsx;
             }
         }
@@ -25,21 +25,21 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../../Util/XLSXReader.php');
+        require __DIR__ . '/../../Util/XLSXReader.php';
 
         $this->boats = $this->_sails->findBy('id');
 
-        $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
+        $xlsxs = glob(null === $file ? $this->xlsDir . '/*' : $file);
         sort($xlsxs);
         $i = 0;
-        $total = $yesterday = array();
+        $total = $yesterday = [];
         foreach ($xlsxs as $xlsx) {
-            $i++;
+            ++$i;
             try {
-                echo $xlsx.PHP_EOL;
+                echo $xlsx . PHP_EOL;
                 $_xlsx = new \XLSXReader($xlsx);
-                $data  = $_xlsx->getSheetData('Proto');
-                $ts    = $this->_getDate($data);
+                $data = $_xlsx->getSheetData('Proto');
+                $ts = $this->_getDate($data);
                 foreach ($data as $row) {
                     $this->_getClass($row);
                     if (false === $r = $this->_cleanRow($row, $ts, $xlsx)) {
@@ -47,12 +47,12 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
                     }
                     $r['class'] = $this->class;
                     if (!isset($total[$r['sail']])) {
-                           $total[$r['sail']] = 0;
+                        $total[$r['sail']] = 0;
                     }
-                    $total[$r['sail']]     += $r['lastreport_distance'];
-                    $r['total_distance']   = $total[$r['sail']];
-                    $r['dtl_diff']         = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                    $r['color']            = $this->_misc->getColor($r['sail']);
+                    $total[$r['sail']] += $r['lastreport_distance'];
+                    $r['total_distance'] = $total[$r['sail']];
+                    $r['dtl_diff'] = isset($yesterday[$r['sail']]) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                    $r['color'] = $this->_misc->getColor($r['sail']);
                     $yesterday[$r['sail']] = $r;
                     try {
                         // print_r($this->_report->insert($r, $force));
@@ -70,7 +70,7 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
     private function _cleanRow($row, $ts, $file)
     {
         $rank = trim(trim($row[1], ' '));
-        if ('RET' == $rank) {
+        if ('RET' === $rank) {
             return false;
         } else {
             $rank = (int) $rank;
@@ -112,20 +112,20 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         )
          */
         $ret = $this->_report->schema();
-        $ret['rank']    = (int) $rank;
-        $boat           = str_replace(array('(', ')'), '', trim($row[2], ' '));
-        $ret['sail']    = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
+        $ret['rank'] = (int) $rank;
+        $boat = str_replace(['(', ')'], '', trim($row[2], ' '));
+        $ret['sail'] = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['sail'];
         $ret['skipper'] = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['skipper'];
-        $ret['boat']    = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['boat'];
+        $ret['boat'] = !isset($this->boats[ $boat ]) ? null : $this->boats[ $boat ]['boat'];
         $ret['country'] = substr($ret['sail'], 0, 3);
-        $ret['source']  = basename($file);
-        $ret['id']      = date('Ymd-Hi', $ts);
+        $ret['source'] = basename($file);
+        $ret['id'] = date('Ymd-Hi', $ts);
 
         $ret['lat_dms'] = trim($row[6]);
         $ret['lon_dms'] = trim($row[7]);
 
-        $ret['date']      = date('Y-m-d', $ts);
-        $ret['time']      = date('H:i', $ts);
+        $ret['date'] = date('Y-m-d', $ts);
+        $ret['time'] = date('H:i', $ts);
         $ret['timestamp'] = $ts;
 
         // ----------------------------
@@ -144,19 +144,19 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS($ret['lat_dms']));
         $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS($ret['lon_dms']));
 
-        $ret['1hour_heading']  = (int) trim($row[8]);
-        $ret['1hour_speed']    = (float) trim($row[9]);
-        $ret['1hour_vmg']      = (float) trim($row[10]);
+        $ret['1hour_heading'] = (int) trim($row[8]);
+        $ret['1hour_speed'] = (float) trim($row[9]);
+        $ret['1hour_vmg'] = (float) trim($row[10]);
         $ret['1hour_distance'] = (float) trim($row[11]);
 
-        $ret['lastreport_heading']  = (int) trim($row[12]);
-        $ret['lastreport_speed']    = (float) trim($row[13]);
-        $ret['lastreport_vmg']      = (float) trim($row[14]);
+        $ret['lastreport_heading'] = (int) trim($row[12]);
+        $ret['lastreport_speed'] = (float) trim($row[13]);
+        $ret['lastreport_vmg'] = (float) trim($row[14]);
         $ret['lastreport_distance'] = (float) trim($row[15]);
 
-        $ret['24hour_heading']  = (int) trim($row[16]);
-        $ret['24hour_speed']    = (float) trim($row[17]);
-        $ret['24hour_vmg']      = (float) trim($row[18]);
+        $ret['24hour_heading'] = (int) trim($row[16]);
+        $ret['24hour_speed'] = (float) trim($row[17]);
+        $ret['24hour_vmg'] = (float) trim($row[18]);
         $ret['24hour_distance'] = (float) trim($row[19]);
 
         $ret['dtf'] = (float) trim($row[20]);
@@ -178,9 +178,9 @@ class Mini2013Xls extends XlsManager implements XlsManagerInterface
         $date = $data[2][1];
         // Classement du 29/10/2013 à 12:00:00 FR
         $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) FR';
-        preg_match('|'.$s.'|s', $date, $match);
+        preg_match('|' . $s . '|s', $date, $match);
 
-        return strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
+        return strtotime($match[3] . '-' . $match[2] . '-' . $match[1] . ' ' . $match[4] . ' UTC');
         // $this->ts = strtotime($match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
     }
 }

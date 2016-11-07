@@ -6,7 +6,7 @@ class Misc
 {
     private $skippers;
 
-    public function __construct(array $skippers = array())
+    public function __construct(array $skippers = [])
     {
         $this->skippers = $skippers;
     }
@@ -16,6 +16,7 @@ class Misc
         if (!isset($this->skippers[$id])) {
             return false;
         }
+
         return $this->skippers[$id]['skipper'];
     }
 
@@ -24,6 +25,7 @@ class Misc
         if (!isset($this->skippers[$id])) {
             return false;
         }
+
         return $this->skippers[$id]['boat'];
     }
 
@@ -34,16 +36,16 @@ class Misc
         }
         $skipper = $this->skippers[$id];
         if (isset($this->skippers[$id]['twitter']) && !empty($this->skippers[$id]['twitter'])) {
-            return ($noAt ? '' : '@').$this->skippers[$id]['twitter'];
+            return ($noAt ? '' : '@') . $this->skippers[$id]['twitter'];
         }
         if (isset($this->skippers[$id]['twitter_skipper1']) && !empty($this->skippers[$id]['twitter_skipper1'])) {
-            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_skipper1'];
+            return ($noAt ? '' : '@') . $this->skippers[$id]['twitter_skipper1'];
         }
         if (isset($this->skippers[$id]['twitter_skipper2']) && !empty($this->skippers[$id]['twitter_skipper2'])) {
-            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_skipper2'];
+            return ($noAt ? '' : '@') . $this->skippers[$id]['twitter_skipper2'];
         }
         if (isset($this->skippers[$id]['twitter_sponsor']) && !empty($this->skippers[$id]['twitter_sponsor'])) {
-            return ($noAt ? '' : '@').$this->skippers[$id]['twitter_sponsor'];
+            return ($noAt ? '' : '@') . $this->skippers[$id]['twitter_sponsor'];
         }
         if (true === $allowAltnerative && isset($this->skippers[$id]['boat']) && !empty($this->skippers[$id]['boat'])) {
             return $this->skippers[$id]['boat'];
@@ -66,15 +68,15 @@ class Misc
 
     public static function sitemapPing($url, $debug = false)
     {
-        $pings = array(
+        $pings = [
             // 'http://submissions.ask.com/ping?sitemap=',
             'http://www.google.com/webmasters/sitemaps/ping?sitemap=',
-            'http://www.bing.com/webmaster/ping.aspx?siteMap='
-        );
+            'http://www.bing.com/webmaster/ping.aspx?siteMap=',
+        ];
         foreach ($pings as $ping) {
-            $cmd = 'wget -nv -O /dev/null "'.$ping.urlencode($url).'"';
+            $cmd = 'wget -nv -O /dev/null "' . $ping . urlencode($url) . '"';
             if ($debug) {
-                echo $cmd.PHP_EOL;
+                echo $cmd . PHP_EOL;
             } else {
                 system($cmd);
             }
@@ -83,9 +85,9 @@ class Misc
 
     public static function hexToRgb($color)
     {
-        $rgb = array();
-        for ($x=0;$x<3;$x++) {
-            $rgb[$x] = hexdec(substr($color, (2*$x), 2));
+        $rgb = [];
+        for ($x = 0; $x < 3; ++$x) {
+            $rgb[$x] = hexdec(substr($color, (2 * $x), 2));
         }
 
         return $rgb;
@@ -97,7 +99,7 @@ class Misc
         $gg = substr($color, 2, 2);
         $bb = substr($color, 4, 2);
 
-        return strtolower($aa.$bb.$gg.$rr);
+        return strtolower($aa . $bb . $gg . $rr);
     }
 
     public static function kmlToRgb($color)
@@ -106,6 +108,6 @@ class Misc
         $gg = substr($color, 4, 2);
         $bb = substr($color, 2, 2);
 
-        return strtolower($rr.$gg.$bb);
+        return strtolower($rr . $gg . $bb);
     }
 }

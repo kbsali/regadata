@@ -2,12 +2,15 @@
 
 namespace Service\Xls;
 
-class Vg2012Xls extends XlsManager implements XlsManagerInterface
+class Vg2016Xls extends XlsManager implements XlsManagerInterface
 {
+    private $urlHistory = 'http://www.vendeeglobe.org/fr/historique-des-classements';
+    private $baseDlUrl = 'http://www.vendeeglobe.org/download-race-data/%s';
+
     public function listMissingXlsx()
     {
-        $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
-        $s = '<a href="http://tracking2012.vendeeglobe.org/download/(.*?)" title="Cliquer pour télécharger" target="_blank">';
+        $html = file_get_contents($this->urlHistory);
+        $s = '<a href="/download-race-data/(.*?)" class="item__link" download>';
         preg_match_all('|' . $s . '|s', $html, $matches);
         $ret = [];
         foreach ($matches[1] as $xlsx) {
@@ -21,14 +24,14 @@ class Vg2012Xls extends XlsManager implements XlsManagerInterface
 
     public function downloadXlsx()
     {
-        $html = file_get_contents('http://www.vendeeglobe.org/fr/classement-historiques.html');
-        $s = '<a href="http://tracking2012.vendeeglobe.org/download/(.*?)" title="Cliquer pour télécharger" target="_blank">';
+        $html = file_get_contents($this->urlHistory);
+        $s = '<a href="/download-race-data/(.*?)" class="item__link" download>';
         preg_match_all('|' . $s . '|s', $html, $matches);
         foreach ($matches[1] as $xlsx) {
             echo 'checking ' . $xlsx;
             if (!file_exists($this->xlsDir . '/' . $xlsx)) {
-                echo ' - downloading from http://tracking2012.vendeeglobe.org/download/' . $xlsx;
-                file_put_contents($this->xlsDir . '/' . $xlsx, file_get_contents('http://tracking2012.vendeeglobe.org/download/' . $xlsx));
+                echo ' - downloading from http://www.vendeeglobe.org/download-race-data/' . $xlsx;
+                file_put_contents($this->xlsDir . '/' . $xlsx, file_get_contents(sprintf($this->baseDlUrl, $xlsx)));
             }
             echo PHP_EOL;
         }
@@ -225,8 +228,8 @@ class Vg2012Xls extends XlsManager implements XlsManagerInterface
     protected function _getDate($data)
     {
         $date = $data[2][1];
-        // Classement du 21/11/2012 à 04:00:00 UTC
-        $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) UTC';
+        // Classement du 06/11/2016 à 18:00:00 FR
+        $s = 'Classement du (.*?)/(.*?)/(.*?) à (.*?) FR';
         preg_match('|' . $s . '|s', $date, $match);
 
         return strtotime($match[3] . '-' . $match[2] . '-' . $match[1] . ' ' . $match[4] . ' UTC');

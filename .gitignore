@@ -1,9 +1,11 @@
+.php_cs.cache
 /cache/*
-/xls/*
-/web/json/*
-/web/xml/*
-/vendor/*
+!/cache/.gitkeep
 /src/config.php
 /src/races.php
-/web/vendor
+/vendor/*
+/web/json/*
 /web/kml
+/web/vendor
+/web/xml/*
+/xls/*
