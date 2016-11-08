@@ -1,4 +1,4 @@
-.php_cs.cache
+/.php_cs.cache
 /cache/*
 !/cache/.gitkeep
 /src/config.php
@@ -9,3 +9,4 @@
 /web/vendor
 /web/xml/*
 /xls/*
+/servers.yml

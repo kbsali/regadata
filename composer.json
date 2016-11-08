@@ -4,15 +4,13 @@
     "license": "proprietary",
     "keywords": ["open data", "json", "regatta", "ranking"],
     "homepage": "http://vg2012.saliou.name",
-    "authors": [
-        {
-            "name": "Kevin Saliou",
-            "email": "kevin@saliou.name",
-            "homepage": "http://saliou.name",
-            "role": "Developer"
-        }
-    ],
-    "minimum-stability" : "stable",
+    "authors": [{
+        "name": "Kevin Saliou",
+        "email": "kevin@saliou.name",
+        "homepage": "http://saliou.name",
+        "role": "Developer"
+    }],
+    "minimum-stability": "stable",
     "require": {
         "php": "^7.0",
 
