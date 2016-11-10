@@ -140,8 +140,15 @@ class Report
 
     public function getLastTs()
     {
+        $filter = [];
+        $options = [
+            'sort' => [
+                'timestamp' => -1,
+            ],
+            'limit' => 1,
+        ];
         $report = $this->_col
-            ->find([], ['timestamp' => -1, 'limit' => 1])
+            ->find($filter, $options)
         ;
         $tmp = current(iterator_to_array($report));
 
