@@ -141,8 +141,7 @@ class Report
     public function getLastTs()
     {
         $report = $this->_col
-            ->find([], ['timestamp' => -1])
-            ->limit(1)
+            ->find([], ['timestamp' => -1, 'limit' => 1])
         ;
         $tmp = current(iterator_to_array($report));
 
