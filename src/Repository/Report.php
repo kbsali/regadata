@@ -81,7 +81,7 @@ class Report
             return false;
         }
         if ($force) {
-            return $this->_col->update(
+            return $this->_col->updateOne(
                 [
                     'race_id' => $r['race_id'],
                     'timestamp' => $r['timestamp'],

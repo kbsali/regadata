@@ -35,7 +35,7 @@ class Sail
             return false;
         }
         if ($force) {
-            return $this->_col->update(['sail' => $r['sail']], $r, ['safe' => true]);
+            return $this->_col->updateOne(['sail' => $r['sail']], $r, ['safe' => true]);
         }
 
         return $this->_col->insertOne($r, ['safe' => true]);
