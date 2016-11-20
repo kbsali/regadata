@@ -32,7 +32,7 @@
 
     <meta name="twitter:card" content="summary">
     <meta name="twitter:creator" content="@kbsali">
-    <meta name="twitter:site" content="@VG2012RaceData">
+    <meta name="twitter:site" content="@VGRaceData">
 
     {{ meta_page_prev }}
     {{ meta_page_next }}
@@ -78,6 +78,16 @@
     <link rel="apple-touch-icon-precomposed" href="/img/logo-60.png">
     <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
     <link rel="icon" href="/favicon.ico" type="image/x-icon">
+    {% if debug == false %}
+    <script>
+    (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+    })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+    ga('create', '{{ race.ua }}', 'auto');
+    ga('send', 'pageview');
+    </script>
+    {% endif %}
 </head>
 <body id="{{ bodyId }}">
     <a href="https://github.com/kbsali/regadata" class="visible-lg">
@@ -92,8 +102,8 @@
             <p>
                 &copy; <span itemprop="name author"><a href="http://www.linkedin.com/in/kevinsaliou" itemprop="url">Kevin Saliou</a></span>
                 <a itemprop="email" href="mailto:kevin_AT_saliou_DOT_name"><i class="icon-envelope"></i></a>
-                2012
-                <a class="btn btn-mini" href="http://twitter.com/VG2012RaceData" target="_blank"><i class="icon-twitter icon-large"></i> Follow @VG2012RaceData</a>
+                2016
+                <a class="btn btn-mini" href="http://twitter.com/VGRaceData" target="_blank"><i class="icon-twitter icon-large"></i> Follow @VGRaceData</a>
             </p>
         </footer>
     </div>
@@ -123,15 +133,6 @@
     <script src="/js/script.js?5"></script>
     <script>
     !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");
-    {% if debug == false %}
-    var _gaq = [['_setAccount', '{{ race.ua }}'], ['_setDomainName', '{{ race.domain }}'], ['_trackPageview']];
-    (function(d, t) {
-        var g = d.createElement(t), s = d.getElementsByTagName(t)[0];
-        g.async = true;
-        g.src = '//www.google-analytics.com/ga.js';
-        s.parentNode.insertBefore(g, s);
-    })(document, 'script');
-    {% endif %}
     </script>
 </body>
 </html>

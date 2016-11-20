@@ -10,9 +10,9 @@ class Vor2014Json extends XlsManager
             'vor2014-1' => 'VOLVO_WEB_LEG1_2014',
             'vor2014-2' => 'VOLVO_WEB_LEG2_2014',
         ];
-        $file = $this->xlsDir.'/'.$races[$race].'-'.date('Ymd-H00').'.json';
-        if(!file_exists($file)) {
-            file_put_contents($file, file_get_contents('http://www.volvooceanrace.com/en/rdc/'.$races[$race].'.json'));
+        $file = $this->xlsDir . '/' . $races[$race] . '-' . date('Ymd-H00') . '.json';
+        if (!file_exists($file)) {
+            file_put_contents($file, file_get_contents('http://www.volvooceanrace.com/en/rdc/' . $races[$race] . '.json'));
         }
         $tmp = json_decode(file_get_contents($file), true);
         /*
@@ -75,17 +75,17 @@ class Vor2014Json extends XlsManager
         */
         foreach ($tmp['data']['tracksall'] as $track) {
             $r = array_combine($tmp['data']['fields'], $track);
-            $ts = strtotime($r['reportdate'].' UTC');
+            $ts = strtotime($r['reportdate'] . ' UTC');
             $row[$ts][(int) $r['legstanding']] = $this->_report->schema(
                 [
-                    'rank'      => $r['legstanding'],
-                    'sail'      => $r['code'],
-                    'skipper'   => $this->_misc->getSkipper($r['code']),
-                    'boat'      => $this->_misc->getBoat($r['code']),
-                    'color'     => $this->_misc->getColor($r['code']),
-                    'source'    => basename($file),
-                    'id'        => date('Ymd-Hi', $ts),
-                    'date'      => date('Y-m-d', $ts),
+                    'rank' => $r['legstanding'],
+                    'sail' => $r['code'],
+                    'skipper' => $this->_misc->getSkipper($r['code']),
+                    'boat' => $this->_misc->getBoat($r['code']),
+                    'color' => $this->_misc->getColor($r['code']),
+                    'source' => basename($file),
+                    'id' => date('Ymd-Hi', $ts),
+                    'date' => date('Y-m-d', $ts),
                     'timestamp' => $ts,
 
                     'lat_dms' => self::DECtoDMS($r['latitude']),
@@ -93,15 +93,15 @@ class Vor2014Json extends XlsManager
                     'lat_dec' => $r['latitude'],
                     'lon_dec' => $r['longitude'],
 
-                    'dtf'      => $r['dtf'],
+                    'dtf' => $r['dtf'],
                     'dtl_diff' => (int) $r['dtlc'],
                     // 'dtl'      => 0,
 
                     'total_distance' => $this->race['total_distance'] - $r['dtf'],
 
-                    '1hour_heading'       => $r['boatheadingtrue'],
-                    '1hour_speed'         => $r['speedthrowater'],
-                    '1hour_vmg'           => $r['smg'],
+                    '1hour_heading' => $r['boatheadingtrue'],
+                    '1hour_speed' => $r['speedthrowater'],
+                    '1hour_vmg' => $r['smg'],
                     // '1hour_distance'      => 0,
 
                     // 'lastreport_heading'  => 0,
@@ -110,23 +110,23 @@ class Vor2014Json extends XlsManager
                     // 'lastreport_distance' => 0,
 
                     // '24hour_heading'      => 0,
-                    '24hour_speed'        => $r['twentyfourhourrun']/24,
+                    '24hour_speed' => $r['twentyfourhourrun'] / 24,
                     // '24hour_vmg'          => 0,
-                    '24hour_distance'     => $r['twentyfourhourrun'],
+                    '24hour_distance' => $r['twentyfourhourrun'],
                 ]
             );
         }
         // update dtl for each report
         foreach ($row as $ts => $reports) {
             foreach ($reports as $legstanding => $report) {
-                if(1 !== $legstanding && isset($reports[1]['dtf'])) {
+                if (1 !== $legstanding && isset($reports[1]['dtf'])) {
                     $report['dtl'] = (float) $report['dtf'] - (float) $reports[1]['dtf'];
                 }
                 try {
                     // echo $report['id'].PHP_EOL;
                     $this->_report->insert($report, $force);
                 } catch (\MongoCursorException $e) {
-                    echo 'ERR'.PHP_EOL;
+                    echo 'ERR' . PHP_EOL;
                     // echo $e->getMessage().PHP_EOL;
                 }
             }

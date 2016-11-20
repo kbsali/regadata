@@ -24,45 +24,42 @@ class Sail
             return false;
         }
         $this->raceId = $collectionName;
-        $this->col = $collectionName.'_sails';
-        $this->_col = $this->_db->selectCollection($collectionName.'_sails');
-        $this->_col->ensureIndex(array('sail' => 1), array('unique' => true));
+        $this->col = $collectionName . '_sails';
+        $this->_col = $this->_db->selectCollection($collectionName . '_sails');
+        $this->_col->createIndex(['sail' => 1], ['unique' => true]);
     }
 
-    public function insert(array $r = array(), $force = false)
+    public function insert(array $r = [], $force = false)
     {
         if (empty($r)) {
             return false;
         }
         if ($force) {
-            return $this->_col->update(array('sail' => $r['sail']), $r, array('safe' => true));
+            return $this->_col->updateOne(['sail' => $r['sail']], $r, ['safe' => true]);
         }
 
-        return $this->_col->insert($r, array('safe' => true));
+        return $this->_col->insertOne($r, ['safe' => true]);
     }
 
     public function getAllBy($key, $reverse = false)
     {
-        $tmp = $this->_db
-            ->command(array('distinct' => $this->col, 'key' => $key))
-        ;
+        $tmp = $this->_col->distinct($key);
         if ($reverse) {
-            rsort($tmp['values']);
+            rsort($tmp);
         }
 
-        return $tmp['values'];
+        return $tmp;
     }
 
-    public function findBy($indexBy = null, array $arr = array(), array $orderby = array('skipper' => 1))
+    public function findBy($indexBy = null, array $arr = [], array $orderby = ['skipper' => 1])
     {
         $tmp = $this->_col
-            ->find($arr)
-            ->sort($orderby)
+            ->find($arr, $orderby)
         ;
         if (null === $indexBy) {
             return iterator_to_array($tmp);
         }
-        $ret = array();
+        $ret = [];
         foreach (iterator_to_array($tmp) as $v) {
             $ret[$v[$indexBy]] = $v;
         }

@@ -10,12 +10,12 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
     {
         $html = file_get_contents('http://www.routedurhum.com/fr/s11_classements/s11p02_all_class.php');
         $s = '<a href="/fr/s11_classements/s11p04_get_xls.php\?no_classement=(.*?)" target="_blank">';
-        preg_match_all('|'.$s.'|s', $html, $matches);
+        preg_match_all('|' . $s . '|s', $html, $matches);
 
-        $ret = array();
+        $ret = [];
         foreach ($matches[1] as $xlsx) {
             // ClasExcel_2014_11_02_16_11_00.xls
-            if (!file_exists($this->xlsDir.'/'.$xlsx)) {
+            if (!file_exists($this->xlsDir . '/' . $xlsx)) {
                 $ret[] = $xlsx;
             }
         }
@@ -25,32 +25,32 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
 
     public function xls2mongo($file = null, $force = false)
     {
-        require(__DIR__.'/../../Util/Spreadsheet_Excel_Reader.php');
-        require(__DIR__.'/../../Util/SpreadsheetReader_XLS.php');
+        require __DIR__ . '/../../Util/Spreadsheet_Excel_Reader.php';
+        require __DIR__ . '/../../Util/SpreadsheetReader_XLS.php';
 
         $this->boats = $this->_sails->findBy('skipper');
 
-        $xlsxs = glob(null === $file ? $this->xlsDir.'/*' : $file);
+        $xlsxs = glob(null === $file ? $this->xlsDir . '/*' : $file);
         sort($xlsxs);
         $i = 0;
-        $total = $yesterday = array();
+        $total = $yesterday = [];
         foreach ($xlsxs as $xlsx) {
-            echo $xlsx.PHP_EOL;
-            $i++;
+            echo $xlsx . PHP_EOL;
+            ++$i;
             try {
-                $sheets = array(
-                    'ultime'  => 0,
-                    'imoca'   => 1,
+                $sheets = [
+                    'ultime' => 0,
+                    'imoca' => 1,
                     'multi50' => 2,
                     'class40' => 3,
-                    'rhum'    => 4,
-                );
+                    'rhum' => 4,
+                ];
                 $this->ts = null;
                 $tmpClass = null;
                 foreach ($sheets as $class => $sheetId) {
-                    $data = new \SpreadsheetReader_XLS($xlsx, array('sheet' => $sheetId));
+                    $data = new \SpreadsheetReader_XLS($xlsx, ['sheet' => $sheetId]);
                     foreach ($data as $idx => $row) {
-                        if((int) $idx < 5) {
+                        if ((int) $idx < 5) {
                             continue;
                         }
                         if (null === $tmpClass || $tmpClass !== $class) {
@@ -69,10 +69,10 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
                         if (!isset($total[$r['sail']])) {
                             $total[$r['sail']] = 0;
                         }
-                        $total[$r['sail']]     += $r['lastreport_distance'];
-                        $r['total_distance']   = $total[$r['sail']];
-                        $r['dtl_diff']         = isset($yesterday[$r['sail']]) && !isset($r['has_arrived']) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
-                        $r['color']            = $this->_misc->getColor($r['sail']);
+                        $total[$r['sail']] += $r['lastreport_distance'];
+                        $r['total_distance'] = $total[$r['sail']];
+                        $r['dtl_diff'] = isset($yesterday[$r['sail']]) && !isset($r['has_arrived']) ? $r['dtl'] - $yesterday[$r['sail']]['dtl'] : 0;
+                        $r['color'] = $this->_misc->getColor($r['sail']);
                         $yesterday[$r['sail']] = $r;
                         try {
                             // print_R($this->_report->insert($r, $force));
@@ -83,7 +83,7 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
                     }
                 }
             } catch (\Exception $e) {
-                throw new \Exception('WHAT? '.$e->getMessage());
+                throw new \Exception('WHAT? ' . $e->getMessage());
                 continue;
             }
         }
@@ -92,7 +92,7 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
     private function _cleanRow($row, $ts, $file)
     {
         $rank = trim(trim($row[0]), ' ');
-        if ('RET' == $rank) {
+        if ('RET' === $rank) {
             return false;
             /*
             list($coun, $sail) = explode(PHP_EOL, trim($row[2]));
@@ -109,7 +109,7 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
             return $ret;
             */
         } else {
-            if (0 === (int) $rank ) {
+            if (0 === (int) $rank) {
                 return false;
             }
         }
@@ -138,15 +138,15 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
         $lon_dms = trim($row[7]);
         $ret = $this->_report->schema(
             [
-                'rank'      => (int) $rank,
-                'skipper'   => $skipper,
-                'sail'      => !isset($this->boats[ $skipper ]) ? null : $this->boats[ $skipper ]['sail'],
-                'boat'      => !isset($this->boats[ $skipper ]) ? null : $this->boats[ $skipper ]['boat'],
+                'rank' => (int) $rank,
+                'skipper' => $skipper,
+                'sail' => !isset($this->boats[ $skipper ]) ? null : $this->boats[ $skipper ]['sail'],
+                'boat' => !isset($this->boats[ $skipper ]) ? null : $this->boats[ $skipper ]['boat'],
                 // 'color'     => $this->_misc->getColor($row['code']),
-                'source'    => basename($file),
-                'id'        => date('Ymd-Hi', $ts),
-                'date'      => date('Y-m-d', $ts),
-                'time'      => date('H:i', $ts),
+                'source' => basename($file),
+                'id' => date('Ymd-Hi', $ts),
+                'date' => date('Y-m-d', $ts),
+                'time' => date('H:i', $ts),
                 'timestamp' => $ts,
 
                 'lat_dms' => $lat_dms,
@@ -157,15 +157,15 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
                 'dtf' => (float) trim($row[3]),
                 'dtl' => (float) trim($row[4]),
 
-                '1hour_speed'    => (float) trim($row[8]),
-                '1hour_vmg'      => (float) trim($row[9]),
-                '1hour_heading'  => (int) trim($row[10]),
+                '1hour_speed' => (float) trim($row[8]),
+                '1hour_vmg' => (float) trim($row[9]),
+                '1hour_heading' => (int) trim($row[10]),
 
-                'lastreport_vmg'      => (float) trim($row[11]),
-                'lastreport_heading'  => (int) trim($row[12]),
+                'lastreport_vmg' => (float) trim($row[11]),
+                'lastreport_heading' => (int) trim($row[12]),
 
-                '24hour_vmg'          => (int) trim($row[13]),
-                '24hour_distance'     => (float) trim($row[14]),
+                '24hour_vmg' => (int) trim($row[13]),
+                '24hour_distance' => (float) trim($row[14]),
             ]
         );
         // ----------------------------
@@ -189,7 +189,7 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
 
     protected function _getDate($data)
     {
-        if(isset($this->ts)) {
+        if (isset($this->ts)) {
             return;
         }
         if (false === strpos($data[0], 'Date retenue pour')) {
@@ -197,8 +197,8 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
         }
         // "ULTIMES - Date retenue pour le calcul du classement interm�diaire estim� � : 02/11/14 16:36 Locale PARIS "
         $s = ': (.*?)/(.*?)/(.*?) (.*?) Locale';
-        preg_match('|'.$s.'|s', $data[0], $match);
+        preg_match('|' . $s . '|s', $data[0], $match);
 
-        $this->ts = strtotime('20'.$match[3].'-'.$match[2].'-'.$match[1].' '.$match[4].' UTC');
+        $this->ts = strtotime('20' . $match[3] . '-' . $match[2] . '-' . $match[1] . ' ' . $match[4] . ' UTC');
     }
 }
