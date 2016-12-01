@@ -334,7 +334,7 @@ $app['races'] = [
         'total_distance' => '24016',
         'url_xls' => 'http://www.vendeeglobe.org/download-race-data/%file%',
         'url_map' => 'http://tracking2016.vendeeglobe.org/hp5ip0/',
-        'url_gmap' => 'goo.gl/DQWUDO', // https://maps.google.com/?q=http://vg2016.regadata.org/kml/vg2016/trace_FULL.kmz
+        'url_gmap' => 'http://goo.gl/DQWUDO', // https://maps.google.com/?q=http://vg2016.regadata.org/kml/vg2016/trace_FULL.kmz
         'parser' => 'vg',
         'type' => 'race',
         'tweetUrlFr' => 'goo.gl/E3QgCY', // http://vg2016.regadata.org/fr/reports/latest?utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
