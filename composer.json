@@ -27,7 +27,8 @@
         "suin/php-rss-writer": ">=1.0",
         "evert/sitemap-php": "dev-master",
 
-        "mongodb/mongodb": "^1.0.0"
+        "mongodb/mongodb": "^1.0.0",
+        "fguillot/picofeed": "^0.1.25"
     },
     "require-dev": {
         "raulfraile/ladybug": "~1.0"
