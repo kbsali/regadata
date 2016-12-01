@@ -143,16 +143,17 @@ $app->get('/{_locale}/about', function () use ($app) {
     ]);
 })->bind('about');
 
-$app->get('/{_locale}/sail/{ids}', function ($ids) use ($app) {
-    $ids = explode('-', $ids);
+$app->get('/{_locale}/sail/{sailNumbers}', function ($sailNumbers) use ($app) {
+    $sailNumbers = explode('-', $sailNumbers);
     $infos = [];
-    foreach ($ids as $id) {
-        if (false !== $info = $app['srv.vg']->getFullSailInfo($id)) {
+    foreach ($sailNumbers as $sailNumber) {
+        if (false !== $info = $app['srv.vg']->getFullSailInfo($sailNumber)) {
             if (!$info['info']) {
                 continue;
             }
             $info['info']['time_travelled'] = $info['info']['timestamp'] - strtotime($app['race']['start_date']);
             $info['info']['twitter'] = $app['misc']->getTwitter($info['info']['sail'], /* $noAt */ true, /* $allowAltnerative */ false);
+            // $info['info']['videos'] = $app['misc']->getVideoList($info['info']['sail']);
 
             $c = 'rgb(' . implode(',', $app['misc']::hexToRgb($app['misc']->getColor($info['info']['sail']))) . ')';
             $infos[] = [

@@ -39,12 +39,12 @@
                                     {% if race.modes %}
                                         {% if infos[0].info.class == skipper.class and infos[0].info.sail != skipper.sail %}
                                             <li>
-                                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                                <a href="{{ path('sail', {sailNumbers: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
                                                 <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                                         {% endif %}
                                     {% else %}
                                             <li>
-                                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
+                                                <a href="{{ path('sail', {sailNumbers: infos[0].info.sail ~ '-' ~ skipper.sail}) }}">
                                                 <span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                                     {% endif %}
                                     {% endfor %}
@@ -118,11 +118,11 @@
                         {% if race.modes %}
                             {% if infos[0].info.class|upper == skipper.class|upper and infos[0].info.sail|upper != skipper.sail|upper %}
                             <li>
-                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                <a href="{{ path('sail', {sailNumbers: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                             {% endif %}
                         {% else %}
                             <li>
-                                <a href="{{ path('sail', {ids: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
+                                <a href="{{ path('sail', {sailNumbers: infos[0].info.sail ~ '-' ~ skipper.sail}) }}"><span class="label" style="background: #{{ skipper.color }}">&nbsp;&nbsp;</span> {{ skipper.skipper }}</a>
                         {% endif %}
                         {% endfor %}
                     </ul>

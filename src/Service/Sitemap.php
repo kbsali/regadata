@@ -56,7 +56,7 @@ class Sitemap
             'map' => ['idx' => [], 'prio' => 0.8, 'freq' => 'daily'],
             'doc_json' => ['idx' => [], 'prio' => 0.2, 'freq' => 'monthly'],
             'about' => ['idx' => [], 'prio' => 0.6, 'freq' => 'hourly'],
-            'sail' => ['idx' => ['k' => 'ids', 'v' => array_keys($this->skippers)], 'prio' => 1, 'freq' => 'hourly'],
+            'sail' => ['idx' => ['k' => 'sailNumbers', 'v' => array_keys($this->skippers)], 'prio' => 1, 'freq' => 'hourly'],
             '_homepage' => ['idx' => [], 'prio' => 0.1, 'freq' => 'yearly'],
         ];
         foreach ($arrLocle as $route => $params) {

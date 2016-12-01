@@ -14,7 +14,7 @@
                 </p>
                 <p>
                     <a href="{{ path('report', {id: 'latest'}) }}" class="btn btn-success btn-lg"><i class="icon-table"></i> {{ 'Last ranking'|trans }}</a>
-                    <a href="{{ path('sail', {ids: random(sk).sail}) }}" class="btn btn-success btn-lg"><i class="icon-signal"></i> {{ 'Random boat'|trans }}</a>
+                    <a href="{{ path('sail', {sailNumbers: random(sk).sail}) }}" class="btn btn-success btn-lg"><i class="icon-signal"></i> {{ 'Random boat'|trans }}</a>
                     <a href="{{ path('doc_json') }}" class="jsondoc btn btn-primary" target="_blank"><i class="icon-book"></i> {{ 'JSON Doc'|trans }}</a>
                 </p>
             </div>
@@ -50,7 +50,7 @@
                         <ul>
                             {% for skipper in sk %}
                                 <li>
-                                    <a href="{{ path('sail', {ids: skipper.sail}) }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
+                                    <a href="{{ path('sail', {sailNumbers: skipper.sail}) }}" rel="tooltip" title="{{ 'See the graphs'|trans }}"><i class="icon-signal"></i> {{ skipper.skipper }}</a>
                                     <ul>
                                         <li><a target="_blank" href="{{ path('sail_json', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download JSON'|trans }}"><i class="icon-download"></i> {{ path('sail_json', {race: race.id, id: skipper.sail}) }}</a>
                                         <li><a target="_blank" href="{{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}" rel="tooltip" title="{{ 'Download KMZ'|trans }}"><i class="icon-globe"></i> {{ path('sail_kmz', {race: race.id, id: skipper.sail}) }}</a>
