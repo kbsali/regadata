@@ -2,6 +2,13 @@
 {% set active = 'reports' %}
 {% set title = 'General ranking %date%'|trans({'%date%': ts|date}) %}
 {% set extra_meta = 'General ranking %date%'|trans({'%date%': ts|date}) %}
+{% set params = {} %}
+{% if mode != false %}
+    {% set params = params|merge({'mode': mode }) %}
+{% endif %}
+{% if full_screen %}
+    {% set params = params|merge({'fs': 1 }) %}
+{% endif %}
 
 {% block container_content %}
 
@@ -84,8 +91,8 @@
                             <span class="geo">
                                 <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
                                 <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
-                                <a href="{{ path('sail', {sailNumbers: r.sail}) }}">{{ r.skipper }}</a>
-                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {sailNumbers: r.sail}) }}">{{ r.boat }}</a>]</span>
+                                <a href="{{ path('sail', {sailNumbers: r.sail}|merge(params)) }}">{{ r.skipper }}</a>
+                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {sailNumbers: r.sail}|merge(params)) }}">{{ r.boat }}</a>]</span>
                             </span>
                         </td>
 
@@ -126,9 +133,9 @@
             <ul class="pager hidden-inline-desktop">
                 <li>
                     {% if full == false %}
-                    <a href="?full=1&amp;mode={{ mode_k }}"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
+                    <a href="?{{ {'mode': mode_k, 'full': 1}|url_encode }}"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
                     {% else %}
-                    <a href="?mode={{ mode_k }}"><i class="icon-resize-small"></i>{{ 'Mobile view'|trans }}</a>
+                    <a href="?{{ {'mode': mode_k}|url_encode }}"><i class="icon-resize-small"></i>{{ 'Mobile view'|trans }}</a>
                     {% endif %}
                 </li>
             </ul>

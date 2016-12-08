@@ -1,10 +1,15 @@
 <?php
 
+use Silex\Application;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 $app = require __DIR__ . '/bootstrap.php';
 
+$app->before(function (Request $request, Application $app) {
+    $app['full_screen'] = false !== $request->get('fs', false);
+    $app['twig']->addGlobal('full_screen', $app['full_screen']);
+});
 // ---- /REDIRECT OLD URLS (indexed by search engines)
 $app->get('/json/sail/{id}.kmz', function ($id) use ($app) {
     $u = $app['url_generator']->generate('sail_kmz', ['id' => $id]);
@@ -132,6 +137,7 @@ $app->get('/{_locale}/reports/{id}', function (Request $request, $id) use ($app)
         'start_date' => strtotime($app['race']['start_date']),
         'full' => null !== $request->get('full'),
         'pagination' => $pagination,
+        'body_id' => true === $app['full_screen'] ? 'full_screen' : false,
     ]);
 })->bind('report');
 

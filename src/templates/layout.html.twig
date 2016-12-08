@@ -1,4 +1,5 @@
-{% set bodyId = bodyId|default('normal') %}
+{% set body_id = body_id|default('normal') %}
+{% set full_screen = full_screen|default(false) %}
 {% set title = title|default(null) %}
 {% set extra_meta = extra_meta|default(null) %}
 {% set meta_page_prev = meta_page_prev|default(null) %}
@@ -89,14 +90,17 @@
     </script>
     {% endif %}
 </head>
-<body id="{{ bodyId }}">
-    <a href="https://github.com/kbsali/regadata" class="visible-lg">
-        <img style="position:absolute;top:51px;right:0;border:;" src="//s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
-    </a>
-    {% set active = active|default(null) %}
-    {% include '_menu.html.twig' with { 'active': active } %}
+<body id="{{ body_id }}">
+    {% if full_screen == false %}
+        <a href="https://github.com/kbsali/regadata" class="visible-lg">
+            <img style="position:absolute;top:51px;right:0;border:;" src="//s3.amazonaws.com/github/ribbons/forkme_right_green_007200.png" alt="Fork me on GitHub">
+        </a>
+        {% set active = active|default(null) %}
+        {% include '_menu.html.twig' with { 'active': active } %}
+    {% endif %}
     <div class="container" id="main">
         {% block container_content %}{% endblock %}
+        {% if full_screen == false %}
         <hr>
         <footer>
             <p>
@@ -106,6 +110,7 @@
                 <a class="btn btn-mini" href="http://twitter.com/VGRaceData" target="_blank"><i class="icon-twitter icon-large"></i> Follow @VGRaceData</a>
             </p>
         </footer>
+        {% endif %}
     </div>
 
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>

@@ -2,6 +2,13 @@
 {% set active = 'reports' %}
 {% set title = 'General ranking %date%'|trans({'%date%': ts|date}) %}
 {% set extra_meta = 'General ranking %date%'|trans({'%date%': ts|date}) %}
+{% set params = {} %}
+{% if mode != false %}
+    {% set params = params|merge({'mode': mode }) %}
+{% endif %}
+{% if full_screen %}
+    {% set params = params|merge({'fs': 1 }) %}
+{% endif %}
 
 {% block container_content %}
             {% include '_pagination.html.twig' with { 'p': pagination } %}
@@ -72,8 +79,8 @@
                             <span class="geo">
                                 <span class="latitude"><span class="value-title" title="{{ r.lat_dec }}"></span></span>
                                 <span class="longitude"><span class="value-title" title="{{ r.lon_dec }}"></span></span>
-                                <a href="{{ path('sail', {sailNumbers: r.sail}) }}">{{ r.skipper }}</a>
-                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {sailNumbers: r.sail}) }}">{{ r.boat }}</a>]</span>
+                                <a href="{{ path('sail', {sailNumbers: r.sail}|merge(params)) }}">{{ r.skipper }}</a>
+                                <span class="hidden-inline-xs hidden-inline-sm">[<a href="{{ path('sail', {sailNumbers: r.sail}|merge(params)) }}">{{ r.boat }}</a>]</span>
                             </span>
                         </td>
 
@@ -107,26 +114,33 @@
                 </tbody>
             </table>
             </div>
+            {% if race.showReportFooter == true %}
+                <p class="tooltips">
+                    {{ 'Source'|trans }} : <a target="_blank" href="{{ path('reports_json', {race: race.id, id: report_id}) }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: report_id}) }}</a>
+                    | <a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}"><i class="icon-download"></i> {{ path('race_kmz', {race: race.id}) }}</a>
+                    | <a target="_blank" href="{{ race.url_map }}"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
+                    | <a target="_blank" href="{{ race.url_gmap }}"><i class="icon-globe"></i> {{ 'Google Map'|trans }}</a>
+                    {% if full_screen == true %}
+                        | &copy; {{ 'now'|date('Y') }} <span itemprop="name author"><a href="http://www.linkedin.com/in/kevinsaliou" itemprop="url">Kevin Saliou</a></span>
+                            <a itemprop="email" href="mailto:kevin_AT_saliou_DOT_name"><i class="icon-envelope"></i></a>
+                        | <a class="btn btn-mini" href="http://twitter.com/VGRaceData" target="_blank"><i class="icon-twitter icon-large"></i> Follow @VGRaceData</a>
+                    {% endif %}
+                    <br>
+                    * {{ 'Bold numbers are the greatest values of the report'|trans }}
+                </p>
+            {% endif %}
+
             {% include '_pagination.html.twig' with { 'p': pagination } %}
 
-            <ul class="pager hidden-inline-desktop">
-                <li>
-                    {% if full == false %}
-                    <a href="?full=1"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
-                    {% else %}
-                    <a href="?"><i class="icon-resize-small"></i>{{ 'Mobile view'|trans }}</a>
-                    {% endif %}
-                </li>
-            </ul>
-
-            {% if race.showReportFooter == true %}
-            <p class="tooltips">
-                {{ 'Source'|trans }} : <a target="_blank" href="{{ path('reports_json', {race: race.id, id: report_id}) }}" rel="tooltip" title="Source JSON"><i class="icon-download"></i> {{ path('reports_json', {race: race.id, id: report_id}) }}</a>
-                | <a target="_blank" href="{{ path('race_kmz', {race: race.id}) }}"><i class="icon-download"></i> {{ path('race_kmz', {race: race.id}) }}</a>
-                | <a target="_blank" href="{{ race.url_map }}"><i class="icon-globe"></i> {{ 'Official Map'|trans }}</a>
-                | <a target="_blank" href="{{ race.url_gmap }}"><i class="icon-globe"></i> {{ 'Google Map'|trans }}</a>
-                <br>
-                * {{ 'Bold numbers are the greatest values of the report'|trans }}
-            </p>
+            {% if full_screen == false %}
+                <ul class="pager hidden-inline-desktop">
+                    <li>
+                        {% if full == false %}
+                        <a href="?full=1"><i class="icon-resize-full"></i> {{ 'Full view'|trans }}</a>
+                        {% else %}
+                        <a href="?"><i class="icon-resize-small"></i>{{ 'Mobile view'|trans }}</a>
+                        {% endif %}
+                    </li>
+                </ul>
             {% endif %}
 {% endblock %}

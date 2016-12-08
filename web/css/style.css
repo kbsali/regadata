@@ -1,14 +1,17 @@
 body {
     padding-top: 51px;
-    /*padding-bottom: 40px;*/
+}
+
+body#full_screen {
+    padding-top: 0px;
 }
 
 body#high {
     padding-top: 60px;
-    /*padding-bottom: 40px;*/
 }
 
-body#normal .container {
+body#normal .container,
+body#full_screen .container {
     max-width: 100%;
     width: 100%;
 }
