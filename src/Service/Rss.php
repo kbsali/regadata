@@ -24,7 +24,7 @@ class Rss
                // ->url($app->url('homepage'))
                ->url($this->urlGenerator->generate('homepage', [], true))
                ->language('en')
-               ->copyright('Copyright 2012, Kevin Saliou')
+               ->copyright(sprintf('Copyright %d, Kevin Saliou', date('Y')))
                ->appendTo($feed)
            ;
         $reports = $this->_report->getAllBy('id', true);
