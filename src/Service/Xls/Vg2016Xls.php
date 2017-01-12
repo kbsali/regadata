@@ -169,9 +169,14 @@ class Vg2016Xls extends XlsManager implements XlsManagerInterface
         $ret['id'] = date('Ymd-Hi', $ts);
         $ret['date'] = date('Y-m-d', $ts);
         $ret['timestamp'] = $ts;
-
-        if (null !== $row[4]) {
-            $_ts = $this->_getArrivalDate($row[4]);
+        $idxExtra = 0;
+        if (count($row) === 22) {
+            $idxExtra = 1;
+        }
+        // Since 20170111_1800 there is 1 column less...
+        /*
+        if (null !== $row[3 + $idxExtra]) {
+            $_ts = $this->_getArrivalDate($row[3 + $idxExtra]);
 
             $ret['timestamp'] = $_ts;
             $ret['time'] = date('H:i', $_ts);
@@ -185,34 +190,35 @@ class Vg2016Xls extends XlsManager implements XlsManagerInterface
 
             return $ret;
         }
+        */
 
-        if (false === preg_match("|(\d{2}):(\d{2})|", $row[5], $time)) {
+        if (false === preg_match("|(\d{2}):(\d{2})|", $row[4 + $idxExtra], $time)) {
             $time[0] = 0;
         }
         $ret['time'] = $time[0];
 
-        $ret['lat_dms'] = trim($row[6]);
-        $ret['lon_dms'] = trim($row[7]);
-        $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[6])));
-        $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[7])));
+        $ret['lat_dms'] = trim($row[5 + $idxExtra]);
+        $ret['lon_dms'] = trim($row[6 + $idxExtra]);
+        $ret['lat_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[5 + $idxExtra])));
+        $ret['lon_dec'] = self::DMStoDEC(self::strtoDMS(trim($row[6 + $idxExtra])));
 
-        $ret['1hour_heading'] = (int) trim($row[8], '°');
-        $ret['1hour_speed'] = (float) trim($row[9], ' kts');
-        $ret['1hour_vmg'] = (float) trim($row[10], ' kts');
-        $ret['1hour_distance'] = (float) trim($row[11], ' nm');
+        $ret['1hour_heading'] = (int) trim($row[7 + $idxExtra], '°');
+        $ret['1hour_speed'] = (float) trim($row[8 + $idxExtra], ' kts');
+        $ret['1hour_vmg'] = (float) trim($row[9 + $idxExtra], ' kts');
+        $ret['1hour_distance'] = (float) trim($row[10 + $idxExtra], ' nm');
 
-        $ret['lastreport_heading'] = (int) trim($row[12], '°');
-        $ret['lastreport_speed'] = (float) trim($row[13], ' kts');
-        $ret['lastreport_vmg'] = (float) trim($row[14], ' kts');
-        $ret['lastreport_distance'] = (float) trim($row[15], ' nm');
+        $ret['lastreport_heading'] = (int) trim($row[11 + $idxExtra], '°');
+        $ret['lastreport_speed'] = (float) trim($row[12 + $idxExtra], ' kts');
+        $ret['lastreport_vmg'] = (float) trim($row[13 + $idxExtra], ' kts');
+        $ret['lastreport_distance'] = (float) trim($row[14 + $idxExtra], ' nm');
 
-        $ret['24hour_heading'] = (int) trim($row[16], '°');
-        $ret['24hour_speed'] = (float) trim($row[17], ' kts');
-        $ret['24hour_vmg'] = (float) trim($row[18], ' kts');
-        $ret['24hour_distance'] = (float) trim($row[19], ' nm');
+        $ret['24hour_heading'] = (int) trim($row[15 + $idxExtra], '°');
+        $ret['24hour_speed'] = (float) trim($row[16 + $idxExtra], ' kts');
+        $ret['24hour_vmg'] = (float) trim($row[17 + $idxExtra], ' kts');
+        $ret['24hour_distance'] = (float) trim($row[18 + $idxExtra], ' nm');
 
-        $ret['dtf'] = (float) trim($row[20], ' nm');
-        $ret['dtl'] = (float) trim($row[21], ' nm');
+        $ret['dtf'] = (float) trim($row[19 + $idxExtra], ' nm');
+        $ret['dtl'] = (float) trim($row[20 + $idxExtra], ' nm');
 
         return $ret;
     }
