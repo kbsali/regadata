@@ -8,6 +8,7 @@ use Silex\Provider\TwigServiceProvider;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Translation\Loader\YamlFileLoader;
+use Service\VideoList;
 
 function _ldd($a)
 {
@@ -186,6 +187,12 @@ $app['srv.geovoile'] = $app->share(function ($app) {
         $app['repo.report'],
         $app['misc'],
         $app['race']
+    );
+});
+
+$app['srv.video'] = $app->share(function ($app) {
+    return new \Service\VideoList(
+        $app['sk']
     );
 });
 // --- Before

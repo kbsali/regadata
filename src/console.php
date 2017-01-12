@@ -6,10 +6,8 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-$console = new Application('VG2021', '0.1');
+$console = new Application('VG2012', '0.1');
 
-// ----------------------- GEO -----------------------
-// ---------------------------------------------------
 $console
     ->register('geo:dl')
     ->setDescription('Downloads archives from geovoile')
@@ -29,6 +27,17 @@ $console
         $app->setRace($input->getArgument('race'));
 
         $app['srv.geovoile']->parse();
+    })
+;
+
+$console
+    ->register('regadata:video:update')
+    ->setDescription('Updates list of published videos')
+    ->addArgument('race', InputArgument::REQUIRED, 'Race id')
+    ->setCode(function (InputInterface $input, OutputInterface $output) use ($app) {
+        $app->setRace($input->getArgument('race'));
+
+        $app['srv.video']->download();
     })
 ;
 
