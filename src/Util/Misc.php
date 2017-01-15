@@ -64,7 +64,7 @@ class Misc
             return 'fff';
         }
 
-        return $this->skippers[$skipper]['color'];
+        return (string) $this->skippers[$skipper]['color'];
     }
 
     public static function sitemapPing($url, $debug = false)

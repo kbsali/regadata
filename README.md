@@ -53,11 +53,11 @@ Prepare New Regatta
 -------------------
 
 * Prepare csv with full list of skippers/boats + import to mongodb
- *  `src/init/XXX-20XX.csv`
+ * `src/init/XXX-20XX.csv`
   * Random color generator : =DEC2HEX(RANDBETWEEN(0, 16^6), 6)
- *  `mongoimport -d regatta -c XXX20XX_sails --type csv --file src/init/XXX-20XX.csv --headerline --drop`
+ * `mongoimport -d regatta -c XXX20XX_sails --type csv --file src/init/XXX-20XX.csv --headerline --drop`
 * Add race details
- *  `src/races.php`
+ * `src/races.php`
 * Create language files + adapt texts (if copied from previous language files) :
- *  `src/locales/XXX20XX_en.yml`
- *  `src/locales/XXX20XX_fr.yml`
+ * `src/locales/XXX20XX_en.yml`
+ * `src/locales/XXX20XX_fr.yml`
