@@ -61,7 +61,10 @@ class Misc
             return false;
         }
         if (!isset($this->skippers[$skipper]['color'])) {
-            return 'fff';
+            return 'ffffff';
+        }
+        if (0 === $this->skippers[$skipper]['color']) {
+            return '000000';
         }
 
         return (string) $this->skippers[$skipper]['color'];
