@@ -26,14 +26,14 @@ $app['races'] = [
         'parser' => 'geovoile',
         'type' => 'race',
         'tweetUrlFr' => [
-            'ultime' => 'goo.gl/roRUFp', // http://rdr2014.regadata.org/fr/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'ultimes' => 'goo.gl/roRUFp', // http://rdr2014.regadata.org/fr/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'imoca' => 'goo.gl/CLEpAk', // http://rdr2014.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'multi50' => 'goo.gl/SQFnUW', // http://rdr2014.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'class40' => 'goo.gl/3PpH4l', // http://rdr2014.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'rhum' => 'goo.gl/CjsIbm', // http://rdr2014.regadata.org/fr/reports/latest?mode=rhum&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         ],
         'tweetUrlEn' => [
-            'ultime' => 'goo.gl/5IFzzJ', // http://rdr2014.regadata.org/en/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'ultimes' => 'goo.gl/5IFzzJ', // http://rdr2014.regadata.org/en/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'imoca' => 'goo.gl/rI3UET', // http://rdr2014.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'multi50' => 'goo.gl/AtkiSn', // http://rdr2014.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'class40' => 'goo.gl/URpHxW', // http://rdr2014.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
@@ -43,7 +43,7 @@ $app['races'] = [
         'xls_service_class' => 'Service\Xls\Rdr2014Xls',
         'showReportFooter' => true,
         'modes' => [
-            'ultime' => 'Ultime',
+            'ultimes' => 'Ultimes',
             'imoca' => 'IMOCA',
             'multi50' => 'Multi 50',
             'class40' => 'Class 40',
@@ -230,13 +230,13 @@ $app['races'] = [
             'class40' => 'goo.gl/13FJD8', // http://tjv2017.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'multi50' => 'goo.gl/x3eaUP', // http://tjv2017.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'imoca' => 'goo.gl/xtEr2B', // http://tjv2017.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-            'ultime' => 'goo.gl/Lr3u66', // http://tjv2017.regadata.org/fr/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'ultimes' => 'goo.gl/Lr3u66', // http://tjv2017.regadata.org/fr/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         ],
         'tweetUrlEn' => [
             'class40' => 'goo.gl/oAX2n1', // http://tjv2017.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'multi50' => 'goo.gl/f3QcU5', // http://tjv2017.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'imoca' => 'goo.gl/4wdsRY', // http://tjv2017.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
-            'ultime' => 'goo.gl/CCsfwc', // http://tjv2017.regadata.org/en/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'ultimes' => 'goo.gl/CCsfwc', // http://tjv2017.regadata.org/en/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         ],
         'xls_service' => 'srv.tjv2017xls',
         'xls_service_class' => 'Service\Xls\Tjv2017Xls',
@@ -245,7 +245,7 @@ $app['races'] = [
             'class40' => 'Class 40',
             'multi50' => 'Multi 50',
             'imoca' => 'IMOCA',
-            'ultime' => 'Ultime',
+            'ultimes' => 'Ultimes',
         ],
         'menu' => [
             'map' => true,

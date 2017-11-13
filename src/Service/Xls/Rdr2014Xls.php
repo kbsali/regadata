@@ -39,7 +39,7 @@ class Rdr2014Xls extends XlsManager implements XlsManagerInterface
             ++$i;
             try {
                 $sheets = [
-                    'ultime' => 0,
+                    'ultimes' => 0,
                     'imoca' => 1,
                     'multi50' => 2,
                     'class40' => 3,
