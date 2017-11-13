@@ -202,6 +202,57 @@ $app['races'] = [
             'about' => false,
         ],
     ],
+    'tjv2017' => [
+        'id' => 'tjv2017',
+        'hashtag' => 'TJV2017',
+        'showTwailorHashtag' => false,
+        'host' => 'tjv2017.regadata.org',
+        'domain' => 'regadata.org',
+        'ua' => 'UA-328215-6',
+
+        'departure' => 'Le Havre',
+        'departure_lat' => '49.4900000',
+        'departure_lon' => '00.1000000',
+
+        'arrival' => 'Salvador de Bahia',
+        'arrival_lat' => '-12.97111',
+        'arrival_lon' => '-38.51083',
+
+        'total_distance' => '4350',
+
+        'start_date' => 'sunday 5 november 2017 13:30',
+        'url_xls' => 'https://www.transatjacquesvabre.org/rankings/%file%',
+        'url_map' => 'https://www.transatjacquesvabre.org/fr/cartographie-et-classement#live',
+        'url_gmap' => 'https://goo.gl/FbTNdj', // https://maps.google.com/?q=http://tjv2017.regadata.org/kml/tjv2017/trace_FULL.kmz
+        'parser' => 'geovoile',
+        'type' => 'race',
+        'tweetUrlFr' => [
+            'class40' => 'goo.gl/13FJD8', // http://tjv2017.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'multi50' => 'goo.gl/x3eaUP', // http://tjv2017.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'imoca' => 'goo.gl/xtEr2B', // http://tjv2017.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'ultime' => 'goo.gl/Lr3u66', // http://tjv2017.regadata.org/fr/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+        ],
+        'tweetUrlEn' => [
+            'class40' => 'goo.gl/oAX2n1', // http://tjv2017.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'multi50' => 'goo.gl/f3QcU5', // http://tjv2017.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'imoca' => 'goo.gl/4wdsRY', // http://tjv2017.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'ultime' => 'goo.gl/CCsfwc', // http://tjv2017.regadata.org/en/reports/latest?mode=ultime&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+        ],
+        'xls_service' => 'srv.tjv2017xls',
+        'xls_service_class' => 'Service\Xls\Tjv2017Xls',
+        'showReportFooter' => true,
+        'modes' => [
+            'class40' => 'Class 40',
+            'multi50' => 'Multi 50',
+            'imoca' => 'IMOCA',
+            'ultime' => 'Ultime',
+        ],
+        'menu' => [
+            'map' => true,
+            'documentation' => true,
+            'about' => false,
+        ],
+    ],
     'mini2013' => [
         'id' => 'mini2013',
         'hashtag' => 'MiniTransat',

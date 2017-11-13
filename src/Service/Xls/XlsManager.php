@@ -411,6 +411,8 @@ abstract class XlsManager
         if (strpos($str, '°')) {
             $regex = "|(.*?)°(.*?)\.(.*?)'([A-Z]{1})$|s";
         } else {
+            // 10 09.99' N
+            // 29 15.09' W
             $regex = "|(.*?) (.*?)\.(.*?)' ([A-Z]{1})$|s";
         }
         if (false === preg_match($regex, $str, $matches)) {
@@ -421,7 +423,14 @@ abstract class XlsManager
                 'dir' => 0,
             ];
         }
-
+        if (empty($matches)) {
+            return [
+                'deg' => 0,
+                'min' => 0,
+                'sec' => 0,
+                'dir' => 0,
+            ];
+        }
         return [
             'deg' => $matches[1],
             'min' => $matches[2],
