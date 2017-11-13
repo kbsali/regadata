@@ -230,13 +230,13 @@ $app['races'] = [
             'class40' => 'goo.gl/13FJD8', // http://tjv2017.regadata.org/fr/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'multi50' => 'goo.gl/x3eaUP', // http://tjv2017.regadata.org/fr/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
             'imoca' => 'goo.gl/xtEr2B', // http://tjv2017.regadata.org/fr/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
-            'ultimes' => 'goo.gl/Lr3u66', // http://tjv2017.regadata.org/fr/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
+            'ultimes' => 'goo.gl/U33HXs', // http://tjv2017.regadata.org/fr/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_fr
         ],
         'tweetUrlEn' => [
             'class40' => 'goo.gl/oAX2n1', // http://tjv2017.regadata.org/en/reports/latest?mode=class40&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'multi50' => 'goo.gl/f3QcU5', // http://tjv2017.regadata.org/en/reports/latest?mode=multi50&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
             'imoca' => 'goo.gl/4wdsRY', // http://tjv2017.regadata.org/en/reports/latest?mode=imoca&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
-            'ultimes' => 'goo.gl/CCsfwc', // http://tjv2017.regadata.org/en/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
+            'ultimes' => 'goo.gl/EaHZME', // http://tjv2017.regadata.org/en/reports/latest?mode=ultimes&utm_source=twitter&utm_medium=link&utm_campaign=twitter_en
         ],
         'xls_service' => 'srv.tjv2017xls',
         'xls_service_class' => 'Service\Xls\Tjv2017Xls',

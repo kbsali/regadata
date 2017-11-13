@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+    <Document>
+        <NetworkLink>
+            <name>#tjv2017 - OpenData (Traces)</name>
+            <open>0</open>
+            <Link>
+                <href>http://tjv2017.regadata.org/kml/tjv2017/trace_FULL.kmz</href>
+                <refreshMode>onInterval</refreshMode>
+                <refreshInterval>3600</refreshInterval>
+            </Link>
+        </NetworkLink>
+        <NetworkLink>
+            <name>#Tjv2017 - OpenData (Positions)</name>
+            <open>0</open>
+            <visibility>0</visibility>
+            <Link>
+                <href>http://tjv2017.regadata.org/kml/tjv2017/points_FULL.kmz</href>
+                <refreshMode>onInterval</refreshMode>
+                <refreshInterval>3600</refreshInterval>
+            </Link>
+        </NetworkLink>
+        <NetworkLink>
+            <name>WXTiles - Wind (10m)</name>
+            <open>0</open>
+            <visibility>0</visibility>
+            <Link>
+                <href>http://kml.wxtiles.com/current/wx.wind.kmz</href>
+                <refreshMode>onInterval</refreshMode>
+                <refreshInterval>3600</refreshInterval>
+            </Link>
+        </NetworkLink>
+    </Document>
+</kml>
