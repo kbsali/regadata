@@ -2,20 +2,20 @@
 <kml xmlns="http://earth.google.com/kml/2.2">
     <Document>
         <NetworkLink>
-            <name>#VG2012 - OpenData (Traces)</name>
+            <name>#tjv2013 - OpenData (Traces)</name>
             <open>0</open>
             <Link>
-                <href>http://vg2012.regadata.org/kml/vg2012/trace_FULL.kmz</href>
+                <href>http://tjv2013.regadata.org/kml/tjv2013/trace_FULL.kmz</href>
                 <refreshMode>onInterval</refreshMode>
                 <refreshInterval>3600</refreshInterval>
             </Link>
         </NetworkLink>
         <NetworkLink>
-            <name>#VG2012 - OpenData (Positions)</name>
+            <name>#tjv2013 - OpenData (Positions)</name>
             <open>0</open>
             <visibility>0</visibility>
             <Link>
-                <href>http://vg2012.regadata.org/kml/vg2012/points_FULL.kmz</href>
+                <href>http://tjv2013.regadata.org/kml/tjv2013/points_FULL.kmz</href>
                 <refreshMode>onInterval</refreshMode>
                 <refreshInterval>3600</refreshInterval>
             </Link>
